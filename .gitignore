@@ -1,0 +1,13 @@
+# Expo with React Native
+node_modules
+**/tmp*
+package-lock.json
+
+#Xcode
+Pods/
+BytePal.xcworkspace
+build/
+
+# Mac OS
+**/.DS_Store
+.DS_Store
