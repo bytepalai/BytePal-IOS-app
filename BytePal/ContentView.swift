@@ -11,6 +11,9 @@ import Foundation
 
 struct ContentView: View {
     var body: some View {
+         //BytepalWav()
+         //TestWav()
+        
         LoginView()
     }
 }
