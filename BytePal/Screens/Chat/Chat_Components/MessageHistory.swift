@@ -3,7 +3,7 @@
 //  BytePal
 //
 //  Created by Paul Ngouchet on 8/25/20.
-//  Copyright © 2020 BytePal-AI. All rights reserved.
+//  Copyright © 2020 BytePal AI, LLC. All rights reserved.
 //
 
 import Foundation
@@ -71,14 +71,13 @@ struct MessageHistory: View{
                 message = response1
                 Sounds.playSounds(soundfile: response2)
                
-                
                 //Save bot message to cache
                 messageListCoreData.id = UUID()
                 messageListCoreData.content = message
                 messageListCoreData.isCurrentUser = false
                 try? self.moc.save()
                 
-                self.messages.list.insert(MessageView(id: UUID(), message: MessageInformation(content: message, isCurrentUser: false)), at: self.messages.list.startIndex)
+                self.messages.list.insert(MessageView(id: UUID(),message: MessageInformation(content: message, isCurrentUser: false)),at: self.messages.list.startIndex)
             
             }
             

@@ -113,12 +113,12 @@ struct AccountSettingsView: View {
                         .foregroundColor(convertHextoRGB(hexColor: blueColor))
                         .padding(EdgeInsets(top: 16, leading: 8, bottom: 16, trailing: 0))
                 }
-                NavigationLink(destination: IAPView()){
+                /*NavigationLink(destination: IAPView()){
                     Text("IAP")
                         .font(.custom(fontStyle, size: 14))
                         .foregroundColor(convertHextoRGB(hexColor: blueColor))
                         .padding(EdgeInsets(top: 16, leading: 8, bottom: 16, trailing: 0))
-                }
+                }*/
                 NavigationLink(destination: DetectDominantLanguage()){
                     Text("Detect Language")
                         .font(.custom(fontStyle, size: 14))

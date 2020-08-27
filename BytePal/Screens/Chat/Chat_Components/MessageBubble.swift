@@ -3,7 +3,7 @@
 //  BytePal
 //
 //  Created by Paul Ngouchet on 8/25/20.
-//  Copyright © 2020 BytePal-AI. All rights reserved.
+//  Copyright © 2020 BytePal AI, LLC. All rights reserved.
 //
 
 import SwiftUI
