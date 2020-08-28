@@ -61,17 +61,24 @@ class BytePalAuth {
         return loginStatus
     }
     
-    func facebookLogin (id: String, email: String, first_name: String, last_name: String) -> String {
-    //      Init
+    func facebookLogin (id: String, email: String, first_name: String, last_name: String) -> [String: String] {
+        
+            // Init
             let semaphore = DispatchSemaphore (value: 0) //Create counter for async management
             var loginStatus: String = ""
+            var userInformation: [String: String] = [String: String]()
+        
+            // Set email and name
+            userInformation["email"] = email
+            userInformation["firstName"] = first_name
+            userInformation["lastName"] = last_name
 
-    //      Define header of POST Request
+            // Define header of POST Request
             var request = URLRequest(url: URL(string: "\(API_HOSTNAME)/facebook")!,timeoutInterval: Double.infinity)
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")
             request.httpMethod = "POST"
 
-    //      Define body POST Request
+            // Define body POST Request
             let parameters = """
             {
                 \"id\": \"\(id)\",
@@ -80,6 +87,7 @@ class BytePalAuth {
                 \"last_name\": \"\(last_name)\"
             }
             """
+
             let postData = parameters.data(using: .utf8)
             request.httpBody = postData
 
@@ -88,9 +96,9 @@ class BytePalAuth {
                 var user_id: String
             }
 
-    //      Create Post Request
+            // Create Post Request
             let task = URLSession.shared.dataTask(with: request) { data, response, error in
-    //          Handle Response
+                // Handle Response
                 guard let data = data else {
                     print(String(describing: error))
                     loginStatus = ""
@@ -107,9 +115,12 @@ class BytePalAuth {
             }
             task.resume()
             semaphore.wait()
-
-    //      Return loginStatus
-            return loginStatus
+        
+            // Set BytePal User ID
+            userInformation["id"] = loginStatus
+        
+            // Return loginStatus
+            return userInformation
     }
     
     func googleLogin (id: String, email: String, first_name: String, last_name: String) -> String {
@@ -167,70 +178,37 @@ class BytePalAuth {
 }
 
 class SocialMediaAuth {
-    
-    // Facebook Single Sign On
-    func fbSSO() -> String {
-        var id: String = ""
-        var email: String = ""
-        var firstName: String = ""
-        var lastName: String = ""
-        var userID: String = ""
-        
+    func fbLogout() {
         let fbLoginManager: LoginManager = LoginManager()
         fbLoginManager.logOut()
-        fbLoginManager.logIn(permissions: ["email"], from: UIApplication.shared.windows.last?.rootViewController) { (result, error) -> Void in
-            
-            // Handeler FB Login
-            
-            // Set ID
-            id = result!.token!.userID
-            
-            // Get user profile infromation
-            let tokenString: String = result!.token!.tokenString    // Set FBGraphAPI token
-            let request = FBSDKLoginKit.GraphRequest(               // Make FBGraphAPI request object
-                graphPath: "me",
-                parameters: ["fields": "email, name"],              // Specify data request from Facebook Graph API "User" Root Node
-                tokenString: tokenString,
-                version: nil,
-                httpMethod: .get
-            )
-            request.start(completionHandler: {connection, result, error in  // Send FBGraphAPI Request
-                
-                // Handeler for request
-                if let userProfile = result as? [String: String] {
-                    // Set email
-                    email = userProfile["email"]!
-                    
-                    // Set names
-                    let fullName = userProfile["name"]
-                    let names: [String] = fullName!.components(separatedBy: " ")
-                    let namesNum: Int = names.count
-                    switch namesNum {
-                        case 2:
-                            firstName = names[0]
-                            lastName = names[1]
-                        case 3:
-                            firstName = names[0]
-                            lastName = names[2]
-                        default:
-                            firstName = ""
-                            lastName = ""
-                            print("Error no name recieved")
-                    }
-                }
-            })
-            userID = BytePalAuth().facebookLogin(id: id, email: email, first_name: firstName, last_name: lastName)
+    }
+    
+    func GoogleLogout() {
+        GIDSignIn.sharedInstance()?.signOut()
+    }
+    
+    func personalLogout() {
+        print("------ Personal Logout")
+    }
+    
+    func logout() {
+        let account: String = self.getAccountLoggedIn()
+        switch account {
+            case "Facebook":
+                print("----- Logged out of Facebook")
+                self.fbLogout()
+            case "Google":
+                print("----- Logged out of Google")
+                self.GoogleLogout()
+            case "Personal":
+                print("----- Logged out of Personal")
+                self.personalLogout()
+            default:
+                print("----- Error: Account did not logout succesfully")
         }
-        
-        return userID
     }
     
-    func fbLogout(){
-        let fbLoginManager: LoginManager = LoginManager()
-        fbLoginManager.logOut()
-    }
-    
-    func accountLoggedIn() -> String {
+    func getAccountLoggedIn() -> String {
         if(GIDSignIn.sharedInstance()?.currentUser != nil){
             return "Google"
         } else if (AccessToken.current ?? nil) != nil {
@@ -238,9 +216,10 @@ class SocialMediaAuth {
                 return "Facebook"
             }
         } else {
-            return "Personal"
+            // Implement personal login
+            return "logged out"
         }
-        return ""
+        return "logged out"
     }
 }
 
@@ -250,8 +229,11 @@ class FBLogin: ObservableObject {
 
 class GoogleDelegate: NSObject, GIDSignInDelegate, ObservableObject {
     let bytepalAuth: BytePalAuth = BytePalAuth()
-    @Published var signedIn: Bool = false
     @Published var userID: String = ""
+    @Published var email: String = ""
+    @Published var firstName: String = ""
+    @Published var lastName: String = ""
+    @Published var signedIn: Bool = false
 
     // Signin Handeler
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!)  {
@@ -271,6 +253,9 @@ class GoogleDelegate: NSObject, GIDSignInDelegate, ObservableObject {
         let userID: String = bytepalAuth.googleLogin(id: idToken, email: email, first_name: givenName, last_name: familyName)
         
         self.userID = userID
+        self.email = email
+        self.firstName = givenName
+        self.lastName = familyName
         self.signedIn = true
     }
     

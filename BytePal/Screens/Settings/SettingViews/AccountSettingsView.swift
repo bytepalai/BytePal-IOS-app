@@ -8,21 +8,21 @@
 
 import SwiftUI
 import CoreData
-let username: String = "John2369"
-let email: String = "johnsmith@gmail.com"
 
 struct AccountSettingsView: View {
     var socialMediaAuth: SocialMediaAuth = SocialMediaAuth()
     var container: NSPersistentContainer!
-    @FetchRequest(entity: User.entity(), sortDescriptors: []) var UserInformationCoreData: FetchedResults<User>
+    @FetchRequest(entity: User.entity(), sortDescriptors: []) var UserInformationCoreDataRead: FetchedResults<User>
     @Environment(\.managedObjectContext) var moc
+    @EnvironmentObject var userInformation: UserInformation
     @State var isShowingChatView: Bool = false
+    var email: String = ""
     
-    func logoutFB() {
+    func logout() {
         // Clear User ID on Logout
-        socialMediaAuth.fbLogout()
-        for userInfo in UserInformationCoreData {
-            moc.delete(userInfo)
+        socialMediaAuth.logout()
+        for userInformation in UserInformationCoreDataRead {
+            moc.delete(userInformation)
         }
         try? self.moc.save()
         
@@ -53,34 +53,13 @@ struct AccountSettingsView: View {
                     Text("User")
                         .font(.custom(fontStyle, size: 20))
                     HStack {
-                        NavigationLink(destination: UsernameView()){
-                            Text("Username")
-                                .font(.custom(fontStyle, size: 14))
-                                .foregroundColor(convertHextoRGB(hexColor: blueColor))
-                        }
-                            .foregroundColor(Color(UIColor.systemBlue))
-                        Text(username)
-                            .font(.custom(fontStyle, size: 14))
-                    }
-                        .padding(EdgeInsets(top: 16, leading: 8, bottom: 16, trailing: 0))
-                    HStack {
-                        NavigationLink(destination: EmailView()){
-                            Text("Email")
-                                .font(.custom(fontStyle, size: 14))
-                                .foregroundColor(convertHextoRGB(hexColor: blueColor))
-                        }
-                            .foregroundColor(Color(UIColor.systemBlue))
-                        Text(email)
-                            .font(.custom(fontStyle, size: 14))
-                    }
-                        .padding(EdgeInsets(top: 16, leading: 8, bottom: 16, trailing: 0))
-                    NavigationLink(destination: PasswordView()){
-                        Text("Password")
+                        Text("Email")
                             .font(.custom(fontStyle, size: 14))
                             .foregroundColor(convertHextoRGB(hexColor: blueColor))
-                            .padding(EdgeInsets(top: 16, leading: 8, bottom: 16, trailing: 0))
+                        Text(userInformation.email)
+                            .font(.custom(fontStyle, size: 14))
                     }
-                        .foregroundColor(Color(UIColor.systemBlue))
+                        .padding(EdgeInsets(top: 16, leading: 8, bottom: 16, trailing: 0))
                 }
                     .padding(EdgeInsets(top: 16, leading: 0, bottom: 16, trailing: 0))
                 VStack(alignment: .leading) {
@@ -104,42 +83,13 @@ struct AccountSettingsView: View {
                     .padding(EdgeInsets(top: 16, leading: 0, bottom: 16, trailing: 0))
             }
                 .padding(EdgeInsets(top: 0, leading: 64, bottom: 0, trailing: 0))
-            VStack (alignment: .leading) {
-                Text("Developer")
-                    .font(.custom(fontStyle, size: 20))
-                NavigationLink(destination: Avatar()){
-                    Text("Avatar")
-                        .font(.custom(fontStyle, size: 14))
-                        .foregroundColor(convertHextoRGB(hexColor: blueColor))
-                        .padding(EdgeInsets(top: 16, leading: 8, bottom: 16, trailing: 0))
-                }
-                NavigationLink(destination: IAPView()){
-                    Text("IAP")
-                        .font(.custom(fontStyle, size: 14))
-                        .foregroundColor(convertHextoRGB(hexColor: blueColor))
-                        .padding(EdgeInsets(top: 16, leading: 8, bottom: 16, trailing: 0))
-                }
-                NavigationLink(destination: DetectDominantLanguage()){
-                    Text("Detect Language")
-                        .font(.custom(fontStyle, size: 14))
-                        .foregroundColor(convertHextoRGB(hexColor: blueColor))
-                        .padding(EdgeInsets(top: 16, leading: 8, bottom: 16, trailing: 0))
-                }
-                NavigationLink(destination: SignupView()){
-                    Text("Singup")
-                        .font(.custom(fontStyle, size: 14))
-                        .foregroundColor(convertHextoRGB(hexColor: blueColor))
-                        .padding(EdgeInsets(top: 16, leading: 8, bottom: 16, trailing: 0))
-                }
-            }
-                .padding(EdgeInsets(top: 0, leading: 64, bottom: 0, trailing: 0))
             Button(action: {
-                self.logoutFB()
+                self.logout()
             }){
                 Text("Logout")
                     .font(.custom(fontStyle, size: 16))
                     .foregroundColor(Color(UIColor.systemRed))
-                    .padding(EdgeInsets(top: 16, leading: 8, bottom: 16, trailing: 0))
+                    .padding(EdgeInsets(top: 16, leading: 72, bottom: 16, trailing: 0))
             }
             NavigationLink(destination: LoginView(), isActive: $isShowingChatView ){EmptyView()}
             Spacer(minLength: 300)

@@ -68,15 +68,13 @@ struct UserBar: View{
     }
 }
 
-
-// Use this for mainting message history between views
-class Messages: ObservableObject {
-    @Published var list = [MessageView]()
-}
-
 // Use this for mainting message history between views
 class UserInformation: ObservableObject {
-    @Published var user_id: String = ""
+    @Published var id: String = ""
+    @Published var email: String = ""
+    @Published var firstName: String = ""
+    @Published var lastName: String = ""
+    @Published var messagesLeft: Int = 0
 }
 
 struct MessageHistory: View{
@@ -109,12 +107,11 @@ struct MessageHistory: View{
         
 //      Update message history with user message
         DispatchQueue.main.async {
-            self.messages.list.insert(MessageView(id: UUID(), message: MessageInformation(content: self.textFieldString, isCurrentUser: true)), at: self.messages.list.startIndex)
+            self.messages.list.insert(["id": UUID(), "content": self.textFieldString, "isCurrentUser": true], at: self.messages.list.startIndex)
+            //      Clear message box
+            self.messageString = self.textFieldString
+            self.textFieldString = ""
         }
-        
-//      Clear message box
-        self.messageString = self.textFieldString
-        self.textFieldString = ""
     }
     
     func sendChatbotMessage(){
@@ -129,7 +126,7 @@ struct MessageHistory: View{
         
 //      Update message history with bot message
         DispatchQueue.main.async {
-            self.messages.list.insert(MessageView(id: UUID(), message: MessageInformation(content: message, isCurrentUser: false)), at: self.messages.list.startIndex)
+            self.messages.list.insert(["id": UUID(), "content": message, "isCurrentUser": false], at: self.messages.list.startIndex)
         }
         
 //      Speak bot response
@@ -148,7 +145,7 @@ struct MessageHistory: View{
 //      Define body of POST Request
         let parameters = """
         {
-        \"user_id\": \"\(self.userInformation.user_id)\",
+        \"user_id\": \"\(self.userInformation.id)\",
             \"text\" : "\(message)\",
             \"type\" : \"user\"
         }
@@ -175,7 +172,7 @@ struct MessageHistory: View{
             do {
                 let reponseObject = try JSONDecoder().decode(responseStruct.self, from: data)
                 let responseData: String = reponseObject.text
-                responseFromChatBot = responseData
+                responseFromChatBot = responseData.trimmingCharacters(in: .whitespacesAndNewlines)
             } catch {
                 print(error)
             }
@@ -193,10 +190,11 @@ struct MessageHistory: View{
             VStack{
                 
 //              Render message history from bottom to top
-                List(self.messages.list) { message in
-                    message
-                        .rotationEffect(.radians(.pi))
-//                        .scaleEffect(x: -1, y: 1, anchor: .center)
+                List {
+                    ForEach((0 ..< self.messages.list.count), id: \.self) { i in
+                        MessageView(id: self.messages.list[i]["id"] as! UUID, message: MessageInformation(content: self.messages.list[i]["content"] as! String, isCurrentUser: self.messages.list[i]["isCurrentUser"] as! Bool))
+                            .rotationEffect(.radians(.pi))
+                    }
                 }
                     .rotationEffect(.radians(.pi))
 //                    .scaleEffect(x: -1, y: 1, anchor: .center)
@@ -243,7 +241,7 @@ struct MessageHistory: View{
             }.onAppear(perform: {
                 // Load User ID from Cache to RAM
                 for userInfo in self.UserInformationCoreData {
-                    self.userInformation.user_id = userInfo.id!
+                    self.userInformation.id = userInfo.id!
                 }
             })
         }

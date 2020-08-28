@@ -30,39 +30,44 @@ struct SettingsNavigation: View {
 }
 
 struct NavigationBar: View {
+    @EnvironmentObject var userInformation: UserInformation
+    
     var body: some View {
         GeometryReader { geometry in
-            HStack {
-                NavigationLink(destination: HomeView()){
-                    Image(systemName: "house.fill")
-                        .font(.system(size: 34))
-                        .foregroundColor(convertHextoRGB(hexColor: "EAEEED"))
-                        .padding(EdgeInsets(top: 0, leading: 0, bottom: 32, trailing: 64))
-                        .shadow(color: convertHextoRGB(hexColor: "000000").opacity(0.48), radius: 3, x: 3, y: 7)
+            VStack {
+                Spacer(minLength: 10)
+                HStack {
+                    NavigationLink(destination: HomeView().environmentObject(self.userInformation)){
+                            Image(systemName: "house.fill")
+                                .font(.system(size: 34))
+                                .foregroundColor(convertHextoRGB(hexColor: "EAEEED"))
+                                .padding(EdgeInsets(top: 0, leading: 0, bottom: 32, trailing: 64))
+                                .shadow(color: convertHextoRGB(hexColor: "000000").opacity(0.48), radius: 3, x: 3, y: 7)
+                        }
+                        
+                    NavigationLink(destination: ChatView().environmentObject(self.userInformation)){
+                            Image(systemName: "bubble.left.fill")
+                                .font(.system(size: 34))
+                                .foregroundColor(convertHextoRGB(hexColor: "EAEEED"))
+                                .shadow(color: convertHextoRGB(hexColor: "000000").opacity(0.48), radius: 3, x: 3, y: 7)
+                                .padding(EdgeInsets(top: 6, leading: 0, bottom: 32, trailing: 0))
+                        }
+                        NavigationLink(destination: AccountSettingsView().environmentObject(self.userInformation)){
+                            Image(systemName: "person.fill")
+                                .font(.system(size: 34))
+                                .foregroundColor(convertHextoRGB(hexColor: "EAEEED"))
+                                .shadow(color: convertHextoRGB(hexColor: "000000").opacity(0.48), radius: 3, x: 3, y: 7)
+                                .padding(EdgeInsets(top: 0, leading: 64, bottom: 32, trailing: 0))
+                        }
+                    }
+                        .edgesIgnoringSafeArea(.bottom)
+                        .frame(width: geometry.size.width, height: 104, alignment: .bottom)
+                        .background(convertHextoRGB(hexColor: "9FA7A3"))
+                        .shadow(radius: 1)
+                        .opacity(1)
                 }
-                
-                NavigationLink(destination: ChatView()){
-                    Image(systemName: "bubble.left.fill")
-                        .font(.system(size: 34))
-                        .foregroundColor(convertHextoRGB(hexColor: "EAEEED"))
-                        .shadow(color: convertHextoRGB(hexColor: "000000").opacity(0.48), radius: 3, x: 3, y: 7)
-                        .padding(EdgeInsets(top: 6, leading: 0, bottom: 32, trailing: 0))
-                }
-                NavigationLink(destination: AccountSettingsView()){
-                    Image(systemName: "person.fill")
-                        .font(.system(size: 34))
-                        .foregroundColor(convertHextoRGB(hexColor: "EAEEED"))
-                        .shadow(color: convertHextoRGB(hexColor: "000000").opacity(0.48), radius: 3, x: 3, y: 7)
-                        .padding(EdgeInsets(top: 0, leading: 64, bottom: 32, trailing: 0))
-                }
-            }
-                .edgesIgnoringSafeArea(.bottom)
-                .frame(width: geometry.size.width, height: 104
-            )
-                .background(convertHextoRGB(hexColor: "9FA7A3"))
-                .shadow(radius: 1).opacity(0.60)
-        }
-            .edgesIgnoringSafeArea(.bottom)
-    }
+                    .edgesIgnoringSafeArea(.bottom)
 
+            }
+        }
 }

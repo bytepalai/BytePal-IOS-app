@@ -66,68 +66,78 @@ struct FacebookLogin: View {
     @FetchRequest(entity: User.entity(), sortDescriptors: []) var UserInformationCoreData: FetchedResults<User>
     @Environment(\.managedObjectContext) var moc
     @EnvironmentObject var messages: Messages
+    @EnvironmentObject var userInformation: UserInformation
     @State var isShowingChatView = false
-    var socialMediaAuth: SocialMediaAuth = SocialMediaAuth()
 
     func loginFB() {
-        var id: String = ""
         var email: String = ""
         var firstName: String = ""
         var lastName: String = ""
-        var userID: String = ""
+        var fbUserInformation: [String: String] = [String: String]()
         
         let fbLoginManager: LoginManager = LoginManager()
         fbLoginManager.logOut()
         fbLoginManager.logIn(permissions: ["email"], from: UIApplication.shared.windows.last?.rootViewController) { (result, error) -> Void in
             
             // Handeler FB Login
-            
-            // Set ID
-            id = result!.token!.userID
-            
-            // Get user profile infromation
-            let tokenString: String = result!.token!.tokenString    // Set FBGraphAPI token
-            let request = FBSDKLoginKit.GraphRequest(               // Make FBGraphAPI request object
-                graphPath: "me",
-                parameters: ["fields": "email, name"],              // Specify data request from Facebook Graph API "User" Root Node
-                tokenString: tokenString,
-                version: nil,
-                httpMethod: .get
-            )
-            request.start(completionHandler: {connection, result, error in  // Send FBGraphAPI Request
+            if let fbAccessToken = result!.token {
+                let id: String = fbAccessToken.userID
+                // Get user profile infromation
+                let tokenString: String = fbAccessToken.tokenString    // Set FBGraphAPI token
+                let request = FBSDKLoginKit.GraphRequest(               // Make FBGraphAPI request object
+                    graphPath: "me",
+                    parameters: ["fields": "email, name"],              // Specify data request from Facebook Graph API "User" Root Node
+                    tokenString: tokenString,
+                    version: nil,
+                    httpMethod: .get
+                )
                 
-                // Handeler for request
-                if let userProfile = result as? [String: String] {
-                    // Set email
-                    email = userProfile["email"]!
+                request.start(completionHandler: {connection, result, error in  // Send FBGraphAPI Request
                     
-                    // Set names
-                    let fullName = userProfile["name"]
-                    let names: [String] = fullName!.components(separatedBy: " ")
-                    let namesNum: Int = names.count
-                    switch namesNum {
-                        case 2:
-                            firstName = names[0]
-                            lastName = names[1]
-                        case 3:
-                            firstName = names[0]
-                            lastName = names[2]
-                        default:
-                            firstName = ""
-                            lastName = ""
-                            print("Error no name recieved")
+                    // Handeler for request
+                    if let userProfile = result as? [String: String] {
+                        // Set email
+                        email = userProfile["email"]!
+                        // Set names
+                        let fullName = userProfile["name"]
+                        let names: [String] = fullName!.components(separatedBy: " ")
+                        let namesNum: Int = names.count
+                        switch namesNum {
+                            case 2:
+                                firstName = names[0]
+                                lastName = names[1]
+                            case 3:
+                                firstName = names[0]
+                                lastName = names[2]
+                            default:
+                                firstName = ""
+                                lastName = ""
+                                print("Error no name recieved")
+                        }
+                        
+                        fbUserInformation = BytePalAuth().facebookLogin(id: id, email: email, first_name: firstName, last_name: lastName)
+
+                        // Saved userID if it exists
+                        if fbUserInformation["id"]! != "" {
+                            
+                            // Write user information to cache
+                            let userInformationCoreDataWrite: User = User(context: self.moc)
+                            userInformationCoreDataWrite.id = fbUserInformation["id"]!
+                            userInformationCoreDataWrite.email = fbUserInformation["email"]!
+                            userInformationCoreDataWrite.firstName = fbUserInformation["firstName"]!
+                            userInformationCoreDataWrite.lastName = fbUserInformation["lastName"]!
+                            try? self.moc.save()
+                            
+                            // Write user information to RAM
+                            self.userInformation.id = fbUserInformation["id"]!
+                            self.userInformation.email = fbUserInformation["email"]!
+                            self.userInformation.firstName = fbUserInformation["firstName"]!
+                            self.userInformation.lastName = fbUserInformation["lastName"]!
+                            
+                            self.isShowingChatView = true
+                        }
                     }
-                }
-            })
-            
-            userID = BytePalAuth().facebookLogin(id: id, email: email, first_name: firstName, last_name: lastName)
-            
-            // Saved userID if it exists
-            if userID != "" {
-                let userInformation: User = User(context: self.moc)
-                userInformation.id = userID
-                try? self.moc.save()
-                self.isShowingChatView = true
+                })
             }
         }
     }
@@ -159,8 +169,8 @@ struct GoogleLogin: View {
     @Environment(\.managedObjectContext) var moc
     @EnvironmentObject var messages: Messages
     @EnvironmentObject var googleDelegate: GoogleDelegate
+    @EnvironmentObject var userInformation: UserInformation
     @State var isShowingChatView = false
-    var socialMediaAuth: SocialMediaAuth = SocialMediaAuth()
     
     var body: some View {
         VStack {
@@ -201,12 +211,23 @@ struct GoogleLogin: View {
 
                     // Saved userID if it exists
                     if self.googleDelegate.userID != "" {
-                        let userInformation: User = User(context: self.moc)
-                        userInformation.id = self.googleDelegate.userID
+                        
+                        // Write user information to cache
+                        let userInformationCoreDataWrite: User = User(context: self.moc)
+                        userInformationCoreDataWrite.id = self.googleDelegate.userID
+                        userInformationCoreDataWrite.email = self.googleDelegate.email
+                        userInformationCoreDataWrite.firstName = self.googleDelegate.firstName
+                        userInformationCoreDataWrite.lastName = self.googleDelegate.lastName
                         try? self.moc.save()
+                        
+                        // Write user information to RAM
+                        self.userInformation.id = self.googleDelegate.userID
+                        self.userInformation.email = self.googleDelegate.email
+                        self.userInformation.firstName = self.googleDelegate.firstName
+                        self.userInformation.lastName = self.googleDelegate.lastName
+                        
                         self.isShowingChatView = true
                     }
-                    self.isShowingChatView = self.googleDelegate.signedIn
                 }
             })
             NavigationLink(destination: ChatView().environmentObject(messages), isActive: self.$isShowingChatView){EmptyView()}
@@ -247,8 +268,8 @@ struct SignupBar: View {
 }
 
 struct LoginView: View {
-    var socialMediaAuth: SocialMediaAuth = SocialMediaAuth()
     var loginViewModel: LoginViewModel = LoginViewModel()
+    var socialMediaAuth: SocialMediaAuth = SocialMediaAuth()
     var container: NSPersistentContainer!
     @FetchRequest(entity: Message.entity(), sortDescriptors: []) var MessagesCoreData: FetchedResults<Message>
     @FetchRequest(entity: User.entity(), sortDescriptors: []) var UserInformationCoreData: FetchedResults<User>
@@ -309,6 +330,10 @@ struct LoginView: View {
         return loginStatus
     }
     
+    func loadMessage(message: Message) {
+        self.messages.list.insert(["id": message.id!, "content": message.content!, "isCurrentUser": message.isCurrentUser], at: self.messages.list.startIndex)
+    }
+    
     var body: some View {
         NavigationView {
             VStack {
@@ -327,7 +352,7 @@ struct LoginView: View {
                     if loginStatus == "Wrong email or password" {
                         self.loginError = "Wrong email or password"
                     }else {
-                        self.userInformation.user_id = loginStatus
+                        self.userInformation.id = loginStatus
                         try? self.moc.save()
                         self.isShowingChatView = true
                     }
@@ -337,27 +362,39 @@ struct LoginView: View {
                 Divider()
                 SignupBar()
                 NavigationLink(destination: ChatView().environmentObject(messages).environmentObject(userInformation), isActive: self.$isShowingChatView){EmptyView()}
-            }
-        }.onAppear(perform: {
-            // Load messages from cache
-            var id: String = ""
-            
-            for item in self.MessagesCoreData {
-                self.messages.list.insert(MessageView(id: item.id ?? UUID(), message: MessageInformation(content: item.content ?? "Unkown", isCurrentUser: item.isCurrentUser)), at: self.messages.list.startIndex)
-            }
-            
-            // Check if Facebook Login already logged in
-            if (AccessToken.current ?? nil) != nil {
-                if !AccessToken.current!.isExpired {
-                    for userInfo in self.UserInformationCoreData {
-                        id = userInfo.id ?? ""
+                
+            }.onAppear(perform: {
+                // Load messages from cache
+                var messageNumber: Int = 0
+                if self.MessagesCoreData.isEmpty != true {
+                    let messageCount: Int = self.MessagesCoreData.count
+                    let lastMessageLowestIndex: Int = messageCount - 2
+                    for message in self.MessagesCoreData {
+                        if messageNumber >= lastMessageLowestIndex {
+                            self.messages.lastMessages.append(message.content ?? "")
+                        }
+                        self.loadMessage(message: message)
+                        messageNumber += 1
                     }
-                    self.userInformation.user_id = id
+                }
+                else {
+                    self.messages.lastMessages.append(userNoMessages)
+                    self.messages.lastMessages.append(chatbotNoMessages)
+                }
+                                
+                // Load user information
+                if self.socialMediaAuth.getAccountLoggedIn() != "logged out" {
+                    // Load user information from cache to RAM
+                    for userInfo in self.UserInformationCoreData {
+                        self.userInformation.id = userInfo.id ?? ""
+                        self.userInformation.email = userInfo.email ?? ""
+                        self.userInformation.firstName = userInfo.firstName ?? ""
+                        self.userInformation.lastName = userInfo.lastName ?? ""
+                    }
                     self.isShowingChatView = true
                 }
-            }
-            
-        })
+            })
+        }
     }
 }
 

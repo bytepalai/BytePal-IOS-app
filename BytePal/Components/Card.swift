@@ -9,52 +9,64 @@
 import SwiftUI
 
 struct ButtonCard: View {
+    var type: String
+    var title: String
     var image: String
     var text: String
     var buttonText: String
+    @EnvironmentObject var messages: Messages
+    @EnvironmentObject var userInformation: UserInformation
+    @State var isShowingIAPView: Bool = false
+    @State var isShowingChatView: Bool = false
+    
+    func updateView(type: String) {
+        switch type {
+            case "typing":
+                self.isShowingIAPView = true
+            case "female user", "BytePal":
+                self.isShowingChatView = true
+            default:
+                print("Error")
+        }
+    }
     
     var body: some View {
-        ZStack{
+        ZStack {
             Rectangle()
                 .fill(Color(UIColor.white))
                 .frame(width: 300, height: 160)
                 .cornerRadius(10)
                 .shadow(radius: 3)
-            VStack {
-                HStack {
-                    Image(systemName: image)
-                        .font(.system(size: 34))
-                        .foregroundColor(convertHextoRGB(hexColor: "eaeeed"))
-                        .shadow(radius: 0)
-                        .padding(EdgeInsets(top: 6, leading: 0, bottom: 0, trailing: 0))
-                    Text("You have 9,000 messages left")
-                        .font(.custom(fontStyle, size: 16))
-                }
-                NavigationLink(destination: UpgradeView()) {
-                    Button(action: {
-                        
-                    }){
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 20)
-                                .fill(convertHextoRGB(hexColor: greenColor))
-                                .frame(width: 200, height: 32)
-                            Text("Upgrade")
-                                .font(.custom(fontStyle, size: 16))
-                                .foregroundColor(Color(UIColor.white))
+            HStack {
+                    Image(image)
+                        .resizable()
+                        .frame(width: 72,height: 72)
+                    VStack {
+                        Text(title)
+                            .font(.custom(fontStyle, size: 18))
+                            .padding(16)
+                        Text(text)
+                            .lineLimit(nil)
+                            .font(.custom(fontStyle, size: 16))
+                        Button(action: {
+                            self.updateView(type: self.type)
+                        }){
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 20)
+                                    .fill(convertHextoRGB(hexColor: greenColor))
+                                    .frame(width: 200, height: 32)
+                                Text(buttonText)
+                                    .font(.custom(fontStyle, size: 16))
+                                    .foregroundColor(Color(UIColor.white))
+                            }
                         }
                     }
-                    .padding(16)
-                }
+                NavigationLink(destination: IAPView().environmentObject(messages).environmentObject(userInformation), isActive: self.$isShowingIAPView){EmptyView()}
+                NavigationLink(destination: ChatView().environmentObject(messages).environmentObject(userInformation), isActive: self.$isShowingChatView){EmptyView()}
             }
+                .padding(16)
         }
-            .padding(8)   
-    }
-}
-
-struct TextBytePal: View {
-    var body: some View {
-        Text("Hello World")
-            .font(.custom(fontStyle, size: 16))
+        .padding(16)
     }
 }
 

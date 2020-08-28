@@ -33,7 +33,7 @@ struct login: View {
             
             let createAgentParameter = """
             {
-                \"user_id\" : "",
+                \"user_id\" : "\(id)",
             }
             """
             
