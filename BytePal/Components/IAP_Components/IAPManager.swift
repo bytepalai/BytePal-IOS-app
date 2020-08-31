@@ -89,6 +89,8 @@ class IAPManager : NSObject{
             return
         }
         
+        //print("receipt Url is", receiptUrl)
+        
         #if DEBUG
         let urlString = "https://sandbox.itunes.apple.com/verifyReceipt"
         #else 

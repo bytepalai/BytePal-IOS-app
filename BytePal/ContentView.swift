@@ -14,10 +14,12 @@ struct ContentView: View {
          //BytepalWav()
          //TestWav()
         
-        LoginView()
+        //LoginView()
         
         //IAPView(productsStore: ProductsStore.shared)
         
+        IAPCard(image:"message3", category:"Unlimited Messages",heading:"$14.99/month", author:"select" )
+        // NavigationBar()
         
     }
 }

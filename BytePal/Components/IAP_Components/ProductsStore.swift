@@ -24,7 +24,7 @@ class ProductsStore : ObservableObject {
     }
     
     func initializeProducts(){
-        IAPManager.shared.startWith(arrayOfIds: [subscription_1, subscription_2], sharedSecret: shared_secret) { products in    
+        IAPManager.shared.startWith(arrayOfIds: [subscription_1, subscription_2, subscription_3], sharedSecret: shared_secret) { products in
             self.products = products   
         }
     }
