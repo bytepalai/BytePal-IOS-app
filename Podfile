@@ -6,4 +6,5 @@ target 'BytePal' do
   pod 'FBSDKLoginKit'
   pod 'GoogleSignIn'
   pod 'Alamofire'
+  pod 'PushNotifications'
 end

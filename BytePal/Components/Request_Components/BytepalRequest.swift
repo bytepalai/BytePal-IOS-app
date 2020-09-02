@@ -18,7 +18,6 @@ class MakeRequest {
         
         var responseFromChatBot: String?
         var voicePath : String?
-        let semaphore = DispatchSemaphore (value: 0)
         //      Define header of POST Request
         let urlRequest =  "\(API_HOSTNAME)/interact"
         

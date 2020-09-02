@@ -108,7 +108,7 @@ class IAPManager : NSObject{
             DispatchQueue.main.async {
                 if data != nil {
                     if let json = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments){
-                        self.parseReceipt(json as! Dictionary<String, Any>)
+                        self.parseReceipt(json as! Dictionary<String, Any>, url:receiptUrl)
                         return
                     }
                 } else {
@@ -123,14 +123,32 @@ class IAPManager : NSObject{
     /* It's the most simple way to get latest expiration date. Consider this code as for learning purposes. You shouldn't use current code in production apps.
      This code doesn't handle errors or some situations like cancellation date.
      */
-    private func parseReceipt(_ json : Dictionary<String, Any>) {
+    private func parseReceipt(_ json : Dictionary<String, Any>, url:URL ) {
         guard let receipts_array = json["latest_receipt_info"] as? [Dictionary<String, Any>] else {
             self.refreshSubscriptionFailureBlock?(nil)
             self.cleanUpRefeshReceiptBlocks()
             return
         }
+        let latestReceipt = json["latest_receipt"] as! String
+        
         for receipt in receipts_array {
-            let productID = receipt["product_id"] as! String 
+            let productID = receipt["product_id"] as! String
+            
+            let receiptUrl = "\(url)" // URL Type to String to be saved in the database
+            let originalTransactionId = receipt["original_transaction_id"] as! String
+            let purchaseDateMs = receipt["purchase_date_ms"] as! String
+            let expiresDateMs = receipt["expires_date_ms"] as! String
+            let webOrderLineItemId = receipt["web_order_line_item_id"] as! String
+            
+            // Post the receipt data to the backend
+            Receipt.sendReceipt(productID: productID,
+                                receiptUrl: receiptUrl,
+                                originalTransactionId: originalTransactionId,
+                                purchaseDateMs: purchaseDateMs,
+                                expiresDateMs: expiresDateMs,
+                                latestReceipt:latestReceipt,
+                                webOrderLineItemId: webOrderLineItemId)
+            
             let formatter = DateFormatter()
             formatter.dateFormat = "yyyy-MM-dd HH:mm:ss VV"
             if let date = formatter.date(from: receipt["expires_date"] as! String) {

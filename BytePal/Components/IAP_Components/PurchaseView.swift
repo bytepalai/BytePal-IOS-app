@@ -43,7 +43,7 @@ struct PurchaseView : View {
     
     func purchaseButtons() -> some View {
         // remake to ScrollView if has more than 2 products because they won't fit on screen.
-        HStack {
+        VStack {
             Spacer()
             ForEach(ProductsStore.shared.products, id: \.self) { prod in
                 PurchaseButton(block: { 

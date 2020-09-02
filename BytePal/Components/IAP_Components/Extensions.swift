@@ -52,6 +52,9 @@ extension SKProduct {
         }
         let unitCount = subscriptionPeriod!.numberOfUnits
         let unitString = unitCount == 1 ? periodString : "\(unitCount) \(periodString)s"
-        return (text ?? "") + "\nper \(unitString)"
+        print("got called")
+        print("text", text)
+        return text!
+        //return (text ?? "") + "\nper \(unitString)"
     }
 }

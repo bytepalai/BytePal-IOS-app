@@ -16,9 +16,11 @@ struct ContentView: View {
         
         //LoginView()
         
-        //IAPView(productsStore: ProductsStore.shared)
+        IAPView(productsStore: ProductsStore.shared)
         
-        IAPCard(image:"message3", category:"Unlimited Messages",heading:"$14.99/month", author:"select" )
+        //ShareView()
+        
+        //IAPCard(image:"message3", category:"Unlimited Messages",heading:"$14.99/month", author:"select" )
         // NavigationBar()
         
     }

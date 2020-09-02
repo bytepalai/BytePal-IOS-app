@@ -8,33 +8,37 @@
 
 import SwiftUI
 
+
+
 struct IAPCard: View {
     
-    var image: String
-    var category: String
-    var heading: String
-    var author: String
+    //var image: String
+    //var plan: String
+    var price: String
+    //var action: String
+    
     
     var body: some View {
         
         VStack {
-            Image(image)
+            Image(MAPIAP[price]![0])
+                .renderingMode(.original)
                 .resizable()
                 //.aspectRatio(contentMode: .fit)
                 .frame(width: 340, height: 340)
-            
+                
             
             HStack {
                 VStack(alignment: .leading) {
-                    Text(category)
+                    Text(MAPIAP[price]![1])
                         .font(.headline)
                         .foregroundColor(.secondary)
-                    Text(heading)
+                    Text(MAPIAP[price]![2])
                         .font(.title)
                         .fontWeight(.black)
                         .foregroundColor(.primary)
                         .lineLimit(3)
-                    Text(author.uppercased())
+                    Text(MAPIAP[price]![3].uppercased())
                         .font(.largeTitle)
                         .foregroundColor(.secondary)
                 }
@@ -62,7 +66,7 @@ struct IAPCard: View {
 
 struct IAPCard_Previews: PreviewProvider {
     static var previews: some View {
-        IAPCard(image:"message3", category:"5000 Messages",heading:"$9.99/month", author:"select" )
+        IAPCard(price:"$9.99")
 
     }
 }

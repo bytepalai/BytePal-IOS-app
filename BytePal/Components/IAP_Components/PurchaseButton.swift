@@ -15,15 +15,24 @@ struct PurchaseButton : View {
     
     var block : SuccessBlock!
     var product : SKProduct!
-    
+
+    @State private var image = ""
+    @State private var plan = ""
+    @State private var price = ""
+    @State private var action = ""
+       
     
     var body: some View {
         
         Button(action: { 
             self.block()
             print("price is", self.product.localizedPrice())
+            print(self.product.localizedPrice())
+           
         }) {
-            Text(product.localizedPrice()).lineLimit(nil).multilineTextAlignment(.center).font(.subheadline)
-            }.padding().frame(height: 50).scaledToFill().border(Color.blue, width: 1)
+            IAPCard(price:String(self.product.localizedPrice()))
+            //Text(product.localizedPrice()).lineLimit(nil).multilineTextAlignment(.center).font(.subheadline)
+            }
     }
+        
 }
