@@ -39,7 +39,7 @@ class IAPManager : NSObject{
         SKPaymentQueue.default().add(self)
         self.didLoadsProducts = callback
         self.sharedSecret = sharedSecret
-        self.productIds = arrayOfIds
+        self.productIds = arrayOfIds // The error is happening right here
         loadProducts()
     }
     

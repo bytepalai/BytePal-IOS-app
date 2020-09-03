@@ -24,19 +24,27 @@ struct PurchaseView : View {
     var body: some View {
                            
         ScrollView (showsIndicators: false) {
-            
             VStack {
                 Text("Get Premium Membership").font(.title)
-                Text("Choose one of the packages above").font(.subheadline)
-                
+                    .fontWeight(.black)
+                    .foregroundColor(.primary)
+                    .lineLimit(3)
+                Text("Choose one of the packages above")
+                    .font(.headline)
+                    .foregroundColor(.secondary)
                 self.purchaseButtons()
-                self.aboutText()
-                self.helperButtons()
-                self.termsText().frame(width: UIScreen.main.bounds.size.width)
-                self.dismissButton()
-                
-                }.frame(width : UIScreen.main.bounds.size.width)
-            }.disabled(self.isDisabled)    
+                //self.aboutText()
+                 Spacer()
+                 VStack {
+                    self.helperButtons()
+                    self.termsText().frame(width: UIScreen.main.bounds.size.width)
+                    self.dismissButton()
+                 }
+                 .background(convertHextoRGB(hexColor:"f8f4f4"))
+            }
+            .background(convertHextoRGB(hexColor:"ebf6f5"))
+            .frame(width : UIScreen.main.bounds.size.width)
+        }.disabled(self.isDisabled)
     }
 
     // MARK:- View creations
