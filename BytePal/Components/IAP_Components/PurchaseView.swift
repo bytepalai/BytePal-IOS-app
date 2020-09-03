@@ -29,7 +29,7 @@ struct PurchaseView : View {
                     .fontWeight(.black)
                     .foregroundColor(.primary)
                     .lineLimit(3)
-                Text("Choose one of the packages above")
+                Text("Choose one of the packages below")
                     .font(.headline)
                     .foregroundColor(.secondary)
                 self.purchaseButtons()
