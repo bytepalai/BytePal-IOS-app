@@ -28,9 +28,12 @@ struct PurchaseButton : View {
             self.block()
             print("price is", self.product.localizedPrice())
             print(self.product.localizedPrice())
+            //Spacer()
            
         }) {
             IAPCard(price:String(self.product.localizedPrice()))
+            //Spacer()
+            
             //Text(product.localizedPrice()).lineLimit(nil).multilineTextAlignment(.center).font(.subheadline)
             }
     }

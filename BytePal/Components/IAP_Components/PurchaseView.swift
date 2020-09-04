@@ -32,15 +32,25 @@ struct PurchaseView : View {
                 Text("Choose one of the packages below")
                     .font(.headline)
                     .foregroundColor(.secondary)
+                
                 self.purchaseButtons()
                 //self.aboutText()
-                 Spacer()
-                 VStack {
-                    self.helperButtons()
-                    self.termsText().frame(width: UIScreen.main.bounds.size.width)
-                    self.dismissButton()
-                 }
-                 .background(convertHextoRGB(hexColor:"f8f4f4"))
+                
+                ZStack{
+                    RoundedRectangle(cornerRadius: 25, style: .continuous)
+                    .fill(convertHextoRGB(hexColor: "ffffff"))
+                    .padding(EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 0))
+                    .shadow(color: convertHextoRGB(hexColor: "000000").opacity(0.33), radius: 4, x: 3, y: 3)
+                    VStack {
+                        self.helperButtons()
+                        self.termsText().frame(width: UIScreen.main.bounds.size.width)
+                        self.dismissButton()
+                        
+                    }
+                    .background(convertHextoRGB(hexColor:"f8f4f4"))
+                    
+                }
+                
             }
             .background(convertHextoRGB(hexColor:"ebf6f5"))
             .frame(width : UIScreen.main.bounds.size.width)
@@ -52,13 +62,38 @@ struct PurchaseView : View {
     func purchaseButtons() -> some View {
         // remake to ScrollView if has more than 2 products because they won't fit on screen.
         VStack {
-            Spacer()
             ForEach(ProductsStore.shared.products, id: \.self) { prod in
-                PurchaseButton(block: { 
-                    self.purchaseProduct(skproduct: prod)
-                }, product: prod).disabled(IAPManager.shared.isActive(product: prod))
-            }
+               
+                VStack{
+                PurchaseButton(block: {
+                    self.purchaseProduct(skproduct:prod)
+                    //Spacer()
+                }, product: prod).disabled(IAPManager.shared.isActive(product:prod))
+                    Spacer()
+                    Spacer()
+                }
+                
+                /*PurchaseButton(block: {
+                    self.purchaseProduct(skproduct:ProductsStore.shared.products[0])
+                    //Spacer()
+                }, product: ProductsStore.shared.products[0]).disabled(IAPManager.shared.isActive(product: ProductsStore.shared.products[0]))
+            
             Spacer()
+            Spacer()
+            
+             PurchaseButton(block: {
+                              self.purchaseProduct(skproduct:ProductsStore.shared.products[1])
+                              //Spacer()
+                          }, product: ProductsStore.shared.products[1]).disabled(IAPManager.shared.isActive(product: ProductsStore.shared.products[1]))
+            Spacer()
+            Spacer()
+              PurchaseButton(block: {
+                              self.purchaseProduct(skproduct:ProductsStore.shared.products[2])
+                              //Spacer()
+                          }, product: ProductsStore.shared.products[2]).disabled(IAPManager.shared.isActive(product: ProductsStore.shared.products[2]))*/
+            }
+            //Spacer()
+            //Spacer()
         }
     }
     

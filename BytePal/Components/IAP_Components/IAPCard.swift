@@ -20,12 +20,18 @@ struct IAPCard: View {
     
     var body: some View {
         
+        ZStack{
+        RoundedRectangle(cornerRadius: 25, style: .continuous)                                          // Text box border
+            .fill(convertHextoRGB(hexColor: "ffffff"))
+            //.frame(width: geometry.size.width - 16 , height: 40)
+            .padding(EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 0))
+            .shadow(color: convertHextoRGB(hexColor: "000000").opacity(0.33), radius: 4, x: 3, y: 3)
         VStack {
             Image(MAPIAP[price]![0])
                 .renderingMode(.original)
                 .resizable()
                 //.aspectRatio(contentMode: .fit)
-                .frame(width: 340, height: 340)
+                .frame(width: 300, height: 300)
                 
             
             HStack {
@@ -50,16 +56,20 @@ struct IAPCard: View {
             .padding()
             
         }
-        .cornerRadius(10)
+        //.cornerRadius(10)
         //.overlay(
             //RoundedRectangle(cornerRadius: 10).stroke(Color(.sRGB, red: 150/255, green: 150/255, blue: 150/255, opacity: 0.1), lineWidth: 1)
         //)
         .padding([.top, .horizontal])
         //.background(Color.white)
-        .shadow(radius: 10.0)
+        //.shadow(radius: 10.0)
+        .cornerRadius(15)
+        //.shadow(color: convertHextoRGB(hexColor: "000000").opacity(0.33), radius: 3, x: 3, y: 7)
         //.shadow(color:Color.black,radius:2)
         .background(convertHextoRGB(hexColor:"f8f4f4"))
         
+            
+        }
         
     }
 }

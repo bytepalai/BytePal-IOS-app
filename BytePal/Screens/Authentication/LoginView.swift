@@ -333,12 +333,14 @@ struct LoginView: View {
                     }
                 }){
                     LoginButtonView()
+                    
                 }
                 Divider()
                 SignupBar()
                 NavigationLink(destination: ChatView().environmentObject(messages).environmentObject(userInformation), isActive: self.$isShowingChatView){EmptyView()}
             }
-        }.onAppear(perform: {
+        }
+        .onAppear(perform: {
             // Load messages from cache
             var id: String = ""
             
