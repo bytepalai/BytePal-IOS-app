@@ -373,6 +373,7 @@ struct LoginView: View {
                         if messageNumber >= lastMessageLowestIndex {
                             self.messages.lastMessages.append(message.content ?? "")
                         }
+                        print(message)
                         self.loadMessage(message: message)
                         messageNumber += 1
                     }

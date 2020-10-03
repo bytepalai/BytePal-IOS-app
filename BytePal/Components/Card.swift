@@ -78,3 +78,9 @@ struct Divider: View {
             .shadow(color: Color(UIColor.black).opacity(0.04), radius: 3, x: 3, y: 3)
     }
 }
+
+struct Card_Previews: PreviewProvider {
+    static var previews: some View {
+        /*@START_MENU_TOKEN@*/Text("Hello, World!")/*@END_MENU_TOKEN@*/
+    }
+}

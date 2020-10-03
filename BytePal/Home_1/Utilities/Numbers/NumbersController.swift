@@ -7,3 +7,11 @@
 //
 
 import Foundation
+
+class NumberController {
+    func commaSeperatedNumber(num: Int) -> String {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        return numberFormatter.string(from: NSNumber(value: num)) ?? ""
+    }
+}

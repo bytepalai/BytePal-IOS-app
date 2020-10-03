@@ -6,10 +6,13 @@
         <attribute name="isCurrentUser" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
     </entity>
     <entity name="User" representedClassName="User" syncable="YES" codeGenerationType="class">
+        <attribute name="email" optional="YES" attributeType="String"/>
+        <attribute name="firstName" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="lastName" optional="YES" attributeType="String"/>
     </entity>
     <elements>
-        <element name="User" positionX="-54" positionY="27" width="128" height="58"/>
         <element name="Message" positionX="-45" positionY="27" width="128" height="88"/>
+        <element name="User" positionX="-54" positionY="27" width="128" height="103"/>
     </elements>
 </model>

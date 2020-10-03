@@ -117,6 +117,8 @@ struct HomeView: View {
                         .frame(width: geometry.size.width, height: 640)
                         .onAppear(perform: {
                             self.homeViewCardAttributes = self.updateHomeViewCards(attributes: self.homeViewCardAttributes)
+                            print("----- HomeView Card Attributes")
+                            print(self.homeViewCardAttributes)
                     })
                 }
                 NavigationBar()
