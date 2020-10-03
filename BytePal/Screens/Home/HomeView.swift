@@ -79,12 +79,23 @@ struct HomeView: View {
     
     func updateHomeViewCards(attributes: [String: [String: String]]) -> [String: [String: String]] {
         var mutatedAttributes = attributes
-        let lastUserMessageIndex: Int = 1
-        let lastChatbotMessageIndex: Int = 0
         
-        mutatedAttributes["typing"]!["text"] = self.messages.getMessagesLeft(userID: self.userInformation.id)
-        mutatedAttributes["female user"]!["text"] = self.messages.list[lastUserMessageIndex]["content"] as? String
-        mutatedAttributes["BytePal"]!["text"] = self.messages.list[lastChatbotMessageIndex]["content"] as? String
+        if self.messages.list.count != 0 {
+            let lastUserMessageIndex: Int = 1
+            let lastChatbotMessageIndex: Int = 0
+            let messagesLeft: String = self.messages.getMessagesLeft(userID: self.userInformation.id)
+            let lastUserMessage: String = self.messages.list[lastUserMessageIndex]["content"] as? String ?? ""
+            let lastChatbotMessage: String = self.messages.list[lastChatbotMessageIndex]["content"] as? String ?? ""
+            
+            mutatedAttributes["typing"]!["text"] = messagesLeft
+            mutatedAttributes["female user"]!["text"] = lastUserMessage
+            mutatedAttributes["BytePal"]!["text"] = lastChatbotMessage
+        }
+        else {
+            mutatedAttributes["typing"]!["text"] = self.messages.getMessagesLeft(userID: self.userInformation.id)
+            mutatedAttributes["female user"]!["text"] = "No messages sent to BytePal"
+            mutatedAttributes["BytePal"]!["text"] = "No messages receviec from BytePal"
+        }
         return mutatedAttributes
     }
 
@@ -117,8 +128,6 @@ struct HomeView: View {
                         .frame(width: geometry.size.width, height: 640)
                         .onAppear(perform: {
                             self.homeViewCardAttributes = self.updateHomeViewCards(attributes: self.homeViewCardAttributes)
-                            print("----- HomeView Card Attributes")
-                            print(self.homeViewCardAttributes)
                     })
                 }
                 NavigationBar()
