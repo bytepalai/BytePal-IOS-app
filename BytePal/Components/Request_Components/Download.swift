@@ -20,12 +20,13 @@ class Download {
         ]
         
         let destination: DownloadRequest.Destination = { _, _ in
-            let documentsURL = FileManager.default.urls(for: .desktopDirectory, in: .userDomainMask)[0]
+            let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
             let fileURL = documentsURL.appendingPathComponent("voice.wav")
             return (fileURL, [.removePreviousFile, .createIntermediateDirectories])
             
         }
         
+        print("start")
         AF.download(
             url,
             method: .post,
@@ -39,9 +40,12 @@ class Download {
             })
             .responseData { response in
                 
+                print(response)
                 if response.error == nil, let voicePath = response.fileURL?.path {
+                               print("stop")
                     if let message = response.response?.allHeaderFields["message"] as? String {
                         completion(message, voicePath)
+                        print(message, voicePath)
                     }
                     
                 }

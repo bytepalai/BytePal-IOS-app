@@ -14,9 +14,9 @@ struct ContentView: View {
          //BytepalWav()
          //TestWav()
         
-        //LoginView()
+        LoginView()
         
-        IAPView(productsStore: ProductsStore.shared)
+        //IAPView(productsStore: ProductsStore.shared)
         
         //ShareView()
         
