@@ -101,6 +101,7 @@
 		5E19CBDB24F41A1D005CAAD5 /* BytepalWav.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BytepalWav.swift; sourceTree = "<group>"; };
 		5E19CBDD24F41A44005CAAD5 /* BytepalRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BytepalRequest.swift; sourceTree = "<group>"; };
 		5E19CBDF24F43879005CAAD5 /* Download.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Download.swift; sourceTree = "<group>"; };
+		5E1DF07E2534B0620085454C /* BytePalDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BytePalDebug.entitlements; sourceTree = "<group>"; };
 		5E86E56C24F6D06C00D63448 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		5E86E56D24F6D06C00D63448 /* PurchaseView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PurchaseView.swift; sourceTree = "<group>"; };
 		5E86E56E24F6D06C00D63448 /* IAPManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IAPManager.swift; sourceTree = "<group>"; };
@@ -335,6 +336,7 @@
 		6CA6ADA1248365B300724EE3 /* BytePal */ = {
 			isa = PBXGroup;
 			children = (
+				5E1DF07E2534B0620085454C /* BytePalDebug.entitlements */,
 				5E13055424FF3A8300DDF48E /* BytePalRelease.entitlements */,
 				6CC3505924DA256E0036808C /* AppDelegate.swift */,
 				6CC3505A24DA256E0036808C /* BytePal.entitlements */,
@@ -811,16 +813,17 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = BytePal/BytePalDebug.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 10;
-				DEVELOPMENT_TEAM = D5E8KJ6Y7W;
+				DEVELOPMENT_TEAM = PCK46MLF23;
 				INFOPLIST_FILE = BytePal/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.10;
-				PRODUCT_BUNDLE_IDENTIFIER = "BytePal-AI.BytePal-Temp";
+				PRODUCT_BUNDLE_IDENTIFIER = "BytePal-AI";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;

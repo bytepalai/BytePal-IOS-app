@@ -42,8 +42,10 @@ class Download {
                 
                 print(response)
                 if response.error == nil, let voicePath = response.fileURL?.path {
-                               print("stop")
+                    print("stop")
+                    print(voicePath)
                     if let message = response.response?.allHeaderFields["message"] as? String {
+                        print(message)
                         completion(message, voicePath)
                         print(message, voicePath)
                     }
