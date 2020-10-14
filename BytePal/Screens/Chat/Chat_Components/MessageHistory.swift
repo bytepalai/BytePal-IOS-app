@@ -17,7 +17,10 @@ import FBSDKLoginKit
 
 // Use this for mainting message history between views
 class UserInformation: ObservableObject {
-    @Published var user_id: String = ""
+    @Published var userID: String = ""
+    @Published var email: String = ""
+    @Published var firstName: String = ""
+    @Published var lastName: String = ""
 }
 
 
@@ -66,7 +69,7 @@ struct MessageHistory: View{
         var message: String = ""
         
         DispatchQueue.global(qos: .userInitiated).async {
-            MakeRequest.sendMessage(message: self.messageString, userID:self.userInformation.user_id){
+            MakeRequest.sendMessage(message: self.messageString, userID:self.userInformation.userID){
                 response1, response2 in
                 message = response1
                 Sounds.playSounds(soundfile: response2)
@@ -98,7 +101,7 @@ struct MessageHistory: View{
                 }
                     .rotationEffect(.radians(.pi))
 //                    .scaleEffect(x: -1, y: 1, anchor: .center)
-                    .frame(width: geometry.size.width, height: 510, alignment: .bottom)
+                    .frame(width: 400, height: 510, alignment: .bottom)
                 
 //              Message Bar
                 HStack {
@@ -107,7 +110,7 @@ struct MessageHistory: View{
                         ZStack{
                             RoundedRectangle(cornerRadius: 25, style: .continuous)                                          // Text box border
                                 .fill(convertHextoRGB(hexColor: "ffffff"))
-                                .frame(width: geometry.size.width - 16 , height: 40)
+                                .frame(width: 400 - 16 , height: 40)
                                 .padding(EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 0))
                                 .shadow(color: convertHextoRGB(hexColor: "000000").opacity(0.33), radius: 4, x: 3, y: 3)
                             // Text box entry area
@@ -132,16 +135,16 @@ struct MessageHistory: View{
                     }
                     .padding(EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 8))
                 }
-                .frame(width: geometry.size.width, height: 70, alignment: .bottom)
+                .frame(width: 400, height: 70, alignment: .bottom)
                 .padding(EdgeInsets(top: 0, leading: 0, bottom: self.keyboard.currentHeight, trailing: 0))
                 
 //              Navigation Bar
                 NavigationBar()
-                    .frame(width: geometry.size.width, height: 80)
+                    .frame(width: 400, height: 80)
             }.onAppear(perform: {
                 // Load User ID from Cache to RAM
                 for userInfo in self.UserInformationCoreData {
-                    self.userInformation.user_id = userInfo.id!
+                    self.userInformation.userID = userInfo.id!
                 }
             })
         }

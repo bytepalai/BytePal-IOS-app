@@ -57,7 +57,7 @@ struct SignupView: View {
 //                        // Set user_id
 //                        let reponseObject = try JSONDecoder().decode(responseStruct.self, from: data)
 //                        let user_id: String = reponseObject.user_id
-//                        self.userInfo.user_id = user_id
+//                        self.userinfo.userID = user_id
 //    //              Go to ChatView
 //                        self.isShowingChatView = true
 //                    }
@@ -76,7 +76,7 @@ struct SignupView: View {
             VStack (alignment: .leading) {
                             Text("Signup")
                                 .font(.custom(fontStyle, size: 32))
-                                .padding(EdgeInsets(top: 96, leading: 150, bottom: 64, trailing: 150))
+                                .padding(EdgeInsets(top: 96, leading: 125, bottom: 64, trailing: 125))
             //                Text("")
             //                    .foregroundColor(Color(UIColor.systemRed))
             //                    .font(.custom(fontStyle, size: 18))

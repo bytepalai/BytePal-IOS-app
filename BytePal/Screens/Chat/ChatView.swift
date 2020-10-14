@@ -14,8 +14,6 @@ import CoreData
 import GoogleSignIn
 import FBSDKLoginKit
 
-
-
 struct ChatView: View {
     var body: some View {
         GeometryReader{ geometry  in
@@ -25,7 +23,7 @@ struct ChatView: View {
                     MessageHistory()
                         .edgesIgnoringSafeArea(.bottom)
                 }
-                .frame(width: geometry.size.width, height: 700)
+                .frame(width: 400, height: 700)
             }
                 
         }

@@ -19,7 +19,7 @@ struct UserBar: View{
                     .shadow(color: convertHextoRGB(hexColor: "000000").opacity(0.16), radius: 2, x: 2, y: 3)
                 .padding(EdgeInsets(top: 0, leading: 0, bottom: 32, trailing: 0))
             }
-            .frame(width: geometry.size.width, height: 48)
+            .frame(width: 400, height: 48)
         }
     }
 }

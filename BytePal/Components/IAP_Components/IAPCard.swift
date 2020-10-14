@@ -23,7 +23,7 @@ struct IAPCard: View {
         ZStack{
         RoundedRectangle(cornerRadius: 25, style: .continuous)                                          // Text box border
             .fill(convertHextoRGB(hexColor: "ffffff"))
-            //.frame(width: geometry.size.width - 16 , height: 40)
+            //.frame(width: 400 - 16 , height: 40)
             .padding(EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 0))
             .shadow(color: convertHextoRGB(hexColor: "000000").opacity(0.33), radius: 4, x: 3, y: 3)
         VStack {

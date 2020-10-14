@@ -23,7 +23,7 @@ struct LargeLogo: View {
                 .shadow(color: convertHextoRGB(hexColor: "000000").opacity(0.35), radius: 5, x: 5, y: 7)
             Text("BytePal")
 //                        .padding(16)
-                .font(.custom(fontStyle, size: 32))
+                .font(.custom(fontStyle, size: 28))
                 .shadow(color: convertHextoRGB(hexColor: "000000").opacity(0.24), radius: 3, x: 3, y: 6)
                 .foregroundColor(Color(UIColor.white))
                 .background(
@@ -66,6 +66,7 @@ struct FacebookLogin: View {
     @FetchRequest(entity: User.entity(), sortDescriptors: []) var UserInformationCoreData: FetchedResults<User>
     @Environment(\.managedObjectContext) var moc
     @EnvironmentObject var messages: Messages
+    @EnvironmentObject var userInformation: UserInformation
     @State var isShowingChatView = false
     var socialMediaAuth: SocialMediaAuth = SocialMediaAuth()
 
@@ -147,7 +148,7 @@ struct FacebookLogin: View {
                             .shadow(color: Color(UIColor.black).opacity(0.48), radius: 4, x: 3, y: 3)
                     )
                     .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 22))
-                NavigationLink(destination: ChatView().environmentObject(messages), isActive: self.$isShowingChatView){EmptyView()}
+                NavigationLink(destination: ChatView().environment(\.managedObjectContext, moc).environmentObject(userInformation).environmentObject(messages), isActive: self.$isShowingChatView){EmptyView()}
             }
         }
     }
@@ -327,7 +328,7 @@ struct LoginView: View {
                     if loginStatus == "Wrong email or password" {
                         self.loginError = "Wrong email or password"
                     }else {
-                        self.userInformation.user_id = loginStatus
+                        self.userInformation.userID = loginStatus
                         try? self.moc.save()
                         self.isShowingChatView = true
                     }
@@ -354,7 +355,7 @@ struct LoginView: View {
                     for userInfo in self.UserInformationCoreData {
                         id = userInfo.id ?? ""
                     }
-                    self.userInformation.user_id = id
+                    self.userInformation.userID = id
                     self.isShowingChatView = true
                 }
             }

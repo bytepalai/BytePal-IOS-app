@@ -16,6 +16,8 @@ struct AccountSettingsView: View {
     var container: NSPersistentContainer!
     @FetchRequest(entity: User.entity(), sortDescriptors: []) var UserInformationCoreData: FetchedResults<User>
     @Environment(\.managedObjectContext) var moc
+    @EnvironmentObject var messages: Messages
+    @EnvironmentObject var userInformation: UserInformation
     @State var isShowingChatView: Bool = false
     
     func logoutFB() {
@@ -141,7 +143,7 @@ struct AccountSettingsView: View {
                     .foregroundColor(Color(UIColor.systemRed))
                     .padding(EdgeInsets(top: 16, leading: 8, bottom: 16, trailing: 0))
             }
-            NavigationLink(destination: LoginView(), isActive: $isShowingChatView ){EmptyView()}
+            NavigationLink(destination: LoginView().environment(\.managedObjectContext, moc).environmentObject(userInformation).environmentObject(messages), isActive: $isShowingChatView ){EmptyView()}
             Spacer(minLength: 300)
             
         }
