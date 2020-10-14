@@ -45,7 +45,7 @@ class Networking {
 //                            let user_id: String = reponseObject.user_id
 //
 //                            print(" --------------- USER ID Response \(user_id) ---------------")
-//                            self.userInfo.user_id = user_id
+//                            self.userinfo.userID = user_id
 //        //              Go to ChatView
 //                            self.isShowingChatView = true
 //                        }

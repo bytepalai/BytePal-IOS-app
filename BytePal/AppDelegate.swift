@@ -37,11 +37,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate  {
         let result2 = self.pushNotifications.registerForRemoteNotifications()
         try? self.pushNotifications.addDeviceInterest(interest: "hello")
         
-        print("done loading", result)
-        print("result2", result2)
-        
-        
-        
 //        GIDSignIn.sharedInstance().delegate = self
 //        GIDSignIn.sharedInstance().clientID = "1005929182171-0k0i1sqdmet6hk0hrj3b1blfoiiul3op.apps.googleusercontent.com"
        
