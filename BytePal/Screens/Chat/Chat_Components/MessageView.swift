@@ -8,11 +8,6 @@
 
 import SwiftUI
 
-// Use this for mainting message history between views
-class Messages: ObservableObject {
-    @Published var list = [MessageView]()
-}
-
 //  Message View
 struct MessageView: View, Identifiable {
     var id: UUID

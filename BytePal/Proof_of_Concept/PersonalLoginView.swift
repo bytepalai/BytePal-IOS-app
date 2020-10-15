@@ -111,10 +111,10 @@ struct login: View {
         GeometryReader {geometry in
             VStack (alignment: .center) {
                 TextField("email", text: self.$email)
-                    .frame(width: 400/2, height: 16)
+                    .frame(width: 375/2, height: 16)
                     .padding(8)
                 TextField("password", text: self.$password)
-                    .frame(width: 400/2, height: 16)
+                    .frame(width: 375/2, height: 16)
                     .padding(8)
                 Button(action: {
                     let id: String = self.login(email: self.email, password: self.password)

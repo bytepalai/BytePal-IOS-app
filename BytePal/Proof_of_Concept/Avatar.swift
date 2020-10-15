@@ -96,7 +96,7 @@ struct Avatar: View {
                         .frame(width: 128, height: 128)
                     
                 }
-                .frame(width: 400, height: 128)
+                .frame(width: 375, height: 128)
                 Picker(selection: self.$selectedVoice, label: Text("Voice: \(self.voiceName[self.selectedVoice])").font(.custom(fontStyle, size: 20))) {
                     ForEach(0 ..< self.voiceName.count) {
                         Text(self.self.voiceName[$0])

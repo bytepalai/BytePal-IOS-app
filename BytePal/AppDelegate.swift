@@ -74,10 +74,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate  {
       let familyName = user.profile.familyName  ?? ""
       let email = user.profile.email  ?? ""
         
-    print("\(givenName)")
-        print("\(givenName)")
-        print("\(familyName)")
-        print("\(email)")
       // [START_EXCLUDE]
 
       // Get userID BytePal API

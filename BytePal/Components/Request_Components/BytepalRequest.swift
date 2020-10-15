@@ -11,7 +11,6 @@ import AVFoundation
 import Alamofire
 
 class MakeRequest {
-    
     static func sendMessage(message: String,
                             userID: String,
                             completion: @escaping (String, String) -> Void) {
@@ -35,9 +34,6 @@ class MakeRequest {
             "type":"user"
         ]
         
-        print(userID)
-        print("stuck")
-        
         Download.downloadWav(url: urlRequest, parameters:parameters){
             response1, response2 in
             responseFromChatBot = response1
@@ -46,10 +42,5 @@ class MakeRequest {
             completion(responseFromChatBot!, voicePath!)
             //semaphore.signal()
         }
-        
-        print("not stuck")
-        print("response is")
-        
     }
-    
 }

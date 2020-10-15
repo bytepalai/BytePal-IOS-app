@@ -18,7 +18,6 @@ struct IAPView : View {
     @State var show_modal = false
     
     var body: some View {
-        
         VStack() {
             ForEach (productsStore.products, id: \.self) { prod in
                 Text(prod.subscriptionStatus()).lineLimit(nil).frame(height: 80)

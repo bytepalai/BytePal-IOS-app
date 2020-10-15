@@ -15,6 +15,7 @@ struct SignupView: View {
     @Environment(\.managedObjectContext) var moc
     @EnvironmentObject var userInformation: UserInformation
     @EnvironmentObject var messages: Messages
+    @EnvironmentObject var googleDelegate: GoogleDelegate
     @State var email: String = ""
     @State var firstName: String = ""
     @State var lastName: String = ""
@@ -113,7 +114,7 @@ struct SignupView: View {
                         // Write user information to RAM
                         
                         DispatchQueue.main.async {
-                            self.userInformation.userID = userID
+                            self.userInformation.id = userID
                             self.userInformation.email = self.email
                             self.userInformation.firstName = self.firstName
                             self.userInformation.lastName = self.lastName
@@ -177,7 +178,7 @@ struct SignupView: View {
                         Text("Signup")
                     }
                         .padding(EdgeInsets(top: 0, leading: 160, bottom: 256, trailing: 160))
-                    NavigationLink(destination: ChatView().environmentObject(messages).environmentObject(userInformation), isActive: self.$isShowingChatView){EmptyView()}
+                    NavigationLink(destination: ChatView().environment(\.managedObjectContext, moc) .environmentObject(userInformation).environmentObject(messages).environmentObject(googleDelegate), isActive: self.$isShowingChatView){EmptyView()}
                     Spacer(minLength: 320)
             }
         }

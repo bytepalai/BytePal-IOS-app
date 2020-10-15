@@ -33,11 +33,12 @@ struct NavigationBar: View {
     @Environment(\.managedObjectContext) var moc
     @EnvironmentObject var messages: Messages
     @EnvironmentObject var userInformation: UserInformation
+    @EnvironmentObject var googleDelegate: GoogleDelegate
     
     var body: some View {
         GeometryReader { geometry in
             HStack {
-                NavigationLink(destination: HomeView().environment(\.managedObjectContext, moc) .environmentObject(userInformation).environmentObject(messages)){
+                NavigationLink(destination: HomeView().environment(\.managedObjectContext, moc) .environmentObject(userInformation).environmentObject(messages).environmentObject(googleDelegate)){
                     Image(systemName: "house.fill")
                         .font(.system(size: 34))
                         .foregroundColor(convertHextoRGB(hexColor: "EAEEED"))
@@ -45,14 +46,14 @@ struct NavigationBar: View {
                         .shadow(color: convertHextoRGB(hexColor: "000000").opacity(0.48), radius: 3, x: 3, y: 7)
                 }
                 
-                NavigationLink(destination: ChatView().environment(\.managedObjectContext, moc).environmentObject(userInformation).environmentObject(messages)){
+                NavigationLink(destination: ChatView().environment(\.managedObjectContext, moc).environmentObject(userInformation).environmentObject(messages).environmentObject(googleDelegate)){
                     Image(systemName: "bubble.left.fill")
                         .font(.system(size: 34))
                         .foregroundColor(convertHextoRGB(hexColor: "EAEEED"))
                         .shadow(color: convertHextoRGB(hexColor: "000000").opacity(0.48), radius: 3, x: 3, y: 7)
                         .padding(EdgeInsets(top: 6, leading: 0, bottom: 32, trailing: 0))
                 }
-                NavigationLink(destination: AccountSettingsView().environment(\.managedObjectContext, moc).environmentObject(userInformation).environmentObject(messages)){
+                NavigationLink(destination: AccountSettingsView().environment(\.managedObjectContext, moc).environmentObject(userInformation).environmentObject(messages).environmentObject(googleDelegate)){
                     Image(systemName: "person.fill")
                         .font(.system(size: 34))
                         .foregroundColor(convertHextoRGB(hexColor: "EAEEED"))
@@ -61,7 +62,7 @@ struct NavigationBar: View {
                 }
             }
                 .edgesIgnoringSafeArea(.bottom)
-                .frame(width: 400, height: 104
+                .frame(width: 375, height: 104
             )
                 .background(convertHextoRGB(hexColor: "9FA7A3"))
                 .shadow(radius: 1).opacity(0.60)

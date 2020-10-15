@@ -14,15 +14,11 @@ import CoreData
 import GoogleSignIn
 import FBSDKLoginKit
 
-
-// Use this for mainting message history between views
-class UserInformation: ObservableObject {
-    @Published var userID: String = ""
-    @Published var email: String = ""
-    @Published var firstName: String = ""
-    @Published var lastName: String = ""
+class Messages: ObservableObject {
+    @Published var list: [[String: Any]] = [[String: Any]]()
+    @Published var messagesLeft: Int = -1
+    @Published var lastMessages: [String] = [String]()
 }
-
 
 struct MessageHistory: View{
     var container: NSPersistentContainer!
@@ -54,7 +50,7 @@ struct MessageHistory: View{
         
 //      Update message history with user message
         DispatchQueue.main.async {
-            self.messages.list.insert(MessageView(id: UUID(), message: MessageInformation(content: self.textFieldString, isCurrentUser: true)), at: self.messages.list.startIndex)
+            self.messages.list.insert(["id": UUID(), "content": self.textFieldString, "isCurrentUser": true], at: self.messages.list.startIndex)
         }
         
 //      Clear message box
@@ -65,11 +61,10 @@ struct MessageHistory: View{
     
     func sendChatbotMessage(){
         let messageListCoreData = Message(context: self.moc)
-        //let message: String = sendMessage(message: self.messageString) // Interact with API
         var message: String = ""
         
         DispatchQueue.global(qos: .userInitiated).async {
-            MakeRequest.sendMessage(message: self.messageString, userID:self.userInformation.userID){
+            MakeRequest.sendMessage(message: self.messageString, userID: self.userInformation.id){
                 response1, response2 in
                 message = response1
                 Sounds.playSounds(soundfile: response2)
@@ -80,8 +75,7 @@ struct MessageHistory: View{
                 messageListCoreData.isCurrentUser = false
                 try? self.moc.save()
                 
-                self.messages.list.insert(MessageView(id: UUID(),message: MessageInformation(content: message, isCurrentUser: false)),at: self.messages.list.startIndex)
-            
+                self.messages.list.insert(["id": UUID(), "content": message, "isCurrentUser": false], at: self.messages.list.startIndex)
             }
             
         }
@@ -94,14 +88,14 @@ struct MessageHistory: View{
             VStack{
                 
 //              Render message history from bottom to top
-                List(self.messages.list) { message in
-                    message
-                        .rotationEffect(.radians(.pi))
-//                        .scaleEffect(x: -1, y: 1, anchor: .center)
+                List {
+                    ForEach((0 ..< self.messages.list.count), id: \.self) { i in
+                        MessageView(id: self.messages.list[i]["id"] as! UUID, message: MessageInformation(content: self.messages.list[i]["content"] as! String, isCurrentUser: self.messages.list[i]["isCurrentUser"] as! Bool))
+                            .rotationEffect(.radians(.pi))
+                    }
                 }
                     .rotationEffect(.radians(.pi))
-//                    .scaleEffect(x: -1, y: 1, anchor: .center)
-                    .frame(width: 400, height: 510, alignment: .bottom)
+                    .frame(width: geometry.size.width, height: 510, alignment: .bottom)
                 
 //              Message Bar
                 HStack {
@@ -110,7 +104,7 @@ struct MessageHistory: View{
                         ZStack{
                             RoundedRectangle(cornerRadius: 25, style: .continuous)                                          // Text box border
                                 .fill(convertHextoRGB(hexColor: "ffffff"))
-                                .frame(width: 400 - 16 , height: 40)
+                                .frame(width: 375 - 16 , height: 40)
                                 .padding(EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 0))
                                 .shadow(color: convertHextoRGB(hexColor: "000000").opacity(0.33), radius: 4, x: 3, y: 3)
                             // Text box entry area
@@ -135,16 +129,16 @@ struct MessageHistory: View{
                     }
                     .padding(EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 8))
                 }
-                .frame(width: 400, height: 70, alignment: .bottom)
+                .frame(width: 375, height: 70, alignment: .bottom)
                 .padding(EdgeInsets(top: 0, leading: 0, bottom: self.keyboard.currentHeight, trailing: 0))
                 
 //              Navigation Bar
                 NavigationBar()
-                    .frame(width: 400, height: 80)
+                    .frame(width: 375, height: 80)
             }.onAppear(perform: {
                 // Load User ID from Cache to RAM
                 for userInfo in self.UserInformationCoreData {
-                    self.userInformation.userID = userInfo.id!
+                    self.userInformation.id = userInfo.id!
                 }
             })
         }

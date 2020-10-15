@@ -16,7 +16,7 @@ struct ContentView: View {
         
         LoginView()
         
-        //IAPView(productsStore: ProductsStore.shared)
+//        IAPView(productsStore: ProductsStore.shared)
         
         //ShareView()
         
