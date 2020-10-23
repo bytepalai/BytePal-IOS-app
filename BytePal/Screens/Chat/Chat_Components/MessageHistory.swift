@@ -104,7 +104,7 @@ struct MessageHistory: View{
                         ZStack{
                             RoundedRectangle(cornerRadius: 25, style: .continuous)                                          // Text box border
                                 .fill(convertHextoRGB(hexColor: "ffffff"))
-                                .frame(width: 375 - 16 , height: 40)
+                                .frame(width: geometry.size.width - 16 , height: 40)
                                 .padding(EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 0))
                                 .shadow(color: convertHextoRGB(hexColor: "000000").opacity(0.33), radius: 4, x: 3, y: 3)
                             // Text box entry area
@@ -129,12 +129,11 @@ struct MessageHistory: View{
                     }
                     .padding(EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 8))
                 }
-                .frame(width: 375, height: 70, alignment: .bottom)
+                .frame(width: geometry.size.width, height: 70, alignment: .bottom)
                 .padding(EdgeInsets(top: 0, leading: 0, bottom: self.keyboard.currentHeight, trailing: 0))
-                
 //              Navigation Bar
                 NavigationBar()
-                    .frame(width: 375, height: 80)
+                    .frame(width: geometry.size.width, height: 80)
             }.onAppear(perform: {
                 // Load User ID from Cache to RAM
                 for userInfo in self.UserInformationCoreData {

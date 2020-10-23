@@ -23,7 +23,7 @@ struct ChatView: View {
                     MessageHistory()
                         .edgesIgnoringSafeArea(.bottom)
                 }
-                .frame(width: 375, height: 700)
+                .frame(width: geometry.size.width, height: 700)
             }
                 
         }

@@ -121,6 +121,9 @@ struct FacebookLogin: View {
                         // Saved userID if it exists
                         if fbUserInformation["id"]! != "" {
                             
+                            // Create Agent
+                            self.createAgent(id: fbUserInformation["id"]!)
+                            
                             // Write user information to cache
                             let userInformationCoreDataWrite: User = User(context: self.moc)
                             userInformationCoreDataWrite.id = fbUserInformation["id"]!
@@ -129,17 +132,68 @@ struct FacebookLogin: View {
                             userInformationCoreDataWrite.lastName = fbUserInformation["lastName"]!
                             try? self.moc.save()
                             
+                            print("---- FB (user ID): \(fbUserInformation["id"]!)")
+                            
                             // Write user information to RAM
                             self.userInformation.id = fbUserInformation["id"]!
+                            print("---- FB (userInformation 1): \(self.userInformation.id)")
                             self.userInformation.email = fbUserInformation["email"]!
                             self.userInformation.firstName = fbUserInformation["firstName"]!
                             self.userInformation.lastName = fbUserInformation["lastName"]!
+                            self.userInformation.fullName = fbUserInformation["firstName"]! + " " + fbUserInformation["lastName"]!
                             
                             self.isShowingChatView = true
                         }
                     }
                 })
             }
+        }
+    }
+    
+    func createAgent(id: String) {
+        var err: Int = 0
+        let semaphore = DispatchSemaphore (value: 0)
+        let createAgentParameter = """
+        {
+            \"user_id\" : "\(id)"
+        }
+        """
+
+        let postData = createAgentParameter.data(using: .utf8)
+        var request = URLRequest(url: URL(string: "\(API_HOSTNAME)/create_agent")!,timeoutInterval: Double.infinity)
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpMethod = "POST"
+        request.httpBody = postData
+        
+        struct createAgentStruct: Decodable {
+            var user_id: String
+        }
+        
+        //      promise handler (completion handler in Apple Dev Doc)
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data else {
+                print(String(describing: error))
+                return
+            }
+            do {
+                // Parse response
+                let dataResponse: String = String(data: data, encoding: .utf8)!
+
+                if dataResponse != "New Agent created" {
+                    err = 1
+                }
+            }
+            semaphore.signal()
+        }
+        
+        task.resume()
+        semaphore.wait()
+
+        if err == 0 {
+            print("------- Agent created")
+            self.isShowingChatView = true
+        } else {
+            print("------- Agent ALREADY created")
         }
     }
     
@@ -172,7 +226,7 @@ struct GoogleLogin: View {
     @EnvironmentObject var userInformation: UserInformation
     @EnvironmentObject var googleDelegate: GoogleDelegate
     @State var isShowingChatView = false
-    
+
     var body: some View {
         VStack {
             Group {
@@ -226,6 +280,7 @@ struct GoogleLogin: View {
                         self.userInformation.email = self.googleDelegate.email
                         self.userInformation.firstName = self.googleDelegate.firstName
                         self.userInformation.lastName = self.googleDelegate.lastName
+                        self.userInformation.fullName = self.googleDelegate.firstName + " " + self.googleDelegate.lastName
                         
                         self.isShowingChatView = true
                     }
@@ -398,11 +453,13 @@ struct LoginView: View {
                         self.userInformation.email = userInfo.email ?? ""
                         self.userInformation.firstName = userInfo.firstName ?? ""
                         self.userInformation.lastName = userInfo.lastName ?? ""
+                        self.userInformation.fullName =  (userInfo.firstName ?? "") + " " + (userInfo.lastName ?? "")
                     }
                     self.isShowingChatView = true
                 }
             })
         }
+            .navigationBarBackButtonHidden(true)
     }
 }
 

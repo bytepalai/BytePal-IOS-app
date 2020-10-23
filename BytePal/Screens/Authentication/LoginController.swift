@@ -143,6 +143,10 @@ class BytePalAuth {
                 \"familyName\": \"\(last_name)\"
             }
             """
+            print("------ id: \(id)")
+            print("------ id: \(email)")
+            print("------ id: \(first_name)")
+            print("------ id: \(last_name)")
         
             let postData = parameters.data(using: .utf8)
             request.httpBody = postData
@@ -164,6 +168,7 @@ class BytePalAuth {
                     let reponseObject = try JSONDecoder().decode(responseStruct.self, from: data)
                     let user_id: String = reponseObject.user_id
                     loginStatus = user_id
+                    print("-------- ID NEW: \(loginStatus)")
                 } catch {
                     print(error)
                 }
@@ -252,11 +257,65 @@ class GoogleDelegate: NSObject, GIDSignInDelegate, ObservableObject {
         
         let userID: String = bytepalAuth.googleLogin(id: idToken, email: email, first_name: givenName, last_name: familyName)
         
-        self.userID = userID
-        self.email = email
-        self.firstName = givenName
-        self.lastName = familyName
-        self.signedIn = true
+        if userID != "" {
+            // Save user metadata
+            self.userID = userID
+            self.email = email
+            self.firstName = givenName
+            self.lastName = familyName
+            self.signedIn = true
+            
+            // Create agent
+            self.createAgent(id: userID)
+        }
+    }
+    
+    //Create Agent Handeler
+    func createAgent(id: String) {
+        var err: Int = 0
+        let semaphore = DispatchSemaphore (value: 0)
+        let createAgentParameter = """
+        {
+            \"user_id\" : "\(id)"
+        }
+        """
+
+        let postData = createAgentParameter.data(using: .utf8)
+        var request = URLRequest(url: URL(string: "\(API_HOSTNAME)/create_agent")!,timeoutInterval: Double.infinity)
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpMethod = "POST"
+        request.httpBody = postData
+        
+        struct createAgentStruct: Decodable {
+            var user_id: String
+        }
+        
+        //      promise handler (completion handler in Apple Dev Doc)
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data else {
+                print(String(describing: error))
+                return
+            }
+            do {
+                // Parse response
+                let dataResponse: String = String(data: data, encoding: .utf8)!
+
+                if dataResponse != "New Agent created" {
+                    err = 1
+                }
+            }
+            semaphore.signal()
+        }
+        
+        task.resume()
+        semaphore.wait()
+
+        if err == 0 {
+            print("------- Agent created")
+            self.signedIn = true
+        } else {
+            print("------- Agent ALREADY created")
+        }
     }
     
     // Signout Handeler

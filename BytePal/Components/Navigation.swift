@@ -62,10 +62,10 @@ struct NavigationBar: View {
                 }
             }
                 .edgesIgnoringSafeArea(.bottom)
-                .frame(width: 375, height: 104
+                .frame(width: geometry.size.width, height: 104
             )
                 .background(convertHextoRGB(hexColor: "9FA7A3"))
-                .shadow(radius: 1).opacity(0.60)
+                .shadow(radius: 1)
         }
             .edgesIgnoringSafeArea(.bottom)
     }

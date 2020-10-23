@@ -63,7 +63,7 @@ struct ButtonCard: View {
                             }
                         }
                     }
-                NavigationLink(destination: IAPView(productsStore: ProductsStore.shared).environment(\.managedObjectContext, moc) .environmentObject(userInformation).environmentObject(messages).environmentObject(googleDelegate), isActive: self.$isShowingIAPView){EmptyView()}
+                NavigationLink(destination: IAPView(productsStore: ProductsStore.shared, viewModel: .init()).environment(\.managedObjectContext, moc) .environmentObject(userInformation).environmentObject(messages).environmentObject(googleDelegate), isActive: self.$isShowingIAPView){EmptyView()}
                 NavigationLink(destination: ChatView().environment(\.managedObjectContext, moc) .environmentObject(userInformation).environmentObject(messages).environmentObject(googleDelegate), isActive: self.$isShowingChatView){EmptyView()}
             }
                 .padding(16)
