@@ -100,42 +100,6 @@ struct HomeView: View {
     }
 
     var body: some View {
-<<<<<<< HEAD
-        GeometryReader { geometry in
-            ZStack {
-                VStack{
-                    HStack {
-                        Image("logo")
-                            .resizable()
-                            .frame(width: 60, height: 60)
-                            .fixedSize()
-                        Text("BytePal")
-                            .font(.custom(fontStyle, size: 28))
-                    }
-//                        .background(convertHextoRGB(hexColor: "F8F8F8"))
-//                        .opacity(0.82)
-                        .padding(16)
-                    ScrollView {
-                        ForEach((0 ..< homeViewCardType.count), id: \.self) { i in
-                            ButtonCard(
-                                type: homeViewCardType[i],
-                                title: self.homeViewCardAttributes[homeViewCardType[i]]?["title"] ?? "error",
-                                image: self.homeViewCardAttributes[homeViewCardType[i]]?["image"] ?? "error",
-                                text: self.homeViewCardAttributes[homeViewCardType[i]]?["text"] ?? "error",
-                                buttonText: self.homeViewCardAttributes[homeViewCardType[i]]?["buttonText"] ?? "error"
-                            )
-                        }
-                    }
-                        .frame(width: geometry.size.width, height: 640)
-                        .onAppear(perform: {
-                            self.homeViewCardAttributes = self.updateHomeViewCards(attributes: self.homeViewCardAttributes)
-                    })
-                }
-                NavigationBar()
-            }
-                .navigationBarBackButtonHidden(true)   
-        }
-=======
         ScrollView {
             VStack {
                 CompanyLogo()
@@ -161,7 +125,6 @@ struct CompanyLogo: View {
                 .font(Font.system(size: height * 0.75))
                 .foregroundColor(.appFontColorBlack)
         }
->>>>>>> Dev_v2
     }
     
     //MARK: Constant

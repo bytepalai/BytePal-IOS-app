@@ -225,7 +225,6 @@ struct GoogleLogin: View {
     @EnvironmentObject var messages: Messages
     @EnvironmentObject var userInformation: UserInformation
     @EnvironmentObject var googleDelegate: GoogleDelegate
-    @EnvironmentObject var userInformation: UserInformation
     @State var isShowingChatView = false
     
     var body: some View {

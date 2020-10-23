@@ -45,7 +45,6 @@ struct NavigationBar: View {
                         .padding(EdgeInsets(top: 0, leading: 0, bottom: 32, trailing: 64))
                         .shadow(color: convertHextoRGB(hexColor: "000000").opacity(0.48), radius: 3, x: 3, y: 7)
                 }
-                
                 NavigationLink(destination: ChatView().environment(\.managedObjectContext, moc).environmentObject(userInformation).environmentObject(messages).environmentObject(googleDelegate)){
                     Image(systemName: "bubble.left.fill")
                         .font(.system(size: 34))
@@ -69,4 +68,5 @@ struct NavigationBar: View {
                 .background(convertHextoRGB(hexColor: "9FA7A3"))
                 .shadow(radius: 1)
         }
+    }
 }
