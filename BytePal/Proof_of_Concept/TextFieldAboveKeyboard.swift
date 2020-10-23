@@ -47,7 +47,7 @@ import SwiftUI
 //                        .padding(.bottom, self.keyboard.currentHeight)
 //                }
 //            }
-//            .frame(width: geometry.size.width, height: geometry.size.height, alignment: .bottom)
+//            .frame(width: 375, height: geometry.size.height, alignment: .bottom)
 //                .edgesIgnoringSafeArea(.bottom)
 //                .animation(.easeOut(duration: 0.16))
 //                .border(Color.black, width: 1)

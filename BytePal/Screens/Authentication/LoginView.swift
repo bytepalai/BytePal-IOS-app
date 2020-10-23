@@ -67,6 +67,7 @@ struct FacebookLogin: View {
     @Environment(\.managedObjectContext) var moc
     @EnvironmentObject var messages: Messages
     @EnvironmentObject var userInformation: UserInformation
+    @EnvironmentObject var googleDelegate: GoogleDelegate
     @State var isShowingChatView = false
 
     func loginFB() {
@@ -120,6 +121,9 @@ struct FacebookLogin: View {
                         // Saved userID if it exists
                         if fbUserInformation["id"]! != "" {
                             
+                            // Create Agent
+                            self.createAgent(id: fbUserInformation["id"]!)
+                            
                             // Write user information to cache
                             let userInformationCoreDataWrite: User = User(context: self.moc)
                             userInformationCoreDataWrite.id = fbUserInformation["id"]!
@@ -128,17 +132,68 @@ struct FacebookLogin: View {
                             userInformationCoreDataWrite.lastName = fbUserInformation["lastName"]!
                             try? self.moc.save()
                             
+                            print("---- FB (user ID): \(fbUserInformation["id"]!)")
+                            
                             // Write user information to RAM
                             self.userInformation.id = fbUserInformation["id"]!
+                            print("---- FB (userInformation 1): \(self.userInformation.id)")
                             self.userInformation.email = fbUserInformation["email"]!
                             self.userInformation.firstName = fbUserInformation["firstName"]!
                             self.userInformation.lastName = fbUserInformation["lastName"]!
+                            self.userInformation.fullName = fbUserInformation["firstName"]! + " " + fbUserInformation["lastName"]!
                             
                             self.isShowingChatView = true
                         }
                     }
                 })
             }
+        }
+    }
+    
+    func createAgent(id: String) {
+        var err: Int = 0
+        let semaphore = DispatchSemaphore (value: 0)
+        let createAgentParameter = """
+        {
+            \"user_id\" : "\(id)"
+        }
+        """
+
+        let postData = createAgentParameter.data(using: .utf8)
+        var request = URLRequest(url: URL(string: "\(API_HOSTNAME)/create_agent")!,timeoutInterval: Double.infinity)
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpMethod = "POST"
+        request.httpBody = postData
+        
+        struct createAgentStruct: Decodable {
+            var user_id: String
+        }
+        
+        //      promise handler (completion handler in Apple Dev Doc)
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data else {
+                print(String(describing: error))
+                return
+            }
+            do {
+                // Parse response
+                let dataResponse: String = String(data: data, encoding: .utf8)!
+
+                if dataResponse != "New Agent created" {
+                    err = 1
+                }
+            }
+            semaphore.signal()
+        }
+        
+        task.resume()
+        semaphore.wait()
+
+        if err == 0 {
+            print("------- Agent created")
+            self.isShowingChatView = true
+        } else {
+            print("------- Agent ALREADY created")
         }
     }
     
@@ -157,7 +212,7 @@ struct FacebookLogin: View {
                             .shadow(color: Color(UIColor.black).opacity(0.48), radius: 4, x: 3, y: 3)
                     )
                     .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 22))
-                NavigationLink(destination: ChatView().environmentObject(messages), isActive: self.$isShowingChatView){EmptyView()}
+                NavigationLink(destination: ChatView().environment(\.managedObjectContext, moc) .environmentObject(userInformation).environmentObject(messages).environmentObject(googleDelegate), isActive: self.$isShowingChatView){EmptyView()}
             }
         }
     }
@@ -168,6 +223,7 @@ struct GoogleLogin: View {
     @FetchRequest(entity: User.entity(), sortDescriptors: []) var UserInformationCoreData: FetchedResults<User>
     @Environment(\.managedObjectContext) var moc
     @EnvironmentObject var messages: Messages
+    @EnvironmentObject var userInformation: UserInformation
     @EnvironmentObject var googleDelegate: GoogleDelegate
     @EnvironmentObject var userInformation: UserInformation
     @State var isShowingChatView = false
@@ -225,19 +281,25 @@ struct GoogleLogin: View {
                         self.userInformation.email = self.googleDelegate.email
                         self.userInformation.firstName = self.googleDelegate.firstName
                         self.userInformation.lastName = self.googleDelegate.lastName
+                        self.userInformation.fullName = self.googleDelegate.firstName + " " + self.googleDelegate.lastName
                         
                         self.isShowingChatView = true
                     }
                 }
             })
-            NavigationLink(destination: ChatView().environmentObject(messages), isActive: self.$isShowingChatView){EmptyView()}
+            NavigationLink(destination: ChatView().environment(\.managedObjectContext, moc) .environmentObject(userInformation).environmentObject(messages).environmentObject(googleDelegate), isActive: self.$isShowingChatView){EmptyView()}
         }
     }
 }
 
 struct PersonalLogin: View {
+    @Environment(\.managedObjectContext) var moc
+    @EnvironmentObject var messages: Messages
+    @EnvironmentObject var userInformation: UserInformation
+    @EnvironmentObject var googleDelegate: GoogleDelegate
+    
     var body: some View {
-        NavigationLink(destination: SignupView()){
+        NavigationLink(destination: SignupView().environment(\.managedObjectContext, moc) .environmentObject(userInformation).environmentObject(messages).environmentObject(googleDelegate)){
             Image(systemName: "envelope.fill")
                 .font(.system(size: 16))
                 .foregroundColor(Color(UIColor.white))
@@ -276,6 +338,7 @@ struct LoginView: View {
     @Environment(\.managedObjectContext) var moc
     @EnvironmentObject var messages: Messages
     @EnvironmentObject var userInformation: UserInformation
+    @EnvironmentObject var googleDelegate: GoogleDelegate
     @State var TextForMultiLine: String =
         """
         """
@@ -353,6 +416,7 @@ struct LoginView: View {
                         self.loginError = "Wrong email or password"
                     }else {
                         self.userInformation.id = loginStatus
+                        self.userInformation.email = self.email
                         try? self.moc.save()
                         self.isShowingChatView = true
                     }
@@ -361,7 +425,7 @@ struct LoginView: View {
                 }
                 Divider()
                 SignupBar()
-                NavigationLink(destination: ChatView().environmentObject(messages).environmentObject(userInformation), isActive: self.$isShowingChatView){EmptyView()}
+                NavigationLink(destination: ChatView().environment(\.managedObjectContext, moc) .environmentObject(userInformation).environmentObject(messages).environmentObject(googleDelegate), isActive: self.$isShowingChatView){EmptyView()}
                 
             }.onAppear(perform: {
                 // Load messages from cache
@@ -373,7 +437,6 @@ struct LoginView: View {
                         if messageNumber >= lastMessageLowestIndex {
                             self.messages.lastMessages.append(message.content ?? "")
                         }
-                        print(message)
                         self.loadMessage(message: message)
                         messageNumber += 1
                     }
@@ -391,11 +454,13 @@ struct LoginView: View {
                         self.userInformation.email = userInfo.email ?? ""
                         self.userInformation.firstName = userInfo.firstName ?? ""
                         self.userInformation.lastName = userInfo.lastName ?? ""
+                        self.userInformation.fullName =  (userInfo.firstName ?? "") + " " + (userInfo.lastName ?? "")
                     }
                     self.isShowingChatView = true
                 }
             })
         }
+            .navigationBarBackButtonHidden(true)
     }
 }
 

@@ -14,8 +14,15 @@ struct ButtonCard: View {
     var image: String
     var text: String
     var buttonText: String
+<<<<<<< HEAD
     @EnvironmentObject var messages: Messages
     @EnvironmentObject var userInformation: UserInformation
+=======
+    @Environment(\.managedObjectContext) var moc
+    @EnvironmentObject var messages: Messages
+    @EnvironmentObject var userInformation: UserInformation
+    @EnvironmentObject var googleDelegate: GoogleDelegate
+>>>>>>> Dev_v2
     @State var isShowingIAPView: Bool = false
     @State var isShowingChatView: Bool = false
     
@@ -61,8 +68,13 @@ struct ButtonCard: View {
                             }
                         }
                     }
+<<<<<<< HEAD
                 NavigationLink(destination: IAPView().environmentObject(messages).environmentObject(userInformation), isActive: self.$isShowingIAPView){EmptyView()}
                 NavigationLink(destination: ChatView().environmentObject(messages).environmentObject(userInformation), isActive: self.$isShowingChatView){EmptyView()}
+=======
+                NavigationLink(destination: IAPView(productsStore: ProductsStore.shared, viewModel: .init()).environment(\.managedObjectContext, moc) .environmentObject(userInformation).environmentObject(messages).environmentObject(googleDelegate), isActive: self.$isShowingIAPView){EmptyView()}
+                NavigationLink(destination: ChatView().environment(\.managedObjectContext, moc) .environmentObject(userInformation).environmentObject(messages).environmentObject(googleDelegate), isActive: self.$isShowingChatView){EmptyView()}
+>>>>>>> Dev_v2
             }
                 .padding(16)
         }

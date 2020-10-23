@@ -15,8 +15,11 @@ struct AccountSettingsView: View {
     @FetchRequest(entity: User.entity(), sortDescriptors: []) var UserInformationCoreDataRead: FetchedResults<User>
     @Environment(\.managedObjectContext) var moc
     @EnvironmentObject var userInformation: UserInformation
+    @EnvironmentObject var messages: Messages
+    @EnvironmentObject var googleDelegate: GoogleDelegate
     @State var isShowingChatView: Bool = false
     var email: String = ""
+    @State var name: String = ""
     
     func logout() {
         // Clear User ID on Logout
@@ -25,92 +28,133 @@ struct AccountSettingsView: View {
             moc.delete(userInformation)
         }
         try? self.moc.save()
-        
-        // Go to Login View 
+
+        // Go to Login View
         self.isShowingChatView = true
     }
     
+    // Temp
+    @State var fullName: String = "ExampleUsername963"
+    
     var body: some View {
-        VStack (alignment: .leading) {
-            SettingsNavigation()
-            Spacer()
-            HStack {
-                Image(systemName: "person.fill")
-                    .font(.system(size: 38))
-                    .foregroundColor(convertHextoRGB(hexColor: "eaeeed"))
-                    .shadow(radius: 2)
-                NavigationLink(destination: UsernameView()){
-                    Text("Invite a Friend")
-                        .font(.custom(fontStyle, size: 20))
-                        .padding(EdgeInsets(top: 0, leading: 24, bottom: 0, trailing: 0))
-                        .foregroundColor(convertHextoRGB(hexColor: greenColor))
-                }
-                Spacer()
-            }
-                .padding(EdgeInsets(top: 0, leading: 64, bottom: 32, trailing: 0))
-            VStack (alignment: .leading) {
-                VStack(alignment: .leading) {
-                    Text("User")
-                        .font(.custom(fontStyle, size: 20))
-                    HStack {
-                        Text("Email")
-                            .font(.custom(fontStyle, size: 14))
-                            .foregroundColor(convertHextoRGB(hexColor: blueColor))
-                        Text(userInformation.email)
-                            .font(.custom(fontStyle, size: 14))
-                    }
-                        .padding(EdgeInsets(top: 16, leading: 8, bottom: 16, trailing: 0))
-                }
-                    .padding(EdgeInsets(top: 16, leading: 0, bottom: 16, trailing: 0))
-                VStack(alignment: .leading) {
-                    Text("About")
-                        .font(.custom(fontStyle, size: 20))
-                    NavigationLink(destination: Page(request: URLRequest(url: URL(string: "https://bytepal.io/terms")!))){
-                        Text("Terms & Conditions")
-                            .font(.custom(fontStyle, size: 14))
-                            .foregroundColor(convertHextoRGB(hexColor: blueColor))
-                            .padding(EdgeInsets(top: 16, leading: 8, bottom: 16, trailing: 0))
-                    }
-                        .foregroundColor(Color(UIColor.systemBlue))
-                    NavigationLink(destination: Page(request: URLRequest(url: URL(string: "https://bytepal.io/privacy")!))){
-                        Text("Privacy Policy")
-                            .font(.custom(fontStyle, size: 14))
-                            .foregroundColor(convertHextoRGB(hexColor: blueColor))
-                            .padding(EdgeInsets(top: 16, leading: 8, bottom: 16, trailing: 0))
-                    }
-                        .foregroundColor(Color(UIColor.systemBlue))
-                }
-                    .padding(EdgeInsets(top: 16, leading: 0, bottom: 16, trailing: 0))
-            }
-                .padding(EdgeInsets(top: 0, leading: 64, bottom: 0, trailing: 0))
-            Button(action: {
-                self.logout()
-            }){
-                Text("Logout")
-                    .font(.custom(fontStyle, size: 16))
-                    .foregroundColor(Color(UIColor.systemRed))
-                    .padding(EdgeInsets(top: 16, leading: 72, bottom: 16, trailing: 0))
-            }
-            NavigationLink(destination: LoginView(), isActive: $isShowingChatView ){EmptyView()}
-            Spacer(minLength: 300)
+        VStack {
             
+            VStack(alignment:.leading) {
+                Text("Account")
+                    .foregroundColor(.appFontColorBlack)
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                
+                HStack {
+                    Image("profileImage")
+                        .resizable()
+                        .frame(width: 100, height: 100, alignment: .center)
+                        .clipShape(Circle())
+                        .overlay(Circle().strokeBorder(Color.appTranspatentWhite, lineWidth: 5, antialiased: true)  )
+                        .shadow(radius: 50)
+                    BytePalTextFieldView(title: "Username", textFieldPlaceHolder: "", text: self.$fullName)
+                        .disabled(true)
+
+                }
+            }
+            .padding()
+            .padding(.bottom, 100)
+            .background(LinearGradient(gradient: Gradient(colors: [Color.appGreen, Color.appLightGreen]), startPoint: .bottomLeading, endPoint: .topLeading)
+                            .blur(radius: 100.0)
+                            .edgesIgnoringSafeArea(.all))
+            
+            GeometryReader { proxy in
+                List {
+                    //TODO: use data arry instead of hardcoded strings and destinations
+                    NavigationLink(
+                        destination: Text("Destination"),
+                        label: {
+                            TitleWithSubTitleCell(title: "Email", subTitle: self.userInformation.email)
+                        })
+//                        TextLink(title: "About", url: "Terms and Conditions")
+                    TextLink(title: "Terms and Conditions", url: "Terms and Conditions")
+                    TextLink(title: "Privacy Policy", url: "Privacy Policy")
+                    
+                    
+                    Button(action: {
+                        logout()
+                    }, label: {
+                        Text("Logout")
+                            .foregroundColor(.darkRed)
+                            .fontWeight(.bold)
+                    })
+                        .buttonStyle(TransparentBackgroundButtonStyle(backgroundColor: .appLightGray))
+                        .frame(height: 50, alignment: .center)
+                        .cornerRadius(10)
+                        .shadow(radius: 2)
+                        .padding()
+                }
+                .frame(width: proxy.size.width - 20, height: proxy.size.height + proxy.size.height/10, alignment: .center)
+                .cornerRadius(20, antialiased: true)
+                .shadow(radius: 0.5)
+                .offset(x: 10, y: -proxy.size.height/6)
+            }
+            .background(Color.appLightGray)
+            .edgesIgnoringSafeArea(.all)
+            
+            NavigationLink(destination: LoginView().environment(\.managedObjectContext, moc).environmentObject(userInformation).environmentObject(messages).environmentObject(googleDelegate), isActive: $isShowingChatView ){EmptyView()}
         }
+        
     }
 }
 
-struct SettingsText {
-    var text: String
+//MARK: Extracted Views
+struct TitleWithSubTitleCell: View {
+    var title: String
+    var subTitle: String
+    
     var body: some View {
-        VStack {
-            Text(text)
-                .font(.custom(fontStyle, size: 14))
-                .padding(8)
+        VStack(alignment: .leading ,spacing: 10) {
+            Text(title)
+                .bold()
+            Text(subTitle)
         }
+        .padding([.top, .bottom], 20)
+    }
+}
+
+struct TextLink: View {
+    var title: String
+    var url: String
+    
+    var body: some View {
+        NavigationLink(
+            destination: self.getWebPage(name: url),
+            label: {
+                Text(title)
+            }
+        )
+            .padding([.top, .bottom], 20)
+    }
+}
+
+extension TextLink {
+    func getWebPage(name: String) -> Page{
+        var url: String = ""
+        
+        if name == "Terms and Conditions" {
+            url = termsAndConditions
+        } else if name == "Privacy Policy" {
+            url = privacyPolicy
+        } else {
+            url = "Error"
+        }
+        
+        return Page(request: URLRequest(url: URL(string: url)!))
     }
 }
 
 struct AccountSettingsView_Previews: PreviewProvider {
     static var previews: some View {
-        AccountSettingsView()
+        Group {
+            AccountSettingsView()
+                .previewDevice("iPhone 11")
+        }
     }
 }
+

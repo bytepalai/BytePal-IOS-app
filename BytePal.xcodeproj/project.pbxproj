@@ -7,8 +7,29 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6C18025124F445CB0040D7DF /* AnchorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C18025024F445CB0040D7DF /* AnchorsView.swift */; };
-		6C18025424F4B9C50040D7DF /* NumbersController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C18025324F4B9C50040D7DF /* NumbersController.swift */; };
+		5E13054A24F9F57A00DDF48E /* IAPCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E13054924F9F57900DDF48E /* IAPCard.swift */; };
+		5E13054C24FEAB2700DDF48E /* MapIAP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E13054B24FEAB2700DDF48E /* MapIAP.swift */; };
+		5E13055024FEDAE300DDF48E /* SendReceipt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E13054F24FEDAE300DDF48E /* SendReceipt.swift */; };
+		5E13055324FF2FCA00DDF48E /* ShareView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E13055224FF2FC900DDF48E /* ShareView.swift */; };
+		5E19CBD324F4145A005CAAD5 /* PlayWav.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E19CBD224F4145A005CAAD5 /* PlayWav.swift */; };
+		5E19CBD524F41514005CAAD5 /* TestWav.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E19CBD424F41514005CAAD5 /* TestWav.swift */; };
+		5E19CBD824F4179E005CAAD5 /* flowtron_v2.wav in Resources */ = {isa = PBXBuildFile; fileRef = 5E19CBD724F4179E005CAAD5 /* flowtron_v2.wav */; };
+		5E19CBDC24F41A1D005CAAD5 /* BytepalWav.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E19CBDB24F41A1D005CAAD5 /* BytepalWav.swift */; };
+		5E19CBDE24F41A44005CAAD5 /* BytepalRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E19CBDD24F41A44005CAAD5 /* BytepalRequest.swift */; };
+		5E19CBE024F43879005CAAD5 /* Download.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E19CBDF24F43879005CAAD5 /* Download.swift */; };
+		5E86E57224F6D06C00D63448 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E86E56C24F6D06C00D63448 /* Constants.swift */; };
+		5E86E57324F6D06C00D63448 /* PurchaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E86E56D24F6D06C00D63448 /* PurchaseView.swift */; };
+		5E86E57424F6D06C00D63448 /* IAPManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E86E56E24F6D06C00D63448 /* IAPManager.swift */; };
+		5E86E57524F6D06C00D63448 /* PurchaseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E86E56F24F6D06C00D63448 /* PurchaseButton.swift */; };
+		5E86E57624F6D06C00D63448 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E86E57024F6D06C00D63448 /* Extensions.swift */; };
+		5E86E57724F6D06C00D63448 /* ProductsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E86E57124F6D06C00D63448 /* ProductsStore.swift */; };
+		5E86E57A24F6D15400D63448 /* IAPView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E86E57924F6D15400D63448 /* IAPView.swift */; };
+		5EC57F8624F57FF100A81974 /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC57F8524F57FF100A81974 /* ChatView.swift */; };
+		5EC57F8C24F5843200A81974 /* UserBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC57F8B24F5843200A81974 /* UserBar.swift */; };
+		5EC57F8E24F5849600A81974 /* MessageBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC57F8D24F5849600A81974 /* MessageBubble.swift */; };
+		5EC57F9024F5960D00A81974 /* MessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC57F8F24F5960D00A81974 /* MessageView.swift */; };
+		5EC57F9224F5966600A81974 /* MessageInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC57F9124F5966600A81974 /* MessageInformation.swift */; };
+		5EC57F9524F5974300A81974 /* MessageHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC57F9424F5974300A81974 /* MessageHistory.swift */; };
 		6C1B3AD224F28F5A005961EA /* ColorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C1B3AD024F28F5A005961EA /* ColorController.swift */; };
 		6C1B3AD324F28F5A005961EA /* ColorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C1B3AD124F28F5A005961EA /* ColorModel.swift */; };
 		6C34D69624DB1F9100BD2489 /* Forms.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C34D69524DB1F9100BD2489 /* Forms.swift */; };
@@ -49,17 +70,11 @@
 		6CC34FF724DA1BF70036808C /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC34FF324DA1BF70036808C /* SettingsController.swift */; };
 		6CC34FF824DA1BF70036808C /* SettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC34FF424DA1BF70036808C /* SettingsModel.swift */; };
 		6CC34FF924DA1BF70036808C /* AccountSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC34FF524DA1BF70036808C /* AccountSettingsView.swift */; };
-		6CC3500424DA1CD50036808C /* IAPManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC3500024DA1CD50036808C /* IAPManager.swift */; };
-		6CC3500524DA1CD50036808C /* IAPView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC3500124DA1CD50036808C /* IAPView.swift */; };
-		6CC3500624DA1CD50036808C /* BuyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC3500224DA1CD50036808C /* BuyView.swift */; };
-		6CC3500724DA1CD50036808C /* ProductDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC3500324DA1CD50036808C /* ProductDB.swift */; };
-		6CC3501724DA1D8B0036808C /* IAPModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC3501624DA1D8B0036808C /* IAPModel.swift */; };
 		6CC3501D24DA1DDB0036808C /* Navigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC3501A24DA1DDB0036808C /* Navigation.swift */; };
 		6CC3501E24DA1DDB0036808C /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC3501B24DA1DDB0036808C /* Card.swift */; };
 		6CC3501F24DA1DDB0036808C /* UpgradeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC3501C24DA1DDB0036808C /* UpgradeView.swift */; };
 		6CC3502524DA1E2D0036808C /* ChatModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC3502224DA1E2D0036808C /* ChatModel.swift */; };
 		6CC3502624DA1E2D0036808C /* ChatController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC3502324DA1E2D0036808C /* ChatController.swift */; };
-		6CC3502724DA1E2D0036808C /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC3502424DA1E2D0036808C /* ChatView.swift */; };
 		6CC3502C24DA20E10036808C /* SignupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC3502B24DA20E10036808C /* SignupView.swift */; };
 		6CC3502F24DA213E0036808C /* NetworkingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC3502E24DA213E0036808C /* NetworkingModel.swift */; };
 		6CC3503124DA216D0036808C /* SignupModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC3503024DA216D0036808C /* SignupModel.swift */; };
@@ -78,8 +93,32 @@
 
 /* Begin PBXFileReference section */
 		1401038A1234D5C498C570B9 /* Pods-BytePal.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BytePal.debug.xcconfig"; path = "Target Support Files/Pods-BytePal/Pods-BytePal.debug.xcconfig"; sourceTree = "<group>"; };
-		6C18025024F445CB0040D7DF /* AnchorsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnchorsView.swift; sourceTree = "<group>"; };
-		6C18025324F4B9C50040D7DF /* NumbersController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumbersController.swift; sourceTree = "<group>"; };
+		5E13054924F9F57900DDF48E /* IAPCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAPCard.swift; sourceTree = "<group>"; };
+		5E13054B24FEAB2700DDF48E /* MapIAP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapIAP.swift; sourceTree = "<group>"; };
+		5E13054F24FEDAE300DDF48E /* SendReceipt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendReceipt.swift; sourceTree = "<group>"; };
+		5E13055224FF2FC900DDF48E /* ShareView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareView.swift; sourceTree = "<group>"; };
+		5E13055424FF3A8300DDF48E /* BytePalRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BytePalRelease.entitlements; sourceTree = "<group>"; };
+		5E19CBD224F4145A005CAAD5 /* PlayWav.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayWav.swift; sourceTree = "<group>"; };
+		5E19CBD424F41514005CAAD5 /* TestWav.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestWav.swift; sourceTree = "<group>"; };
+		5E19CBD624F41785005CAAD5 /* flowtron_v2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = flowtron_v2.wav; path = "/Users/paulngouchet/Documents/GitHub/BytePal-IOS-app/BytePal/flowtron_v2.wav"; sourceTree = "<absolute>"; };
+		5E19CBD724F4179E005CAAD5 /* flowtron_v2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = flowtron_v2.wav; sourceTree = "<group>"; };
+		5E19CBDB24F41A1D005CAAD5 /* BytepalWav.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BytepalWav.swift; sourceTree = "<group>"; };
+		5E19CBDD24F41A44005CAAD5 /* BytepalRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BytepalRequest.swift; sourceTree = "<group>"; };
+		5E19CBDF24F43879005CAAD5 /* Download.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Download.swift; sourceTree = "<group>"; };
+		5E1DF07E2534B0620085454C /* BytePalDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BytePalDebug.entitlements; sourceTree = "<group>"; };
+		5E86E56C24F6D06C00D63448 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		5E86E56D24F6D06C00D63448 /* PurchaseView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PurchaseView.swift; sourceTree = "<group>"; };
+		5E86E56E24F6D06C00D63448 /* IAPManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IAPManager.swift; sourceTree = "<group>"; };
+		5E86E56F24F6D06C00D63448 /* PurchaseButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PurchaseButton.swift; sourceTree = "<group>"; };
+		5E86E57024F6D06C00D63448 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		5E86E57124F6D06C00D63448 /* ProductsStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductsStore.swift; sourceTree = "<group>"; };
+		5E86E57924F6D15400D63448 /* IAPView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAPView.swift; sourceTree = "<group>"; };
+		5EC57F8524F57FF100A81974 /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
+		5EC57F8B24F5843200A81974 /* UserBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserBar.swift; sourceTree = "<group>"; };
+		5EC57F8D24F5849600A81974 /* MessageBubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBubble.swift; sourceTree = "<group>"; };
+		5EC57F8F24F5960D00A81974 /* MessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageView.swift; sourceTree = "<group>"; };
+		5EC57F9124F5966600A81974 /* MessageInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageInformation.swift; sourceTree = "<group>"; };
+		5EC57F9424F5974300A81974 /* MessageHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageHistory.swift; sourceTree = "<group>"; };
 		6C1B3AD024F28F5A005961EA /* ColorController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorController.swift; sourceTree = "<group>"; };
 		6C1B3AD124F28F5A005961EA /* ColorModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorModel.swift; sourceTree = "<group>"; };
 		6C34D69524DB1F9100BD2489 /* Forms.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Forms.swift; sourceTree = "<group>"; };
@@ -121,17 +160,11 @@
 		6CC34FF324DA1BF70036808C /* SettingsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
 		6CC34FF424DA1BF70036808C /* SettingsModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsModel.swift; sourceTree = "<group>"; };
 		6CC34FF524DA1BF70036808C /* AccountSettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsView.swift; sourceTree = "<group>"; };
-		6CC3500024DA1CD50036808C /* IAPManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IAPManager.swift; sourceTree = "<group>"; };
-		6CC3500124DA1CD50036808C /* IAPView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IAPView.swift; sourceTree = "<group>"; };
-		6CC3500224DA1CD50036808C /* BuyView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BuyView.swift; sourceTree = "<group>"; };
-		6CC3500324DA1CD50036808C /* ProductDB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductDB.swift; sourceTree = "<group>"; };
-		6CC3501624DA1D8B0036808C /* IAPModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAPModel.swift; sourceTree = "<group>"; };
 		6CC3501A24DA1DDB0036808C /* Navigation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Navigation.swift; sourceTree = "<group>"; };
 		6CC3501B24DA1DDB0036808C /* Card.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 		6CC3501C24DA1DDB0036808C /* UpgradeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpgradeView.swift; sourceTree = "<group>"; };
 		6CC3502224DA1E2D0036808C /* ChatModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatModel.swift; sourceTree = "<group>"; };
 		6CC3502324DA1E2D0036808C /* ChatController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatController.swift; sourceTree = "<group>"; };
-		6CC3502424DA1E2D0036808C /* ChatView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
 		6CC3502B24DA20E10036808C /* SignupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupView.swift; sourceTree = "<group>"; };
 		6CC3502E24DA213E0036808C /* NetworkingModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkingModel.swift; sourceTree = "<group>"; };
 		6CC3503024DA216D0036808C /* SignupModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupModel.swift; sourceTree = "<group>"; };
@@ -173,12 +206,60 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		6C18025224F4B9B70040D7DF /* Numbers */ = {
+		5E13055124FF2F3A00DDF48E /* Share */ = {
 			isa = PBXGroup;
 			children = (
-				6C18025324F4B9C50040D7DF /* NumbersController.swift */,
+				5E13055224FF2FC900DDF48E /* ShareView.swift */,
 			);
-			path = Numbers;
+			path = Share;
+			sourceTree = "<group>";
+		};
+		5E86E56B24F6D06C00D63448 /* IAP_Components */ = {
+			isa = PBXGroup;
+			children = (
+				5E86E56C24F6D06C00D63448 /* Constants.swift */,
+				5E86E56D24F6D06C00D63448 /* PurchaseView.swift */,
+				5E86E56E24F6D06C00D63448 /* IAPManager.swift */,
+				5E86E56F24F6D06C00D63448 /* PurchaseButton.swift */,
+				5E86E57024F6D06C00D63448 /* Extensions.swift */,
+				5E86E57124F6D06C00D63448 /* ProductsStore.swift */,
+				5E13054924F9F57900DDF48E /* IAPCard.swift */,
+				5E13054B24FEAB2700DDF48E /* MapIAP.swift */,
+				5E13054F24FEDAE300DDF48E /* SendReceipt.swift */,
+			);
+			path = IAP_Components;
+			sourceTree = "<group>";
+		};
+		5E86E57824F6D11F00D63448 /* IAP */ = {
+			isa = PBXGroup;
+			children = (
+				5E86E57924F6D15400D63448 /* IAPView.swift */,
+			);
+			path = IAP;
+			sourceTree = "<group>";
+		};
+		5EC57F8824F580C300A81974 /* Request_Components */ = {
+			isa = PBXGroup;
+			children = (
+				5E19CBDF24F43879005CAAD5 /* Download.swift */,
+				5E19CBDB24F41A1D005CAAD5 /* BytepalWav.swift */,
+				5E19CBDD24F41A44005CAAD5 /* BytepalRequest.swift */,
+				5E19CBD424F41514005CAAD5 /* TestWav.swift */,
+				5E19CBD224F4145A005CAAD5 /* PlayWav.swift */,
+			);
+			path = Request_Components;
+			sourceTree = "<group>";
+		};
+		5EC57F9324F5968D00A81974 /* Chat_Components */ = {
+			isa = PBXGroup;
+			children = (
+				5EC57F8B24F5843200A81974 /* UserBar.swift */,
+				5EC57F8D24F5849600A81974 /* MessageBubble.swift */,
+				5EC57F8F24F5960D00A81974 /* MessageView.swift */,
+				5EC57F9124F5966600A81974 /* MessageInformation.swift */,
+				5EC57F9424F5974300A81974 /* MessageHistory.swift */,
+			);
+			path = Chat_Components;
 			sourceTree = "<group>";
 		};
 		6C5CEA0B24D9006F004DCAB0 /* Home */ = {
@@ -214,8 +295,9 @@
 		6C5CEA1624D900E7004DCAB0 /* ProofofConcept */ = {
 			isa = PBXGroup;
 			children = (
-				6C5CEAA624D904E5004DCAB0 /* AlignementGuidesView.swift */,
-				6C18025024F445CB0040D7DF /* AnchorsView.swift */,
+				5E19CBD724F4179E005CAAD5 /* flowtron_v2.wav */,
+				5E19CBD624F41785005CAAD5 /* flowtron_v2.wav */,
+				6C5CEAA624D904E5004DCAB0 /* AlignementGuides.swift */,
 				6C67DE8724DA467F0027E6BF /* APIView.swift */,
 				6C5CEAAA24D904E5004DCAB0 /* Avatar.swift */,
 				6C88837424F8A6ED0091FA49 /* MessagesJSONFormat.swift */,
@@ -274,6 +356,8 @@
 		6CA6ADA1248365B300724EE3 /* BytePal */ = {
 			isa = PBXGroup;
 			children = (
+				5E1DF07E2534B0620085454C /* BytePalDebug.entitlements */,
+				5E13055424FF3A8300DDF48E /* BytePalRelease.entitlements */,
 				6CC3505924DA256E0036808C /* AppDelegate.swift */,
 				6CC3505A24DA256E0036808C /* BytePal.entitlements */,
 				6CC3505B24DA256E0036808C /* BytePal.xcdatamodeld */,
@@ -310,39 +394,11 @@
 			path = SettingViews;
 			sourceTree = "<group>";
 		};
-		6CC34FFF24DA1CD50036808C /* IAP */ = {
-			isa = PBXGroup;
-			children = (
-				6CC3501624DA1D8B0036808C /* IAPModel.swift */,
-				6CC3501524DA1D6F0036808C /* IAPViews */,
-				6CC3501424DA1D560036808C /* IAPControllers */,
-			);
-			name = IAP;
-			path = BytePal/Screens/IAP;
-			sourceTree = SOURCE_ROOT;
-		};
-		6CC3501424DA1D560036808C /* IAPControllers */ = {
-			isa = PBXGroup;
-			children = (
-				6CC3500024DA1CD50036808C /* IAPManager.swift */,
-				6CC3500324DA1CD50036808C /* ProductDB.swift */,
-			);
-			path = IAPControllers;
-			sourceTree = "<group>";
-		};
-		6CC3501524DA1D6F0036808C /* IAPViews */ = {
-			isa = PBXGroup;
-			children = (
-				6CC3500124DA1CD50036808C /* IAPView.swift */,
-				6CC3500224DA1CD50036808C /* BuyView.swift */,
-			);
-			path = IAPViews;
-			sourceTree = "<group>";
-		};
 		6CC3501924DA1DDB0036808C /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				6C88836D24F86D5C0091FA49 /* Messages */,
+				5E86E56B24F6D06C00D63448 /* IAP_Components */,
+				5EC57F8824F580C300A81974 /* Request_Components */,
 				6CC3502024DA1DF70036808C /* ComponentModels */,
 				6CC3501A24DA1DDB0036808C /* Navigation.swift */,
 				6CC3501B24DA1DDB0036808C /* Card.swift */,
@@ -365,9 +421,10 @@
 		6CC3502124DA1E2D0036808C /* Chat */ = {
 			isa = PBXGroup;
 			children = (
+				5EC57F9324F5968D00A81974 /* Chat_Components */,
 				6CC3502224DA1E2D0036808C /* ChatModel.swift */,
-				6CC3502424DA1E2D0036808C /* ChatView.swift */,
 				6CC3502324DA1E2D0036808C /* ChatController.swift */,
+				5EC57F8524F57FF100A81974 /* ChatView.swift */,
 			);
 			name = Chat;
 			path = BytePal/Screens/Chat;
@@ -376,13 +433,14 @@
 		6CC3502824DA1F4D0036808C /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				5E13055124FF2F3A00DDF48E /* Share */,
+				5E86E57824F6D11F00D63448 /* IAP */,
 				6C5CE9EF24D8FF3B004DCAB0 /* LaunchScreen.storyboard */,
 				6CC3503424DA21920036808C /* Authentication */,
 				6CC3502A24DA20E10036808C /* Signup */,
 				6C5CEA0B24D9006F004DCAB0 /* Home */,
 				6CC3502124DA1E2D0036808C /* Chat */,
 				6CC34FF124DA1BF70036808C /* Settings */,
-				6CC34FFF24DA1CD50036808C /* IAP */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -504,6 +562,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5E19CBD824F4179E005CAAD5 /* flowtron_v2.wav in Resources */,
 				6C5CE9F824D8FF3C004DCAB0 /* Assets.xcassets in Resources */,
 				6C5CEA0324D8FF3C004DCAB0 /* LaunchScreen.storyboard in Resources */,
 			);
@@ -577,12 +636,15 @@
 			files = (
 				6C5CEAB924D904E5004DCAB0 /* InviteAFriendView.swift in Sources */,
 				6C5CEAAE24D904E5004DCAB0 /* CombineHTTPRequest.swift in Sources */,
-				6CC3501724DA1D8B0036808C /* IAPModel.swift in Sources */,
+				5E19CBDC24F41A1D005CAAD5 /* BytepalWav.swift in Sources */,
+				5E86E57324F6D06C00D63448 /* PurchaseView.swift in Sources */,
+				5EC57F8624F57FF100A81974 /* ChatView.swift in Sources */,
 				6C5CEAC324D904E6004DCAB0 /* MultiLineTextField.swift in Sources */,
 				6C5CEAAF24D904E5004DCAB0 /* PrivacyPolicyView.swift in Sources */,
 				6C5CEABB24D904E5004DCAB0 /* NavigationProgramatic.swift in Sources */,
 				6CC3501F24DA1DDB0036808C /* UpgradeView.swift in Sources */,
 				6C1B3AD324F28F5A005961EA /* ColorModel.swift in Sources */,
+				5E19CBDE24F41A44005CAAD5 /* BytepalRequest.swift in Sources */,
 				6CC3506224DA256F0036808C /* ContentView.swift in Sources */,
 				6C5CEAB224D904E5004DCAB0 /* STTLiveAudio.swift in Sources */,
 				6CC34FF824DA1BF70036808C /* SettingsModel.swift in Sources */,
@@ -595,32 +657,39 @@
 				6CC3503F24DA21920036808C /* LoginView.swift in Sources */,
 				6C18025124F445CB0040D7DF /* AnchorsView.swift in Sources */,
 				6CC34FF924DA1BF70036808C /* AccountSettingsView.swift in Sources */,
-				6CC3500724DA1CD50036808C /* ProductDB.swift in Sources */,
-				6CC3502724DA1E2D0036808C /* ChatView.swift in Sources */,
 				6C5CEAC124D904E6004DCAB0 /* Avatar.swift in Sources */,
 				6CC3503D24DA21920036808C /* LoginModel.swift in Sources */,
 				6CC3501E24DA1DDB0036808C /* Card.swift in Sources */,
 				6CC34FE724DA0A480036808C /* HomeController.swift in Sources */,
 				6C5CEA8124D90476004DCAB0 /* HomeView.swift in Sources */,
+				5EC57F9224F5966600A81974 /* MessageInformation.swift in Sources */,
 				6CC3502C24DA20E10036808C /* SignupView.swift in Sources */,
+				5E19CBE024F43879005CAAD5 /* Download.swift in Sources */,
 				6C67DE8824DA467F0027E6BF /* APIView.swift in Sources */,
+				5E86E57724F6D06C00D63448 /* ProductsStore.swift in Sources */,
 				6CC34FF724DA1BF70036808C /* SettingsController.swift in Sources */,
+				5E86E57524F6D06C00D63448 /* PurchaseButton.swift in Sources */,
 				6C34D69624DB1F9100BD2489 /* Forms.swift in Sources */,
-				6C88836F24F86D900091FA49 /* MessagesModel.swift in Sources */,
-				6C88837124F86D9B0091FA49 /* MessagesView.swift in Sources */,
-				6C5CEABD24D904E6004DCAB0 /* AlignementGuidesView.swift in Sources */,
+				5E19CBD324F4145A005CAAD5 /* PlayWav.swift in Sources */,
+				6C5CEABD24D904E6004DCAB0 /* AlignementGuides.swift in Sources */,
+				5E19CBD524F41514005CAAD5 /* TestWav.swift in Sources */,
+				5EC57F8C24F5843200A81974 /* UserBar.swift in Sources */,
+				5E86E57624F6D06C00D63448 /* Extensions.swift in Sources */,
 				6C5CEAC224D904E6004DCAB0 /* PasswordView.swift in Sources */,
+				5E13055324FF2FCA00DDF48E /* ShareView.swift in Sources */,
+				5E86E57A24F6D15400D63448 /* IAPView.swift in Sources */,
 				6CC3503324DA21760036808C /* SignupController.swift in Sources */,
 				6CC3506024DA256F0036808C /* AppDelegate.swift in Sources */,
-				6C88837324F86DA70091FA49 /* MessagesController.swift in Sources */,
-				6CC3500524DA1CD50036808C /* IAPView.swift in Sources */,
 				6CC3502524DA1E2D0036808C /* ChatModel.swift in Sources */,
 				6CC34FF624DA1BF70036808C /* ContactSettingsView.swift in Sources */,
+				5E13054C24FEAB2700DDF48E /* MapIAP.swift in Sources */,
 				6CC3506124DA256F0036808C /* BytePal.xcdatamodeld in Sources */,
+				5EC57F9024F5960D00A81974 /* MessageView.swift in Sources */,
 				6C5CEAB024D904E5004DCAB0 /* TextFieldAboveKeyboard.swift in Sources */,
+				5E13055024FEDAE300DDF48E /* SendReceipt.swift in Sources */,
 				6C5CEABA24D904E5004DCAB0 /* Cache.swift in Sources */,
+				5E86E57424F6D06C00D63448 /* IAPManager.swift in Sources */,
 				6CC3502F24DA213E0036808C /* NetworkingModel.swift in Sources */,
-				6CC3500624DA1CD50036808C /* BuyView.swift in Sources */,
 				6C5CEA4124D902CB004DCAB0 /* Font.swift in Sources */,
 				6C5CEAB324D904E5004DCAB0 /* PersonalLoginView.swift in Sources */,
 				6C5CEAB424D904E5004DCAB0 /* NotificationView.swift in Sources */,
@@ -628,16 +697,18 @@
 				6C5CEABE24D904E6004DCAB0 /* TermsOfServiceView.swift in Sources */,
 				6CC34FE524DA0A3F0036808C /* HomeModel.swift in Sources */,
 				6C1B3AD224F28F5A005961EA /* ColorController.swift in Sources */,
+				5E86E57224F6D06C00D63448 /* Constants.swift in Sources */,
+				5E13054A24F9F57A00DDF48E /* IAPCard.swift in Sources */,
 				6CC3501D24DA1DDB0036808C /* Navigation.swift in Sources */,
 				6CC3503124DA216D0036808C /* SignupModel.swift in Sources */,
 				6C5CEAAD24D904E5004DCAB0 /* DetectDominantLanguage.swift in Sources */,
-				6CC3500424DA1CD50036808C /* IAPManager.swift in Sources */,
+				5EC57F9524F5974300A81974 /* MessageHistory.swift in Sources */,
 				6CC3505024DA228F0036808C /* KeyboardAvoider.swift in Sources */,
 				6CC3502624DA1E2D0036808C /* ChatController.swift in Sources */,
 				6C18025424F4B9C50040D7DF /* NumbersController.swift in Sources */,
 				6C5CEAB824D904E5004DCAB0 /* RelativeAlignement.swift in Sources */,
 				6C5CEAB524D904E5004DCAB0 /* EmailView.swift in Sources */,
-				6C88837524F8A6EE0091FA49 /* MessagesJSONFormat.swift in Sources */,
+				5EC57F8E24F5849600A81974 /* MessageBubble.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -764,16 +835,17 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = BytePal/BytePalDebug.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
-				DEVELOPMENT_TEAM = D5E8KJ6Y7W;
+				CURRENT_PROJECT_VERSION = 10;
+				DEVELOPMENT_TEAM = PCK46MLF23;
 				INFOPLIST_FILE = BytePal/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.9;
-				PRODUCT_BUNDLE_IDENTIFIER = "BytePal-AI.BytePal-Temp";
+				MARKETING_VERSION = 1.10;
+				PRODUCT_BUNDLE_IDENTIFIER = "BytePal-AI";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -787,16 +859,17 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = BytePal/BytePalRelease.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
-				DEVELOPMENT_TEAM = D5E8KJ6Y7W;
+				CURRENT_PROJECT_VERSION = 10;
+				DEVELOPMENT_TEAM = PCK46MLF23;
 				INFOPLIST_FILE = BytePal/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.9;
-				PRODUCT_BUNDLE_IDENTIFIER = "BytePal-AI.BytePal-Temp";
+				MARKETING_VERSION = 1.10;
+				PRODUCT_BUNDLE_IDENTIFIER = "BytePal-AI";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;

@@ -1,7 +1,11 @@
 {
   "images" : [
     {
+<<<<<<< HEAD
       "filename" : "BytePal.png",
+=======
+      "filename" : "chatbot.png",
+>>>>>>> Dev_v2
       "idiom" : "universal",
       "scale" : "1x"
     },

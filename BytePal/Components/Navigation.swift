@@ -30,44 +30,43 @@ struct SettingsNavigation: View {
 }
 
 struct NavigationBar: View {
+    @Environment(\.managedObjectContext) var moc
+    @EnvironmentObject var messages: Messages
     @EnvironmentObject var userInformation: UserInformation
+    @EnvironmentObject var googleDelegate: GoogleDelegate
     
     var body: some View {
         GeometryReader { geometry in
-            VStack {
-                Spacer(minLength: 10)
-                HStack {
-                    NavigationLink(destination: HomeView().environmentObject(self.userInformation)){
-                            Image(systemName: "house.fill")
-                                .font(.system(size: 34))
-                                .foregroundColor(convertHextoRGB(hexColor: "EAEEED"))
-                                .padding(EdgeInsets(top: 0, leading: 0, bottom: 32, trailing: 64))
-                                .shadow(color: convertHextoRGB(hexColor: "000000").opacity(0.48), radius: 3, x: 3, y: 7)
-                        }
-                        
-                    NavigationLink(destination: ChatView().environmentObject(self.userInformation)){
-                            Image(systemName: "bubble.left.fill")
-                                .font(.system(size: 34))
-                                .foregroundColor(convertHextoRGB(hexColor: "EAEEED"))
-                                .shadow(color: convertHextoRGB(hexColor: "000000").opacity(0.48), radius: 3, x: 3, y: 7)
-                                .padding(EdgeInsets(top: 6, leading: 0, bottom: 32, trailing: 0))
-                        }
-                        NavigationLink(destination: AccountSettingsView().environmentObject(self.userInformation)){
-                            Image(systemName: "person.fill")
-                                .font(.system(size: 34))
-                                .foregroundColor(convertHextoRGB(hexColor: "EAEEED"))
-                                .shadow(color: convertHextoRGB(hexColor: "000000").opacity(0.48), radius: 3, x: 3, y: 7)
-                                .padding(EdgeInsets(top: 0, leading: 64, bottom: 32, trailing: 0))
-                        }
-                    }
-                        .edgesIgnoringSafeArea(.bottom)
-                        .frame(width: geometry.size.width, height: 104, alignment: .bottom)
-                        .background(convertHextoRGB(hexColor: "9FA7A3"))
-                        .shadow(radius: 1)
-                        .opacity(1)
+            HStack {
+                NavigationLink(destination: HomeView().environment(\.managedObjectContext, moc) .environmentObject(userInformation).environmentObject(messages).environmentObject(googleDelegate)){
+                    Image(systemName: "house.fill")
+                        .font(.system(size: 34))
+                        .foregroundColor(convertHextoRGB(hexColor: "EAEEED"))
+                        .padding(EdgeInsets(top: 0, leading: 0, bottom: 32, trailing: 64))
+                        .shadow(color: convertHextoRGB(hexColor: "000000").opacity(0.48), radius: 3, x: 3, y: 7)
+                }
+                
+                NavigationLink(destination: ChatView().environment(\.managedObjectContext, moc).environmentObject(userInformation).environmentObject(messages).environmentObject(googleDelegate)){
+                    Image(systemName: "bubble.left.fill")
+                        .font(.system(size: 34))
+                        .foregroundColor(convertHextoRGB(hexColor: "EAEEED"))
+                        .shadow(color: convertHextoRGB(hexColor: "000000").opacity(0.48), radius: 3, x: 3, y: 7)
+                        .padding(EdgeInsets(top: 6, leading: 0, bottom: 32, trailing: 0))
+                }
+                NavigationLink(destination: AccountSettingsView().environment(\.managedObjectContext, moc).environmentObject(userInformation).environmentObject(messages).environmentObject(googleDelegate)){
+                    Image(systemName: "person.fill")
+                        .font(.system(size: 34))
+                        .foregroundColor(convertHextoRGB(hexColor: "EAEEED"))
+                        .shadow(color: convertHextoRGB(hexColor: "000000").opacity(0.48), radius: 3, x: 3, y: 7)
+                        .padding(EdgeInsets(top: 0, leading: 64, bottom: 32, trailing: 0))
                 }
                     .edgesIgnoringSafeArea(.bottom)
 
             }
+                .edgesIgnoringSafeArea(.bottom)
+                .frame(width: geometry.size.width, height: 104
+            )
+                .background(convertHextoRGB(hexColor: "9FA7A3"))
+                .shadow(radius: 1)
         }
 }

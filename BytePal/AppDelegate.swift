@@ -10,17 +10,32 @@ import UIKit
 import CoreData
 import FBSDKCoreKit
 import GoogleSignIn
+import PushNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate  {
     
     let googleDelegate: GoogleDelegate = GoogleDelegate()
+    
+    let pushNotifications = PushNotifications.shared
+    
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        print("got here", deviceToken)
+        self.pushNotifications.registerDeviceToken(deviceToken)
+    }
+
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        print("got there 2", userInfo)
+        self.pushNotifications.handleNotification(userInfo: userInfo)
+    }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        IAPManager.shared.startObserving()
+        //IAPManager.shared.startObserving()
         
-        
+        let result = self.pushNotifications.start(instanceId: "9400f4c9-0860-409a-b5ea-7273af4abe98")
+        let result2 = self.pushNotifications.registerForRemoteNotifications()
+        try? self.pushNotifications.addDeviceInterest(interest: "hello")
         
 //        GIDSignIn.sharedInstance().delegate = self
 //        GIDSignIn.sharedInstance().clientID = "1005929182171-0k0i1sqdmet6hk0hrj3b1blfoiiul3op.apps.googleusercontent.com"
@@ -59,10 +74,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate  {
       let familyName = user.profile.familyName  ?? ""
       let email = user.profile.email  ?? ""
         
-    print("\(givenName)")
-        print("\(givenName)")
-        print("\(familyName)")
-        print("\(email)")
       // [START_EXCLUDE]
 
       // Get userID BytePal API
@@ -150,7 +161,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate  {
 //    // [END disconnect_handler]
     
     func applicationWillTerminate(_ application: UIApplication) {
-      IAPManager.shared.stopObserving()
+      //IAPManager.shared.stopObserving()
     }
 
     // MARK: UISceneSession Lifecycle

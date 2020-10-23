@@ -7,3 +7,7 @@
 //
 
 import Foundation
+import SwiftUI
+
+let termsAndConditions: String = "\(Webpage_HOSTNAME)/terms"
+let privacyPolicy: String = "\(Webpage_HOSTNAME)/privacy"

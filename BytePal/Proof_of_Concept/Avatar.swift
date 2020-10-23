@@ -90,13 +90,13 @@ struct Avatar: View {
                     .size(CGSize(width: 132, height: 132))
                     .foregroundColor(Color(UIColor.white))
                     .shadow(radius: 7)
-                    .padding(EdgeInsets(top: 0, leading: (geometry.size.width/2)-(132/2), bottom: 0, trailing: 0))
+                    .padding(EdgeInsets(top: 0, leading: (375/2)-(132/2), bottom: 0, trailing: 0))
                     Image("chatbot")
                         .resizable()
                         .frame(width: 128, height: 128)
                     
                 }
-                .frame(width: geometry.size.width, height: 128)
+                .frame(width: 375, height: 128)
                 Picker(selection: self.$selectedVoice, label: Text("Voice: \(self.voiceName[self.selectedVoice])").font(.custom(fontStyle, size: 20))) {
                     ForEach(0 ..< self.voiceName.count) {
                         Text(self.self.voiceName[$0])
@@ -119,11 +119,11 @@ struct Avatar: View {
                                 .fill(convertHextoRGB(hexColor: "186ad2"))
                                 .frame(width: 64, height: 64)
                         )
-                        .padding(EdgeInsets(top: 48, leading: 0, bottom: 0, trailing: (geometry.size.width/2)+128))
+                        .padding(EdgeInsets(top: 48, leading: 0, bottom: 0, trailing: (375/2)+128))
                     .shadow(radius: 2)
                         
                 }
-                    .padding(EdgeInsets(top: 0, leading: geometry.size.width - 48, bottom: 0, trailing: 0))
+                    .padding(EdgeInsets(top: 0, leading: 375 - 48, bottom: 0, trailing: 0))
                 Spacer()
             }
         }

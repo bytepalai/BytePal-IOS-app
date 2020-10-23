@@ -1,15 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "chatbot.png",
+      "filename" : "homeRobot.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "homeRobot-1.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "homeRobot-2.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
