@@ -26,6 +26,7 @@ struct MessageBubble: View {
 
 struct MessageBubble_Previews: PreviewProvider {
     static var previews: some View {
-        MessageBubble(message:"hi",isCurrentUser:false)
+        MessageBubble(message:"Good, morning BytePal",isCurrentUser:true)
+        MessageBubble(message:"Good, morning to you to John",isCurrentUser:false)
     }
 }

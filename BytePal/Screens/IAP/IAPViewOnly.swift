@@ -9,10 +9,8 @@
 
 import Foundation
 import SwiftUI
-import Combine
-import StoreKit
 
-struct IAPView : View {
+struct IAPViewOnly: View {
 
     @ObservedObject var productsStore : ProductsStore
     @ObservedObject var viewModel: IAPViewModel
@@ -24,30 +22,30 @@ struct IAPView : View {
             if #available(iOS 14.0, *) {
                 LazyVGrid(columns: [GridItem(.flexible() )]) {
                     ForEach(viewModel.subscriptions) { (subscription)  in
-                        SubscriptionCell(subscription: subscription)
+                        SubscriptionCellOnly(subscription: subscription)
                             .padding()
                     }
                     TermsOfConditionView()
                 }
             } else {
                 ForEach(viewModel.subscriptions) { (subscription)  in
-                    SubscriptionCell(subscription: subscription)
+                    SubscriptionCellOnly(subscription: subscription)
                         .padding()
                 }
-                TermsOfConditionView()
+                TermsOfConditionViewOnly()
             }
         }
     }
 }
 
 //MARK: SubViews
-struct SubscriptionCell: View {
+struct SubscriptionCellOnly: View {
     var subscription: IAPViewModel.Subscription
     var body: some View {
         ZStack {
-            BackgroundImageView(subscription: subscription)
+            BackgroundImageViewOnly(subscription: subscription)
             
-            SubscriptionCellTopView(subscription: subscription)
+            SubscriptionCellTopViewOnly(subscription: subscription)
         }
             .background(Color.applightgreenPure)
             .cornerRadius(20, antialiased: true)
@@ -56,7 +54,7 @@ struct SubscriptionCell: View {
     }
 }
 
-struct BackgroundImageView: View {
+struct BackgroundImageViewOnly: View {
     var subscription: IAPViewModel.Subscription
     
     var body: some View {
@@ -74,7 +72,7 @@ struct BackgroundImageView: View {
     }
 }
 
-struct SubscriptionCellTopView: View {
+struct SubscriptionCellTopViewOnly: View {
     var subscription: IAPViewModel.Subscription
     
     var body: some View {
@@ -114,7 +112,7 @@ struct SubscriptionCellTopView: View {
 }
 
 
-struct TermsOfConditionView: View {
+struct TermsOfConditionViewOnly: View {
     var body: some View {
         
         VStack {
@@ -133,7 +131,7 @@ struct TermsOfConditionView: View {
     }
 }
 
-struct TopButtonViews: View {
+struct TopButtonViewsOnly: View {
     var body: some View {
         HStack {
             Spacer()
@@ -157,11 +155,11 @@ struct TopButtonViews: View {
 
 
 
-struct IAPView_Previews: PreviewProvider {
+struct IAPViewOnly_Previews: PreviewProvider {
     
     static var previews: some View {
         
-        IAPView(productsStore: BytePal.ProductsStore.shared, viewModel: .init())
+        IAPViewOnly(productsStore: BytePal.ProductsStore.shared, viewModel: .init())
         
     }
     
