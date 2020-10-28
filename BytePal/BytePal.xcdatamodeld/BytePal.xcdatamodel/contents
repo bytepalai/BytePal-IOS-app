@@ -9,10 +9,11 @@
         <attribute name="email" optional="YES" attributeType="String"/>
         <attribute name="firstName" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="isLoggedIn" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="lastName" optional="YES" attributeType="String"/>
     </entity>
     <elements>
         <element name="Message" positionX="-45" positionY="27" width="128" height="88"/>
-        <element name="User" positionX="-54" positionY="27" width="128" height="103"/>
+        <element name="User" positionX="-54" positionY="27" width="128" height="118"/>
     </elements>
 </model>

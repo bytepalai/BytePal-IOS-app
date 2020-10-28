@@ -14,12 +14,10 @@ class Sounds {
     static var audioPlayer:AVAudioPlayer?
     
     static func playSounds(soundfile: String) {
-        print("Got here1")
+        
         //if let path = Bundle.main.path(forResource: soundfile, ofType: nil){
-        print("Got here2")
         
         do{
-            print("Got here")
             print(soundfile)
             audioPlayer = try AVAudioPlayer(contentsOf: URL(fileURLWithPath: soundfile))
             audioPlayer?.prepareToPlay()
@@ -28,7 +26,6 @@ class Sounds {
         }
         catch {
             print("Error")
-            
         }
         
     }

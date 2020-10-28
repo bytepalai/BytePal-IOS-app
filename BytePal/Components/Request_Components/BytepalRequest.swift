@@ -25,9 +25,8 @@ class MakeRequest {
         
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpMethod = "POST"
-        //Define body of POST Request
-        //let userID = "$2b$12$6r5AA4ajhiPSXJBbRVjk3eaeddkG20bNpENxaACMVljiE8yX3UqKu"
         
+        //Define body of POST Request
         let parameters: Parameters = [
             "user_id": userID,
             "text":message,
@@ -38,9 +37,7 @@ class MakeRequest {
             response1, response2 in
             responseFromChatBot = response1
             voicePath = response2
-            print("answer", responseFromChatBot!)
             completion(responseFromChatBot!, voicePath!)
-            //semaphore.signal()
         }
     }
 }

@@ -63,10 +63,10 @@ struct SubscriptionCell: View {
             
             SubscriptionCellTopView(subscription: subscription)
         }
-        .background(Color.applightgreenPure)
-        .cornerRadius(20, antialiased: true)
-        .aspectRatio(1.5, contentMode: .fill)
-        .animation(.interpolatingSpring(stiffness: 30, damping: 8) )
+            .background(Color.applightgreenPure)
+            .cornerRadius(20, antialiased: true)
+            .aspectRatio(1.5, contentMode: .fill)
+            .animation(.interpolatingSpring(stiffness: 30, damping: 8) )
     }
 }
 

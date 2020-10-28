@@ -72,15 +72,6 @@ struct ButtonCard: View {
     }
 }
 
-struct Divider: View {
-    var body: some View {
-        Rectangle()
-            .fill(Color(UIColor.black))
-            .frame(width: 300, height: 1)
-            .shadow(color: Color(UIColor.black).opacity(0.04), radius: 3, x: 3, y: 3)
-    }
-}
-
 struct Card_Previews: PreviewProvider {
     static var previews: some View {
         /*@START_MENU_TOKEN@*/Text("Hello, World!")/*@END_MENU_TOKEN@*/

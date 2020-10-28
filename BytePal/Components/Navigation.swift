@@ -59,12 +59,8 @@ struct NavigationBar: View {
                         .shadow(color: convertHextoRGB(hexColor: "000000").opacity(0.48), radius: 3, x: 3, y: 7)
                         .padding(EdgeInsets(top: 0, leading: 64, bottom: 32, trailing: 0))
                 }
-                    .edgesIgnoringSafeArea(.bottom)
-
             }
-                .edgesIgnoringSafeArea(.bottom)
-                .frame(width: geometry.size.width, height: 104
-            )
+                .frame(width: geometry.size.width, height: 104)
                 .background(convertHextoRGB(hexColor: "9FA7A3"))
                 .shadow(radius: 1)
         }

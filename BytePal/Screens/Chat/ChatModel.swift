@@ -16,4 +16,5 @@ class UserInformation: ObservableObject {
     @Published var lastName: String = ""
     @Published var fullName: String = ""
     @Published var messagesLeft: Int = 0
+    @Published var isLoggedIn: Bool = false
 }

@@ -12,6 +12,7 @@ import CoreData
 struct AccountSettingsView: View {
     var socialMediaAuth: SocialMediaAuth = SocialMediaAuth()
     var container: NSPersistentContainer!
+    @FetchRequest(entity: Message.entity(), sortDescriptors: []) var MessagesCoreDataRead: FetchedResults<Message>
     @FetchRequest(entity: User.entity(), sortDescriptors: []) var UserInformationCoreDataRead: FetchedResults<User>
     @Environment(\.managedObjectContext) var moc
     @EnvironmentObject var userInformation: UserInformation
@@ -22,12 +23,21 @@ struct AccountSettingsView: View {
     @State var name: String = ""
     
     func logout() {
-        // Clear User ID on Logout
-        socialMediaAuth.logout()
+        // Clear user information on logout
+        socialMediaAuth.logout(personalLoginStatus: self.userInformation.isLoggedIn)
         for userInformation in UserInformationCoreDataRead {
             moc.delete(userInformation)
         }
+        for message in MessagesCoreDataRead {
+            moc.delete(message)
+        }
         try? self.moc.save()
+        
+        // Set personal login status to logged out
+        let userInformationCoreDataWrite: User = User(context: self.moc)
+        userInformationCoreDataWrite.isLoggedIn = false
+        try? self.moc.save()
+        self.userInformation.isLoggedIn = false
 
         // Go to Login View
         self.isShowingChatView = true
@@ -96,10 +106,8 @@ struct AccountSettingsView: View {
             }
             .background(Color.appLightGray)
             .edgesIgnoringSafeArea(.all)
-            
             NavigationLink(destination: LoginView().environment(\.managedObjectContext, moc).environmentObject(userInformation).environmentObject(messages).environmentObject(googleDelegate), isActive: $isShowingChatView ){EmptyView()}
         }
-        
     }
 }
 

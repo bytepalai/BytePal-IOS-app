@@ -7,8 +7,7 @@
 //
 
 import SwiftUI
-
-import SwiftUI
+import CoreData
 
 
 struct HomeMessageCell: View {
@@ -25,6 +24,7 @@ struct HomeMessageCell: View {
                         HStack {
                             MessageBodyTexts(messageCreator: messageCreator)
                             HomeMessageCellImage(messageCreator: messageCreator)
+                                .padding(EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 0))
                         }
                         .padding()
                         .background(getBackgroundColor(accordingTo: messageCreator))
@@ -36,6 +36,7 @@ struct HomeMessageCell: View {
                 HStack {
                     HStack {
                         HomeMessageCellImage(messageCreator: messageCreator)
+                            .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 8))
                         MessageBodyTexts(messageCreator: messageCreator)
                     }
                     .padding()
@@ -46,12 +47,15 @@ struct HomeMessageCell: View {
                 .transition(.move(edge: .leading))
             }
         }
-        .animation(.interpolatingSpring(stiffness: 30, damping: 8) )
+        .animation(.interpolatingSpring(stiffness: 30, damping: 8))
+        .padding()
     }
     
     enum messagecreater {
         case user(message: String)
         case bytePal(message: String)
+        
+        
         
         var title: String {
             switch self {
@@ -96,32 +100,36 @@ struct HomeMessageCell_Previews: PreviewProvider {
 //MARK: Sub views
 struct MessageBodyTexts: View {
     var messageCreator: HomeMessageCell.messagecreater
+    @FetchRequest(entity: Message.entity(), sortDescriptors: []) var MessagesCoreData: FetchedResults<Message>
+    @FetchRequest(entity: User.entity(), sortDescriptors: []) var UserInformationCoreData: FetchedResults<User>
+    @Environment(\.managedObjectContext) var moc
+    @EnvironmentObject var messages: Messages
+    @EnvironmentObject var userInformation: UserInformation
+    @State var isShowingChatView: Bool = false
     
     var body: some View {
         VStack(alignment: getAlignment(from: messageCreator)) {
             Text(messageCreator.title)
                 .foregroundColor(getMessageTitleColor(acordingTo: messageCreator))
                 .fontWeight(.bold)
-            if #available(iOS 14.0, *) {
-                Text(messageCreator.message)
-                    .font(.title2)
-                    .fontWeight(.semibold)
-                    .lineLimit(/*@START_MENU_TOKEN@*/2/*@END_MENU_TOKEN@*/)
-                    .truncationMode(.tail)
-                    .fixedSize(horizontal: false, vertical: true)
-            } else {
-                // Fallback on earlier versions
-            }
-            if #available(iOS 14.0, *) {
-                Text(Image(systemName: "arrow.right.circle.fill"))
+            Text(messageCreator.message)
+                .font(title2Custom)
+                .fontWeight(.semibold)
+                .lineLimit(/*@START_MENU_TOKEN@*/2/*@END_MENU_TOKEN@*/)
+                .truncationMode(.tail)
+                .fixedSize(horizontal: false, vertical: true)
+            
+            //here we have given explicit animation so that parents animation will not work here
+            Button(action: {
+                self.isShowingChatView = true
+            }){
+                Image(systemName: "arrow.right.circle.fill")
                     .font(.title)
                     .animation(
                         Animation.interpolatingSpring(stiffness: 50, damping: 10, initialVelocity: 0)
                     )
-            } else {
-                // Fallback on earlier versions
             }
-                //here we have given explicit animation so that parents animation will not work here
+            NavigationLink(destination: ChatView().environment(\.managedObjectContext, moc) .environmentObject(userInformation).environmentObject(messages), isActive: self.$isShowingChatView){EmptyView()}
         }
         .foregroundColor(getFontColor(acordingTo: messageCreator) )
     }
@@ -167,8 +175,9 @@ struct MessageBodyTexts: View {
 
 struct HomeMessageCellImage: View {
     var messageCreator: HomeMessageCell.messagecreater
-    
+
     var body: some View {
+        
         VStack {
             getImage(releventTo: messageCreator)
                 .resizable()
@@ -176,20 +185,24 @@ struct HomeMessageCellImage: View {
                 .frame(width: 100, alignment: .top)
             Spacer()
         }
+        
     }
-    
+
     private func getImage(releventTo messageCreator: HomeMessageCell.messagecreater) -> Image {
         
-    switch messageCreator {
-    
-    //chage if needed
-    case .user(message: _):
-        return Image("homePerson")
+        switch messageCreator {
+            //chage if needed
+            case .user(message: _):
+                return Image("homePerson")
+                
+            case .bytePal(message: _):
+                return Image("homeRobot")
+        }
         
-    case .bytePal(message: _):
-        return Image("homeRobot")
     }
+    
 }
-}
+    
+
 
 

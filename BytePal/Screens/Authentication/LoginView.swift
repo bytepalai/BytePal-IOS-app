@@ -13,6 +13,198 @@ import FBSDKCoreKit
 import FBSDKLoginKit
 import GoogleSignIn
 
+struct LoginView: View {
+    var loginViewModel: LoginViewModel = LoginViewModel()
+    var socialMediaAuth: SocialMediaAuth = SocialMediaAuth()
+    var messageHistoryData: [[String: String]] = [[String: String]]()
+    var container: NSPersistentContainer!
+    @FetchRequest(entity: Message.entity(), sortDescriptors: []) var MessagesCoreData: FetchedResults<Message>
+    @FetchRequest(entity: User.entity(), sortDescriptors: []) var UserInformationCoreData: FetchedResults<User>
+    @Environment(\.managedObjectContext) var moc
+    @EnvironmentObject var messages: Messages
+    @EnvironmentObject var userInformation: UserInformation
+    @EnvironmentObject var googleDelegate: GoogleDelegate
+    @State var isCurrentUserLoadServer: Bool = false
+    @State var TextForMultiLine: String =
+        """
+        """
+    @State var email: String = ""
+    @State var password: String = ""
+    @State var loginResp: String = ""
+    @State var loginError: String = ""
+    @State var isShowingChatView = false
+    @State var isShowingEnviromentObjectTestView = false
+    
+    var body: some View {
+        NavigationView {
+            VStack {
+                LargeLogo()
+                Text(loginError)
+                    .foregroundColor(Color(UIColor.systemRed))
+                    .font(.custom(fontStyle, size: 18))
+                TextField("Enter email", text: $email)
+                    .padding(EdgeInsets(top: 0, leading: 32, bottom: 16, trailing: 0))
+                    .autocapitalization(.none)
+                SecureField("Enter password", text: $password)
+                    .padding(EdgeInsets(top: 0, leading: 32, bottom: 16, trailing: 0))
+                    .autocapitalization(.none)
+                Button(action: {
+                    self.personalLogin(email: self.email, password: self.password)
+                }){
+                    LoginButtonView()
+                }
+                Divider()
+                SignupBar()
+                NavigationLink(destination: ChatView().environment(\.managedObjectContext, moc) .environmentObject(userInformation).environmentObject(messages).environmentObject(googleDelegate), isActive: self.$isShowingChatView){EmptyView()}
+                
+            }.onAppear(perform: {
+                
+                // Set values on first application launch
+                if UIApplication.isFirstLaunch() {
+                    // Set personal login status
+                    let userInformationCoreDataWrite: User = User(context: self.moc)
+                    userInformationCoreDataWrite.isLoggedIn = false
+                    try? self.moc.save()
+                } else {
+                    // Load messages from cache
+                    var messageNumber: Int = 0
+                    if self.MessagesCoreData.isEmpty != true {
+                        let messageCount: Int = self.MessagesCoreData.count
+                        let lastMessageLowestIndex: Int = messageCount - 2
+                        for message in self.MessagesCoreData {
+                            if messageNumber >= lastMessageLowestIndex {
+                                self.messages.lastMessages.append(message.content ?? "")
+                            }
+                            self.loadMessageCache(message: message)
+                            messageNumber += 1
+                        }
+                    }
+                    else {
+                        self.messages.lastMessages.append(userNoMessages)
+                        self.messages.lastMessages.append(chatbotNoMessages)
+                    }
+                    
+                    // Load user information from cache and go to Chat View (login)
+                    if self.socialMediaAuth.getAccountLoginStatus(personalLoginStatus: self.userInformation.isLoggedIn) != "logged out" {
+                        
+                        // Load user information from cache to RAM
+                        for userInfo in self.UserInformationCoreData {
+                            self.userInformation.id = userInfo.id ?? ""
+                            self.userInformation.email = userInfo.email ?? ""
+                            self.userInformation.firstName = userInfo.firstName ?? ""
+                            self.userInformation.lastName = userInfo.lastName ?? ""
+                            self.userInformation.fullName =  (userInfo.firstName ?? "") + " " + (userInfo.lastName ?? "")
+                        }
+                        
+                        // Go to Chat View
+                        self.isShowingChatView = true
+                        
+                    }
+                }
+                
+            })
+        }
+            .navigationBarBackButtonHidden(true)
+    }
+    
+    func personalLogin (email: String, password: String) {
+
+        let semaphore = DispatchSemaphore (value: 0)
+        var messageHistoryData: [[String: String]] = [[String: String]]()
+        var loginStatus: String = ""
+        
+        let parameters = "{  \n   \"email\":\"\(email)\",\n   \"password\":\"\(password)\"\n}"
+        let postData = parameters.data(using: .utf8)
+
+        var request = URLRequest(url: URL(string: "\(API_HOSTNAME)/login")!,timeoutInterval: Double.infinity)
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        request.httpMethod = "POST"
+        request.httpBody = postData
+
+        struct responseStruct: Decodable {
+            var user_id: String
+        }
+
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data else {
+                print(String(describing: error))
+                loginStatus = ""
+                return
+            }
+            do {
+                if String(data: data, encoding: .utf8)! == "Wrong Password" {
+                    loginStatus = "Wrong email or password"
+                } else {
+                    
+                    // Set state to logged in
+                    let userInformationCoreDataWrite: User = User(context: self.moc)
+                    userInformationCoreDataWrite.isLoggedIn = true
+                    DispatchQueue.main.async {
+                        try? self.moc.save()
+                    }
+                                        
+                    // Set user ID
+                    let reponseObject = try JSONDecoder().decode(responseStruct.self, from: data)
+                    let user_id: String = reponseObject.user_id
+                    loginStatus = user_id
+                    
+                    // Load messages from server
+                    if self.socialMediaAuth.getAccountLoginStatus(personalLoginStatus: self.userInformation.isLoggedIn) == "logged out" {
+                        DispatchQueue.main.async {
+                            messageHistoryData = self.messages.getHistory(userID: user_id)
+                            if !messageHistoryData.isEmpty {
+                                for message in messageHistoryData {
+                                    self.loadMessageServer(message: message)
+                                }
+                            }
+                            self.userInformation.id = user_id
+                        }   
+                    }
+                    
+                    if loginStatus == "Wrong email or password" {
+                        self.loginError = "Wrong email or password"
+                    }else {
+                        // Set Personal login status, email
+                        self.userInformation.isLoggedIn = true
+                        self.userInformation.id = user_id
+                        self.userInformation.email = self.email
+                        
+                        // Go to chat view
+                        self.isShowingChatView = true
+                    }
+                }
+            } catch {
+                print(error)
+            }
+            semaphore.signal()
+        }
+
+        task.resume()
+        semaphore.wait()
+    }
+    
+    func loadMessageCache(message: Message) {
+        self.messages.list.insert(["id": message.id!, "content": message.content!, "isCurrentUser": message.isCurrentUser], at: self.messages.list.startIndex)
+    }
+    
+    func loadMessageServer(message: [String: String]) {
+        
+        // Load messages into RAM
+        self.messages.list.insert(["id": UUID(), "content": message["text"] ?? "Error can't unwrap message text", "isCurrentUser": isCurrentUserLoadServer], at: self.messages.list.startIndex)
+        
+        //  Toggle the user type
+        isCurrentUserLoadServer.toggle()
+    }
+    
+}
+
+struct LoginView_Previews: PreviewProvider {
+    static var previews: some View {
+        LoginView()
+    }
+}
+
 struct LargeLogo: View {
     var body: some View {
         VStack {
@@ -132,11 +324,8 @@ struct FacebookLogin: View {
                             userInformationCoreDataWrite.lastName = fbUserInformation["lastName"]!
                             try? self.moc.save()
                             
-                            print("---- FB (user ID): \(fbUserInformation["id"]!)")
-                            
                             // Write user information to RAM
                             self.userInformation.id = fbUserInformation["id"]!
-                            print("---- FB (userInformation 1): \(self.userInformation.id)")
                             self.userInformation.email = fbUserInformation["email"]!
                             self.userInformation.firstName = fbUserInformation["firstName"]!
                             self.userInformation.lastName = fbUserInformation["lastName"]!
@@ -190,7 +379,6 @@ struct FacebookLogin: View {
         semaphore.wait()
 
         if err == 0 {
-            print("------- Agent created")
             self.isShowingChatView = true
         } else {
             print("------- Agent ALREADY created")
@@ -325,146 +513,5 @@ struct SignupBar: View {
             PersonalLogin()
         }
             .padding(EdgeInsets(top: 0, leading: 0, bottom: 240, trailing: 0))
-    }
-}
-
-struct LoginView: View {
-    var loginViewModel: LoginViewModel = LoginViewModel()
-    var socialMediaAuth: SocialMediaAuth = SocialMediaAuth()
-    var container: NSPersistentContainer!
-    @FetchRequest(entity: Message.entity(), sortDescriptors: []) var MessagesCoreData: FetchedResults<Message>
-    @FetchRequest(entity: User.entity(), sortDescriptors: []) var UserInformationCoreData: FetchedResults<User>
-    @Environment(\.managedObjectContext) var moc
-    @EnvironmentObject var messages: Messages
-    @EnvironmentObject var userInformation: UserInformation
-    @EnvironmentObject var googleDelegate: GoogleDelegate
-    @State var TextForMultiLine: String =
-        """
-        """
-    @State var email: String = ""
-    @State var password: String = ""
-    @State var loginResp: String = ""
-    @State var loginError: String = ""
-    @State var isShowingChatView = false
-    
-    
-    func login (email: String, password: String) -> String {
-        let semaphore = DispatchSemaphore (value: 0)
-        var loginStatus: String = ""
-
-        let parameters = "{  \n   \"email\":\"\(email)\",\n   \"password\":\"\(password)\"\n}"
-        let postData = parameters.data(using: .utf8)
-
-        var request = URLRequest(url: URL(string: "\(API_HOSTNAME)/login")!,timeoutInterval: Double.infinity)
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-
-        request.httpMethod = "POST"
-        request.httpBody = postData
-
-        struct responseStruct: Decodable {
-            var user_id: String
-        }
-
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data else {
-                print(String(describing: error))
-                loginStatus = ""
-                return
-            }
-            do {
-                if String(data: data, encoding: .utf8)! == "Wrong Password" {
-                    loginStatus = "Wrong email or password"
-                } else {
-                    // Set user_id
-                    let reponseObject = try JSONDecoder().decode(responseStruct.self, from: data)
-                    let user_id: String = reponseObject.user_id
-                    loginStatus = user_id
-                }
-            } catch {
-                print(error)
-            }
-            semaphore.signal()
-        }
-
-        task.resume()
-        semaphore.wait()
-        
-        return loginStatus
-    }
-    
-    func loadMessage(message: Message) {
-        self.messages.list.insert(["id": message.id!, "content": message.content!, "isCurrentUser": message.isCurrentUser], at: self.messages.list.startIndex)
-    }
-    
-    var body: some View {
-        NavigationView {
-            VStack {
-                LargeLogo()
-                Text(loginError)
-                    .foregroundColor(Color(UIColor.systemRed))
-                    .font(.custom(fontStyle, size: 18))
-                TextField("Enter email", text: $email)
-                    .padding(EdgeInsets(top: 0, leading: 32, bottom: 16, trailing: 0))
-                    .autocapitalization(.none)
-                SecureField("Enter password", text: $password)
-                    .padding(EdgeInsets(top: 0, leading: 32, bottom: 16, trailing: 0))
-                    .autocapitalization(.none)
-                Button(action: {
-                    let loginStatus: String = BytePalAuth().personalLogin(email: self.email, password: self.password)
-                    if loginStatus == "Wrong email or password" {
-                        self.loginError = "Wrong email or password"
-                    }else {
-                        self.userInformation.id = loginStatus
-                        self.userInformation.email = self.email
-                        try? self.moc.save()
-                        self.isShowingChatView = true
-                    }
-                }){
-                    LoginButtonView()
-                }
-                Divider()
-                SignupBar()
-                NavigationLink(destination: ChatView().environment(\.managedObjectContext, moc) .environmentObject(userInformation).environmentObject(messages).environmentObject(googleDelegate), isActive: self.$isShowingChatView){EmptyView()}
-                
-            }.onAppear(perform: {
-                // Load messages from cache
-                var messageNumber: Int = 0
-                if self.MessagesCoreData.isEmpty != true {
-                    let messageCount: Int = self.MessagesCoreData.count
-                    let lastMessageLowestIndex: Int = messageCount - 2
-                    for message in self.MessagesCoreData {
-                        if messageNumber >= lastMessageLowestIndex {
-                            self.messages.lastMessages.append(message.content ?? "")
-                        }
-                        self.loadMessage(message: message)
-                        messageNumber += 1
-                    }
-                }
-                else {
-                    self.messages.lastMessages.append(userNoMessages)
-                    self.messages.lastMessages.append(chatbotNoMessages)
-                }
-                                
-                // Load user information
-                if self.socialMediaAuth.getAccountLoggedIn() != "logged out" {
-                    // Load user information from cache to RAM
-                    for userInfo in self.UserInformationCoreData {
-                        self.userInformation.id = userInfo.id ?? ""
-                        self.userInformation.email = userInfo.email ?? ""
-                        self.userInformation.firstName = userInfo.firstName ?? ""
-                        self.userInformation.lastName = userInfo.lastName ?? ""
-                        self.userInformation.fullName =  (userInfo.firstName ?? "") + " " + (userInfo.lastName ?? "")
-                    }
-                    self.isShowingChatView = true
-                }
-            })
-        }
-            .navigationBarBackButtonHidden(true)
-    }
-}
-
-struct LoginView_Previews: PreviewProvider {
-    static var previews: some View {
-        LoginView()
     }
 }

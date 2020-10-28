@@ -143,11 +143,7 @@ class BytePalAuth {
                 \"familyName\": \"\(last_name)\"
             }
             """
-            print("------ id: \(id)")
-            print("------ id: \(email)")
-            print("------ id: \(first_name)")
-            print("------ id: \(last_name)")
-        
+            
             let postData = parameters.data(using: .utf8)
             request.httpBody = postData
 
@@ -196,8 +192,8 @@ class SocialMediaAuth {
         print("------ Personal Logout")
     }
     
-    func logout() {
-        let account: String = self.getAccountLoggedIn()
+    func logout(personalLoginStatus: Bool) {
+        let account: String = self.getAccountLoginStatus(personalLoginStatus: personalLoginStatus)
         switch account {
             case "Facebook":
                 print("----- Logged out of Facebook")
@@ -213,15 +209,17 @@ class SocialMediaAuth {
         }
     }
     
-    func getAccountLoggedIn() -> String {
+    func getAccountLoginStatus(personalLoginStatus: Bool) -> String {
+        
         if(GIDSignIn.sharedInstance()?.currentUser != nil){
             return "Google"
         } else if (AccessToken.current ?? nil) != nil {
             if !AccessToken.current!.isExpired {
                 return "Facebook"
             }
+        } else if personalLoginStatus {
+            return "Personal"
         } else {
-            // Implement personal login
             return "logged out"
         }
         return "logged out"
@@ -311,7 +309,6 @@ class GoogleDelegate: NSObject, GIDSignInDelegate, ObservableObject {
         semaphore.wait()
 
         if err == 0 {
-            print("------- Agent created")
             self.signedIn = true
         } else {
             print("------- Agent ALREADY created")

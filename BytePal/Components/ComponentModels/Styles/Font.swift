@@ -9,3 +9,5 @@
 import SwiftUI
 
 let fontStyle: String = "Helvetica Bold"
+let title2Custom: Font = Font.system(size: 22)
+let title3Custom: Font = Font.system(size: 20)

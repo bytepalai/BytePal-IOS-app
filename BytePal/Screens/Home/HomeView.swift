@@ -8,39 +8,6 @@
 
 import SwiftUI
 
-//struct HomeViewNewsFeed: View {
-//    @EnvironmentObject var messaegs: Messages
-//    @EnvironmentObject var userInformation: UserInformation
-//
-//    func getHomeViewButtonCardText(type: String) -> String {
-//        let userLastMessage: String = self.messaegs.list[0]
-//        let chatbotLastMessage: String = self.messaegs.list[1]
-//        
-//        if type == "typing" {
-//            return "9500"
-//        } else if type == "female user" {
-//            return userLastMessage
-//        } else if type == "BytePal" {
-//            return chatbotLastMessage
-//        }
-//    }
-//
-//    var body: some View {
-//        GeometryReader { geometry in
-//            ScrollView {
-//                ForEach((0 ..< homeViewCardType.count), id: \.self) { i in
-//                    ButtonCard(
-//                        image: homeViewCardAttributes[homeViewCardType[i]]?["image"] ?? "error",
-//                        text: "9,000 messages left",
-//                        buttonText: homeViewCardAttributes[homeViewCardType[i]]?["buttonText"] ?? "error"
-//                    )
-//                }
-//            }
-//                .frame(width: geometry.size.width, height: 640)
-//        }
-//    }
-//}
-
 struct HomeView: View {
     var number: NumberController = NumberController()
     @EnvironmentObject var messages: Messages
@@ -71,12 +38,6 @@ struct HomeView: View {
                 ]
     ]
     
-//    func updateLastMesasge() {
-//        let numberMessages: Int = self.messages.list.count
-//        self.messages.lastMessages[0] = self.messages.list[numberMessages-2]
-//        self.messages.lastMessages[1] = self.messages.list[numberMessages-1]
-//    }
-    
     func updateHomeViewCards(attributes: [String: [String: String]]) -> [String: [String: String]] {
         var mutatedAttributes = attributes
         
@@ -100,15 +61,25 @@ struct HomeView: View {
     }
 
     var body: some View {
-        ScrollView {
-            VStack {
-                CompanyLogo()
-                    .padding([.top,.bottom], 75)
-                UpgradeButton()
-                MessageCellScrollView()
+        GeometryReader { geometry in
+            ZStack{
+                VStack {
+                    ScrollView {
+                        VStack {
+                            CompanyLogo()
+                            UpgradeButton()
+                            MessageCellScrollView()
+                        }
+                    }
+                }
+                VStack {
+                    Spacer()
+                    NavigationBar()
+                        .frame(width: geometry.size.width, height: 104)
+                }
             }
         }
-        .navigationBarHidden(true)
+            .edgesIgnoringSafeArea(.bottom)
     }
 }
 
@@ -132,36 +103,46 @@ struct CompanyLogo: View {
 }
 
 struct UpgradeButton: View {
+    @Environment(\.managedObjectContext) var moc
+    @EnvironmentObject var messages: Messages
+    @EnvironmentObject var userInformation: UserInformation
+    @State var isShowingIAPView: Bool = false
+    @State var messagesLeftAmount: String = ""
+    
     var body: some View {
-        NavigationLink(
-            destination: Text("Destination"),
-            label: {
+        Group {
                 HStack {
                     Spacer()
-                    if #available(iOS 14.0, *) {
-                        VStack {
-                            Text("Messages left")
-                                .bold()
-                            Text("5181 | 1000")
-                                .bold()
+                    VStack {
+                        Text("Messages left")
+                            .bold()
+                        Text(messagesLeftAmount)
+                            .bold()
+                        Button(action: {
+                            self.isShowingIAPView = true
+                        }) {
                             Text("Upgrade")
                                 .font(.title)
                                 .foregroundColor(.appGreen)
                                 .fontWeight(.bold)
+                                .padding(EdgeInsets(top: 8, leading: 0, bottom: 0, trailing: 0))
                         }
-                        .font(.title2)
-                        .foregroundColor(.gray)
-                    } else {
-                        // Fallback on earlier versions
                     }
-                    
+                        .font(title2Custom)
+                        .foregroundColor(.gray)
                     Spacer()
                 }
-                .padding()
-                .background(Color.appLightGray)
-                .cornerRadius(10)
-                .shadow(color: .appGreen, radius: 1, x: 0, y: 0)
-                .padding()
+                    .padding()
+                    .background(Color.appLightGray)
+                    .cornerRadius(10)
+                    .shadow(color: .appGreen, radius: 1, x: 0, y: 0)
+                    .padding()
+                NavigationLink(
+                    destination: IAPView(productsStore: ProductsStore.shared, viewModel: .init()).environment(\.managedObjectContext, moc) .environmentObject(userInformation).environmentObject(messages),
+                    isActive: self.$isShowingIAPView){EmptyView()}
+        }
+            .onAppear(perform: {
+                messagesLeftAmount = self.messages.getMessagesLeft(userID: self.userInformation.id)
             })
     }
 }
@@ -169,26 +150,23 @@ struct UpgradeButton: View {
 struct MessageCellScrollView: View {
     @State var userCellAppear: Bool = false
     @State var bytePalCellAppear: Bool = false
+    @EnvironmentObject var messages: Messages
     
     var body: some View {
         ScrollView {
-            VStack(spacing: 50) {
-                if userCellAppear {
-                    HomeMessageCell(messageCreator: .user(message: "My favorite food is fasta, what is yours ?"))
+            VStack {
+                if self.messages.list.count != 0 {
+                    HomeMessageCell(messageCreator: .user(message: self.messages.list[1]["content"] as! String))
+                    HomeMessageCell(messageCreator: .bytePal(message: self.messages.list[0]["content"] as! String))
+                } else {
+                    HomeMessageCell(messageCreator: .user(message: "No messages sent to BytePal"))
+                    HomeMessageCell(messageCreator: .bytePal(message: "No messages received from BytePal"))
                 }
-                if bytePalCellAppear {
-                    HomeMessageCell(messageCreator: .bytePal(message: "Why ?"))
-                }
+                
             }
-            .padding()
-            .onAppear(perform: {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) { userCellAppear = true }
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2) { bytePalCellAppear = true}
-            })
         }
     }
 }
-
 
 //struct HomeView: View {
 //    var number: NumberController = NumberController()

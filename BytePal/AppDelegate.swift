@@ -99,6 +99,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate  {
         }
     }
     
+    
 //    // [START openurl]
 //    func application(_ application: UIApplication,
 //                     open url: URL, sourceApplication: String?, annotation: Any) -> Bool {

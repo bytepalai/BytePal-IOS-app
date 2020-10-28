@@ -19,15 +19,12 @@ struct ChatView: View {
         GeometryReader{ geometry  in
             VStack{
                 UserBar()
-                VStack {
-                    MessageHistory()
-                        .edgesIgnoringSafeArea(.bottom)
-                }
-                .frame(width: geometry.size.width, height: 700)
+                MessageHistory()
+                    .frame(width: geometry.size.width, height: 700)
             }
-                
         }
-            .navigationBarBackButtonHidden(true)
+        .edgesIgnoringSafeArea(.vertical)
+        .navigationBarBackButtonHidden(true)
     }
 }
 
