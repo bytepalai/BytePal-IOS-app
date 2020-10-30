@@ -33,5 +33,9 @@ struct ShareView: View {
 struct ShareView_Previews: PreviewProvider {
     static var previews: some View {
         ShareView()
+            .environment(\.colorScheme, .dark)
+        
+        ShareView()
+            .environment(\.colorScheme, .light)
     }
 }

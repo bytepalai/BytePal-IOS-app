@@ -15,12 +15,14 @@ import GoogleSignIn
 import FBSDKLoginKit
 
 struct ChatView: View {
+    var relativeSize: ViewRelativeSize = ViewRelativeSize()
+    
     var body: some View {
         GeometryReader{ geometry  in
             VStack{
                 UserBar()
                 MessageHistory()
-                    .frame(width: geometry.size.width, height: 700)
+                    .frame(width: geometry.size.width, height: relativeSize.heightMessageHistoryView)
             }
         }
         .edgesIgnoringSafeArea(.vertical)

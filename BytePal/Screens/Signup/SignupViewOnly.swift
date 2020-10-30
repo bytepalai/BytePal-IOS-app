@@ -74,23 +74,25 @@ struct SignupViewOnly: View {
                 }
                 .zIndex(1.0)
                 
-                Button(action: {
-                    if self.email != "" && self.firstName != "" && self.lastName != "" && self.password != "" {
-                            print("signup")
-                    }
-                    else {
-                        self.signupError = "Error missing signup field"
-                    }
-                }, label: {
-                    Text("Signup")
-                        .foregroundColor(.white)
-                        .fontWeight(.semibold)
-                })
-                    .frame(width: 300, height: 60, alignment: .center)
-                    .background(Color.appGreen)
-                    .cornerRadius(cornerRadious, antialiased: true)
-                    .shadow(radius: 50)
-                    .animation(.easeIn)
+                VStack(alignment: .center) {
+                    Button(action: {
+                        if self.email != "" && self.firstName != "" && self.lastName != "" && self.password != "" {
+                                print("signup")
+                        }
+                        else {
+                            self.signupError = "Error missing signup field"
+                        }
+                    }, label: {
+                        Text("Signup")
+                            .foregroundColor(.white)
+                            .fontWeight(.semibold)
+                    })
+                        .frame(width: 300, height: 60, alignment: .center)
+                        .background(Color.appGreen)
+                        .cornerRadius(cornerRadious, antialiased: true)
+                        .shadow(radius: 50)
+                        .animation(.easeIn)
+                }
             }
             .padding()
         }
@@ -107,6 +109,14 @@ struct SignupViewOnly: View {
 
 struct SignUpViewOnly_Previews: PreviewProvider {
     static var previews: some View {
-        SignupViewOnly()
+//        NavigationView {
+            SignupViewOnly()
+                .environment(\.colorScheme, .light)
+//        }
+        
+//        NavigationView {
+//            SignupViewOnly()
+//                .environment(\.colorScheme, .dark)
+//        }
     }
-}
+} 

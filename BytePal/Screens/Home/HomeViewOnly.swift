@@ -2,30 +2,8 @@ import SwiftUI
 
 struct HomeViewOnly: View {
     var number: NumberController = NumberController()
+    var width: Int = 0
     
-        @State var homeViewCardAttributes: [String: [String: String]] = [
-        "typing":
-                [
-                    "title": "",
-                    "image": "typing",
-                    "text": "",
-                    "buttonText": "Upgrade"
-                ],
-        "female user":
-                [
-                    "title": "Last message sent",
-                    "image": "female user",
-                    "text": "",
-                    "buttonText": "Continue"
-                ],
-        "BytePal":
-                [
-                    "title": "Last message sent by BytePal",
-                    "image": "BytePal",
-                    "text": "",
-                    "buttonText": "Continue"
-                ]
-    ]
     var body: some View {
         GeometryReader { geometry in
             ZStack{
@@ -44,9 +22,12 @@ struct HomeViewOnly: View {
                         .frame(width: geometry.size.width, height: 104)
                 }
             }
+            
         }
             .edgesIgnoringSafeArea(.bottom)
     }
+    
+    // Unique Device Identifier by width in points
 }
 
 struct CompanyLogoOnly: View {
@@ -69,9 +50,13 @@ struct CompanyLogoOnly: View {
 
 struct UpgradeButtonOnly: View {
     var messagesLeftAmount: String = "9,350 / 10,000"
+    @EnvironmentObject var deviceInfo: DeviceInfo
     
     var body: some View {
         Group {
+//                if deviceInfo.deviceSizeGroup == "375,6" {
+//                    Text("This is an iPhone6s")
+//                }
                 HStack {
                     Spacer()
                     VStack {
@@ -98,7 +83,11 @@ struct UpgradeButtonOnly: View {
                     .cornerRadius(10)
                     .shadow(color: .appGreen, radius: 1, x: 0, y: 0)
                     .padding()
+                    
         }
+        .onAppear(perform: {
+            self.deviceInfo.setDeviceGroup()
+        })
     }
 }
 
@@ -119,6 +108,19 @@ struct MessageCellScrollViewOnly: View {
 
 struct HomeOnly_Previews: PreviewProvider {
     static var previews: some View {
-        HomeViewOnly()
+        NavigationView {
+            HomeViewOnly()
+                .environmentObject(DeviceInfo())
+                .environment(\.colorScheme, .dark)
+                
+        }
+        
+        NavigationView {
+            HomeViewOnly()
+                .environmentObject(DeviceInfo())
+                .environment(\.colorScheme, .light)
+                
+        }
+        
     }
 }

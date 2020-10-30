@@ -115,8 +115,11 @@ extension TextLinkOnly {
 struct AccountSettingsViewOnly_Previews: PreviewProvider {
     static var previews: some View {
         Group {
+//            AccountSettingsViewOnly()
+//                .environment(\.colorScheme, .dark)
+            
             AccountSettingsViewOnly()
-                .previewDevice("iPhone 11")
+                .environment(\.colorScheme, .light)
         }
     }
 }

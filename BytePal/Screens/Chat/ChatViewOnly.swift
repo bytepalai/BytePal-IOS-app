@@ -10,23 +10,34 @@ import Foundation
 import SwiftUI
 
 struct ChatViewOnly: View {
+    @State var heightMessageHistory: CGFloat = CGFloat(0.0)
+    var relativeSize: ViewRelativeSize = ViewRelativeSize()
+    
     var body: some View {
         GeometryReader{ geometry  in
             VStack{
                 UserBar()
                 MessageHistoryOnly()
-                    .frame(width: geometry.size.width, height: 700)
+                    .frame(width: geometry.size.width, height: relativeSize.heightMessageHistoryView)
             }
         }
-        .edgesIgnoringSafeArea(.vertical)
+        .edgesIgnoringSafeArea(.bottom)
         .navigationBarBackButtonHidden(true)
+    }
+    
+    func setHeightMessageHistory(height: CGFloat) {
+        self.heightMessageHistory = height
     }
 }
 
 #if DEBUG
 struct ChatViewOnly_Previews: PreviewProvider {
     static var previews: some View {
+//        ChatViewOnly()
+//            .environment(\.colorScheme, .dark)
+        
         ChatViewOnly()
+            .environment(\.colorScheme, .light)
     }
 }
 #endif

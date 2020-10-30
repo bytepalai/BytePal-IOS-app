@@ -84,6 +84,9 @@ struct HomeView: View {
 }
 
 struct CompanyLogo: View {
+    @EnvironmentObject var deviceInfo: DeviceInfo
+    let height: CGFloat = 75
+    
     var body: some View {
         HStack {
             Image("logo")
@@ -96,10 +99,11 @@ struct CompanyLogo: View {
                 .font(Font.system(size: height * 0.75))
                 .foregroundColor(.appFontColorBlack)
         }
+        .onAppear(perform: {
+            self.deviceInfo.setDeviceGroup()
+        })
     }
     
-    //MARK: Constant
-    let height: CGFloat = 75
 }
 
 struct UpgradeButton: View {

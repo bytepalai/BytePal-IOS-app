@@ -20,6 +20,8 @@ struct UserBar: View{
                     .shadow(color: convertHextoRGB(hexColor: "000000").opacity(0.16), radius: 2, x: 2, y: 3)
                 Spacer()
             }
+            .frame(width: geometry.size.width, height: 48, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+            .padding(.top, 8)
         }
     }
 }

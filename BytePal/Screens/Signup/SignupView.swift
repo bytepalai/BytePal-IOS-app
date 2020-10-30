@@ -2,7 +2,7 @@
 //  SignupView.swift
 //  BytePal AI, LLC
 //
-//  Created by may on 7/17/20.
+//  Created by Scott Hom on 7/17/20.
 //  Copyright © 2020 BytePal AI, LLC. All rights reserved.
 //
 

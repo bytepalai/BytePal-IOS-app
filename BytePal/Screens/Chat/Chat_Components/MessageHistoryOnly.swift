@@ -30,8 +30,12 @@ struct MessageHistoryOnly: View{
                         
                     }
                         .rotationEffect(.radians(.pi))
-                        .frame(width: geometry.size.width, height: 540, alignment: .bottom)
+                        .frame(width: geometry.size.width, height: geometry.size.height*0.70, alignment: .bottom)
                 }
+                    .background(Color(UIColor.systemBackground))
+                    .onAppear {
+                        UITableView.appearance().separatorStyle = .none
+                    }
 
                 // Message Bar
                 HStack {
@@ -46,8 +50,9 @@ struct MessageHistoryOnly: View{
                             // Text box entry area
                             // Single Line Text Field
                             TextField("Enter text here", text: self.$textFieldString)
-                                .padding(EdgeInsets(top: 0, leading: 24, bottom: 8, trailing: 48))
+                                .padding(EdgeInsets(top: 8, leading: 24, bottom: 8, trailing: 48))
                         }
+                            .padding(EdgeInsets(top: 16, leading: 0, bottom: 0, trailing: 0))
                     }
                     // Send message button
                     Button(action: {
@@ -62,7 +67,7 @@ struct MessageHistoryOnly: View{
                 }
                 .frame(width: geometry.size.width, height: 70, alignment: .bottom)
                 .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
-                .background(Color(UIColor.white).opacity(20))
+                .background(Color(UIColor.systemBackground))
                 
                 // Navigation Bar
                 NavigationBarOnly()
@@ -70,12 +75,29 @@ struct MessageHistoryOnly: View{
             }
         }
     }
+    
+    init() {
+        if #available(iOS 14.0, *) {
+            // iOS 14 doesn't have extra separators below the list by default.
+        } else {
+            // To remove only extra separators below the list:
+            UITableView.appearance().tableFooterView = UIView()
+        }
+
+        // To remove all separators including the actual ones:
+        UITableView.appearance().separatorStyle = .none
+    }
 }
 
 #if DEBUG
 struct MessageHistoryOnly_Previews: PreviewProvider {
     static var previews: some View {
+        
         MessageHistoryOnly()
+            .environment(\.colorScheme, .dark)
+        
+        MessageHistoryOnly()
+            .environment(\.colorScheme, .light)
     }
 }
 #endif

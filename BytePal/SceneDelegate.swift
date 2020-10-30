@@ -26,6 +26,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         // List of messages. See ChatView.swift for more information
         let messages = Messages()
+        
+        // Information on device Group
+        let deviceInfo = DeviceInfo()
+        
         // Create Objet to store user ID
         // Get the googleDelegate from AppDelegate
         let userInformation = UserInformation()
@@ -34,7 +38,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         // Create the SwiftUI view and set the context as the value for the managedObjectContext environment keyPath.
         // Add `@Environment(\.managedObjectContext)` in the views that will need the context.
-        let contentView = ContentView().environment(\.managedObjectContext, context).environmentObject(messages).environmentObject(userInformation).environmentObject(googleDelegate)
+        let contentView = ContentView().environment(\.managedObjectContext, context).environmentObject(messages).environmentObject(userInformation).environmentObject(googleDelegate).environmentObject(deviceInfo)
 
         // Use a UIHostingController as window root view controller.
         if let windowScene = scene as? UIWindowScene {

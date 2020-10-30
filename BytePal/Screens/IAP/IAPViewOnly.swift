@@ -160,6 +160,10 @@ struct IAPViewOnly_Previews: PreviewProvider {
     static var previews: some View {
         
         IAPViewOnly(productsStore: BytePal.ProductsStore.shared, viewModel: .init())
+            .environment(\.colorScheme, .dark)
+        
+        IAPViewOnly(productsStore: BytePal.ProductsStore.shared, viewModel: .init())
+            .environment(\.colorScheme, .light)
         
     }
     

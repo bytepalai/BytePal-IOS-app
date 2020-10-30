@@ -19,22 +19,23 @@ struct IAPView : View {
     @State var show_modal = false
     
     var body: some View {
-
-        ScrollView {
-            if #available(iOS 14.0, *) {
-                LazyVGrid(columns: [GridItem(.flexible() )]) {
+        GeometryReader {geometry in
+            ScrollView {
+                if #available(iOS 14.0, *) {
+                    LazyVGrid(columns: [GridItem(.flexible() )]) {
+                        ForEach(viewModel.subscriptions) { (subscription)  in
+                            SubscriptionCell(subscription: subscription)
+                                .padding()
+                        }
+                        TermsOfConditionView()
+                    }
+                } else {
                     ForEach(viewModel.subscriptions) { (subscription)  in
                         SubscriptionCell(subscription: subscription)
                             .padding()
                     }
                     TermsOfConditionView()
                 }
-            } else {
-                ForEach(viewModel.subscriptions) { (subscription)  in
-                    SubscriptionCell(subscription: subscription)
-                        .padding()
-                }
-                TermsOfConditionView()
             }
         }
     }
@@ -160,8 +161,15 @@ struct TopButtonViews: View {
 struct IAPView_Previews: PreviewProvider {
     
     static var previews: some View {
+        NavigationView {
+            IAPView(productsStore: BytePal.ProductsStore.shared, viewModel: .init())
+                .environment(\.colorScheme, .dark)
+        }
         
-        IAPView(productsStore: BytePal.ProductsStore.shared, viewModel: .init())
+        NavigationView {
+            IAPView(productsStore: BytePal.ProductsStore.shared, viewModel: .init())
+                .environment(\.colorScheme, .light)
+        }
         
     }
     

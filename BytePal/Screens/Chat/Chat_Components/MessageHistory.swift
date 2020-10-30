@@ -93,11 +93,6 @@ struct MessageHistory: View{
         }
     }
     
-    init() {
-        UITableView.appearance().tableFooterView = UIView()
-        UITableView.appearance().separatorStyle = .none
-    }
-    
     func sendUserMessage() {
         // Save user message to cache
         let messageListCoreData = Message(context: self.moc)

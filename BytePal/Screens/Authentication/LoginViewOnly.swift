@@ -42,7 +42,16 @@ struct LoginViewOnly: View {
 
 struct LoginViewOnly_Previews: PreviewProvider {
     static var previews: some View {
-        LoginViewOnly()
+        NavigationView {
+            LoginViewOnly()
+                .environment(\.colorScheme, .dark)
+        }
+        
+        NavigationView {
+            LoginViewOnly()
+                .environment(\.colorScheme, .light)
+        }
+
     }
 }
 

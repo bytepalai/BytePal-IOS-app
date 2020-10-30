@@ -161,7 +161,6 @@ struct AccountSettingsView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             AccountSettingsView()
-                .previewDevice("iPhone 11")
         }
     }
 }
