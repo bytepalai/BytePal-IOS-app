@@ -42,7 +42,7 @@ extension ViewRelativeSize {
     }
     
     mutating func setViewConstantsiPhone11ProMaxDeviceGroup() {
-        self.heightMessageHistoryView =  CGFloat(self.height*0.65)
+        self.heightMessageHistoryView =  CGFloat(self.height)
     }
     
     mutating func setViewConstantsiPhone12DeviceGroup() {

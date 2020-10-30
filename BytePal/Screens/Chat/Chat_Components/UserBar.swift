@@ -23,6 +23,9 @@ struct UserBar: View{
             .frame(width: geometry.size.width, height: 48, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
             .padding(.top, 8)
         }
+            .frame(height: 75)
+            .background(Color(UIColor.blue))
+            .opacity(0.20)
     }
 }
 

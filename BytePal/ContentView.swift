@@ -14,7 +14,9 @@ struct ContentView: View {
          //BytepalWav()
          //TestWav()
         
-        LoginView()
+//        LoginView()
+        
+        ChatViewOnly()
 
 //        IdentifyDevice()
         

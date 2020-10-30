@@ -15,10 +15,13 @@ struct ChatViewOnly: View {
     
     var body: some View {
         GeometryReader{ geometry  in
-            VStack{
+            ZStack {
                 UserBar()
+                    .zIndex(1)
                 MessageHistoryOnly()
                     .frame(width: geometry.size.width, height: relativeSize.heightMessageHistoryView)
+                    .alignmentGuide(.bottom) { d in d[.bottom] }
+                    .zIndex(0)
             }
         }
         .edgesIgnoringSafeArea(.bottom)

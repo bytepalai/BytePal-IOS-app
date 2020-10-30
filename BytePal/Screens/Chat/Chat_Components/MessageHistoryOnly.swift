@@ -19,18 +19,15 @@ struct MessageHistoryOnly: View{
                 // Render message history from bottom to top
                 VStack {
                     List {
-                        MessageView(id: UUID(), message: MessageInformation(content: "Good morning!", isCurrentUser: true))
-                        .rotationEffect(.radians(.pi))
-                        MessageView(id: UUID(), message: MessageInformation(content: "Good morning!", isCurrentUser: false))
-                        .rotationEffect(.radians(.pi))
-                        MessageView(id: UUID(), message: MessageInformation(content: "Good morning!", isCurrentUser: true))
-                        .rotationEffect(.radians(.pi))
-                        MessageView(id: UUID(), message: MessageInformation(content: "Good morning!", isCurrentUser: false))
-                        .rotationEffect(.radians(.pi))
-                        
+                        ForEach((0 ..< 30), id: \.self) { i in
+                            MessageView(id: UUID(), message: MessageInformation(content: "Good morning!", isCurrentUser: true))
+                            .rotationEffect(.radians(.pi))
+                        }
                     }
                         .rotationEffect(.radians(.pi))
-                        .frame(width: geometry.size.width, height: geometry.size.height*0.70, alignment: .bottom)
+                        .background(Color(UIColor.green))
+                        .frame(width: geometry.size.width, height: geometry.size.height*0.75, alignment: .bottom)
+                        
                 }
                     .background(Color(UIColor.systemBackground))
                     .onAppear {
@@ -65,13 +62,14 @@ struct MessageHistoryOnly: View{
                     }
                     .padding(EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 8))
                 }
-                .frame(width: geometry.size.width, height: 70, alignment: .bottom)
+                .frame(width: geometry.size.width, height: geometry.size.height*0.075, alignment: .bottom)
                 .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
-                .background(Color(UIColor.systemBackground))
+//                .background(Color(UIColor.blue))
                 
                 // Navigation Bar
                 NavigationBarOnly()
-                    .frame(width: geometry.size.width, height: 80)
+                    .frame(width: geometry.size.width, height: geometry.size.height*0.175)
+//                    .background(Color(UIColor.red))
             }
         }
     }
