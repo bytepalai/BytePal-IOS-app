@@ -11,21 +11,10 @@ import Foundation
 
 struct ContentView: View {
     var body: some View {
-         //BytepalWav()
-         //TestWav()
         
 //        LoginView()
-        
-        ChatViewOnly()
 
-//        IdentifyDevice()
-        
-//        IAPView(productsStore: ProductsStore.shared)
-        
-        //ShareView()
-        
-        //IAPCard(image:"message3", category:"Unlimited Messages",heading:"$14.99/month", author:"select" )
-        // NavigationBar()
+        NavigationLinkPopToRoot()
         
     }
 }

@@ -10,6 +10,12 @@ import SwiftUI
 import CoreData
 
 struct AccountSettingsView: View {
+    let width: CGFloat?
+    let height: CGFloat?
+    @Binding var rootViewIsActive: Bool
+    @Binding var isHiddenHomeView: Bool
+    @Binding var isHiddenChatView: Bool
+    @Binding var isHiddenAccountSettingsView: Bool
     var socialMediaAuth: SocialMediaAuth = SocialMediaAuth()
     var container: NSPersistentContainer!
     @FetchRequest(entity: Message.entity(), sortDescriptors: []) var MessagesCoreDataRead: FetchedResults<Message>
@@ -17,62 +23,24 @@ struct AccountSettingsView: View {
     @Environment(\.managedObjectContext) var moc
     @EnvironmentObject var userInformation: UserInformation
     @EnvironmentObject var messages: Messages
-    @EnvironmentObject var googleDelegate: GoogleDelegate
     @State var isShowingChatView: Bool = false
     var email: String = ""
     @State var name: String = ""
-    
-    func logout() {
-        // Clear user information on logout
-        socialMediaAuth.logout(personalLoginStatus: self.userInformation.isLoggedIn)
-        for userInformation in UserInformationCoreDataRead {
-            moc.delete(userInformation)
-        }
-        for message in MessagesCoreDataRead {
-            moc.delete(message)
-        }
-        try? self.moc.save()
-        
-        // Set personal login status to logged out
-        let userInformationCoreDataWrite: User = User(context: self.moc)
-        userInformationCoreDataWrite.isLoggedIn = false
-        try? self.moc.save()
-        self.userInformation.isLoggedIn = false
 
-        // Go to Login View
-        self.isShowingChatView = true
-    }
-    
     // Temp
     @State var fullName: String = "ExampleUsername963"
     
+    
     var body: some View {
+        
         VStack {
             
-            VStack(alignment:.leading) {
-                Text("Account")
-                    .foregroundColor(.appFontColorBlack)
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
+            // Share button
+            ShareViewAccountSettings(
+                width: (width ?? 100),
+                rootViewIsActive: self.$rootViewIsActive
+            )
                 
-                HStack {
-                    Image("profileImage")
-                        .resizable()
-                        .frame(width: 100, height: 100, alignment: .center)
-                        .clipShape(Circle())
-                        .overlay(Circle().strokeBorder(Color.appTranspatentWhite, lineWidth: 5, antialiased: true)  )
-                        .shadow(radius: 50)
-                    BytePalTextFieldView(title: "Username", textFieldPlaceHolder: "", text: self.$fullName)
-                        .disabled(true)
-
-                }
-            }
-            .padding()
-            .padding(.bottom, 100)
-            .background(LinearGradient(gradient: Gradient(colors: [Color.appGreen, Color.appLightGreen]), startPoint: .bottomLeading, endPoint: .topLeading)
-                            .blur(radius: 100.0)
-                            .edgesIgnoringSafeArea(.all))
-            
             GeometryReader { proxy in
                 List {
                     //TODO: use data arry instead of hardcoded strings and destinations
@@ -87,7 +55,7 @@ struct AccountSettingsView: View {
                     
                     
                     Button(action: {
-                        logout()
+                        self.logout()
                     }, label: {
                         Text("Logout")
                             .foregroundColor(.darkRed)
@@ -106,9 +74,58 @@ struct AccountSettingsView: View {
             }
             .background(Color.appLightGray)
             .edgesIgnoringSafeArea(.all)
-            NavigationLink(destination: LoginView().environment(\.managedObjectContext, moc).environmentObject(userInformation).environmentObject(messages).environmentObject(googleDelegate), isActive: $isShowingChatView ){EmptyView()}
+            
+            NavigationBar(
+                width: width!,
+                height: height!*0.10,
+                color: Color(UIColor.systemGray3),
+                rootViewIsActive: self.$rootViewIsActive,
+                isHiddenHomeView: self.$isHiddenHomeView,
+                isHiddenChatView: self.$isHiddenChatView,
+                isHiddenAccountSettingsView: self.$isHiddenAccountSettingsView
+            )
         }
+            .onAppear(perform: {
+                // Set current view
+                self.userInformation.currentView = "AccountSettings"
+            })
+        
     }
+    
+    func logout() {
+        // Set all other account logout status
+        socialMediaAuth.logout(personalLoginStatus: self.userInformation.isLoggedIn)
+        
+        // Clear user information on logout
+        for userInformation in UserInformationCoreDataRead {
+            moc.delete(userInformation)
+        }
+        for message in MessagesCoreDataRead {
+            moc.delete(message)
+        }
+        try? self.moc.save()
+        
+        // Clear Environment Object
+        //// User info
+        self.userInformation.id = ""
+        self.userInformation.email = ""
+        self.userInformation.firstName = ""
+        self.userInformation.lastName = ""
+        
+        //// Messages
+        self.messages.list = [[String: Any]]()
+        self.messages.messagesLeft = -1
+        self.messages.lastMessages = [String]()
+        
+        // Set personal login status to logged out
+        let userInformationCoreDataWrite: User = User(context: self.moc)
+        userInformationCoreDataWrite.isLoggedIn = false
+        try? self.moc.save()
+        self.userInformation.isLoggedIn = false
+        self.rootViewIsActive = false
+
+    }
+
 }
 
 //MARK: Extracted Views
@@ -157,11 +174,11 @@ extension TextLink {
     }
 }
 
-struct AccountSettingsView_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
-            AccountSettingsView()
-        }
-    }
-}
-
+//struct AccountSettingsView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        Group {
+//            AccountSettingsView()
+//        }
+//    }
+//}
+//

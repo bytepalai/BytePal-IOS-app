@@ -14,7 +14,7 @@ class Download {
     
     static func downloadWav(url: String, parameters:Parameters,
                             completion: @escaping (String, String) -> Void) {
-        
+
         let headers: HTTPHeaders = [
             "Accept": "application/json"
         ]
@@ -25,8 +25,7 @@ class Download {
             return (fileURL, [.removePreviousFile, .createIntermediateDirectories])
             
         }
-        
-        print("start")
+
         AF.download(
             url,
             method: .post,
@@ -39,15 +38,13 @@ class Download {
                 
             })
             .responseData { response in
-                
-                print(response)
                 if response.error == nil, let voicePath = response.fileURL?.path {
-                    print("stop")
-                    print(voicePath)
                     if let message = response.response?.allHeaderFields["text"] as? String {
-                        print(message)
+                        
                         completion(message, voicePath)
-                        print(message, voicePath)
+                        
+                    } else if response.response?.statusCode == 400 {
+                        print("Error: Bad request. HTTP Error: 400")
                     }
                     
                 }

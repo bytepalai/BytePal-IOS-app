@@ -15,39 +15,40 @@ import PushNotifications
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate  {
     
-    let googleDelegate: GoogleDelegate = GoogleDelegate()
-    
-    let pushNotifications = PushNotifications.shared
-    
-    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        print("got here", deviceToken)
-        self.pushNotifications.registerDeviceToken(deviceToken)
-    }
-
-    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        print("got there 2", userInfo)
-        self.pushNotifications.handleNotification(userInfo: userInfo)
-    }
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
-        //IAPManager.shared.startObserving()
         
         let result = self.pushNotifications.start(instanceId: "9400f4c9-0860-409a-b5ea-7273af4abe98")
         let result2 = self.pushNotifications.registerForRemoteNotifications()
         try? self.pushNotifications.addDeviceInterest(interest: "hello")
-        
-//        GIDSignIn.sharedInstance().delegate = self
-//        GIDSignIn.sharedInstance().clientID = "1005929182171-0k0i1sqdmet6hk0hrj3b1blfoiiul3op.apps.googleusercontent.com"
-       
+               
         GIDSignIn.sharedInstance().clientID = "1005929182171-0k0i1sqdmet6hk0hrj3b1blfoiiul3op.apps.googleusercontent.com"
         GIDSignIn.sharedInstance().delegate = googleDelegate
-        
-        // Request sensetive information. Error right now.
-        // GIDSignIn.sharedInstance().scopes = Constants.GS.scopes
-        
+
         return true
     }
+    
+    // Lock orientation to portrait
+    static var orientationLock = UIInterfaceOrientationMask.portrait
+
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+        return AppDelegate.orientationLock
+    }
+    
+    
+    // Init push notificaitons
+    let pushNotifications = PushNotifications.shared
+    
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        self.pushNotifications.registerDeviceToken(deviceToken)
+    }
+
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        self.pushNotifications.handleNotification(userInfo: userInfo)
+    }
+    
+    // Define Google Sign Controller
+    
+    let googleDelegate: GoogleDelegate = GoogleDelegate()
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any]) -> Bool {
         return GIDSignIn.sharedInstance().handle(url)
@@ -80,7 +81,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate  {
 
         let bytePalAuth: BytePalAuth = BytePalAuth()
         let BPUserID: String = bytePalAuth.googleLogin(id: idToken, email: email, first_name: givenName, last_name: familyName)
-        print("------------------------- userID (Google Signin): \(BPUserID)")
 
       NotificationCenter.default.post(
         name: Notification.Name(rawValue: "ToggleAuthUINotification"),
@@ -92,74 +92,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate  {
     
     func signIn(signIn: GIDSignIn!, didSignInForUser user: GIDGoogleUser!,
       withError error: NSError!) {
+        
+        print("------------ USING THIS HANDLER --------")
+        
         if (error == nil) {
           print("Callback Success!!!")
         } else {
             print("\(error.localizedDescription)")
         }
     }
-    
-    
-//    // [START openurl]
-//    func application(_ application: UIApplication,
-//                     open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
-//      return GIDSignIn.sharedInstance().handle(url)
-//    }
-//    // [END openurl]
-//    // [START openurl_new]
-//    @available(iOS 9.0, *)
-//    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any]) -> Bool {
-//      return GIDSignIn.sharedInstance().handle(url)
-//    }
-//    // [END openurl_new]
-//    // [START signin_handler]
-//    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!,
-//              withError error: Error!) {
-//      if let error = error {
-//        if (error as NSError).code == GIDSignInErrorCode.hasNoAuthInKeychain.rawValue {
-//          print("The user has not signed in before or they have since signed out.")
-//        } else {
-//          print("\(error.localizedDescription)")
-//        }
-//        // [START_EXCLUDE silent]
-//        NotificationCenter.default.post(
-//          name: Notification.Name(rawValue: "ToggleAuthUINotification"), object: nil, userInfo: nil)
-//        // [END_EXCLUDE]
-//        return
-//      }
-//      // Perform any operations on signed in user here.
-//        let idToken = user.authentication.idToken ?? "" // Safe to send to the server
-//      let fullName = user.profile.name ?? ""          // full name
-//      let givenName = user.profile.givenName  ?? ""
-//      let familyName = user.profile.familyName  ?? ""
-//      let email = user.profile.email  ?? ""
-//      // [START_EXCLUDE]
-//
-//      // Get userID BytePal API
-//
-//        let bytePalAuth: BytePalAuth = BytePalAuth()
-//        let BPUserID: String = bytePalAuth.googleLogin(id: idToken, email: email, first_name: givenName, last_name: familyName)
-//        print("------------------------- userID (Google Signin): \(BPUserID)")
-//
-//      NotificationCenter.default.post(
-//        name: Notification.Name(rawValue: "ToggleAuthUINotification"),
-//        object: nil,
-//        userInfo: ["statusText": "Signed in user:\n\(fullName)"])
-//      // [END_EXCLUDE]
-//    }
-//    // [END signin_handler]
-//    // [START disconnect_handler]
-//    func sign(_ signIn: GIDSignIn!, didDisconnectWith user: GIDGoogleUser!,
-//              withError error: Error!) {
-//      // Perform any operations when the user disconnects from app here.
-//      // [START_EXCLUDE]
-//      NotificationCenter.default.post(
-//        name: Notification.Name(rawValue: "ToggleAuthUINotification"),
-//        object: nil,
-//        userInfo: ["statusText": "User has disconnected."])
-//      // [END_EXCLUDE]
-//    }
-//    // [END disconnect_handler]
     
     func applicationWillTerminate(_ application: UIApplication) {
       //IAPManager.shared.stopObserving()

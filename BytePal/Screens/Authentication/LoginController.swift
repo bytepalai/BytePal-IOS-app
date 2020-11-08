@@ -151,7 +151,7 @@ class BytePalAuth {
             struct responseStruct: Decodable {
                 var user_id: String
             }
-
+        
     //      Create Post Request
             let task = URLSession.shared.dataTask(with: request) { data, response, error in
     //          Handle Response
@@ -164,16 +164,16 @@ class BytePalAuth {
                     let reponseObject = try JSONDecoder().decode(responseStruct.self, from: data)
                     let user_id: String = reponseObject.user_id
                     loginStatus = user_id
-                    print("-------- ID NEW: \(loginStatus)")
                 } catch {
                     print(error)
                 }
                 semaphore.signal()
             }
+        
             task.resume()
             semaphore.wait()
 
-    //      Return loginStatus
+            // Pass loginStatus to handler
             return loginStatus
         }
 }
@@ -185,6 +185,7 @@ class SocialMediaAuth {
     }
     
     func GoogleLogout() {
+        print("--------- sign out Google")
         GIDSignIn.sharedInstance()?.signOut()
     }
     
@@ -248,23 +249,28 @@ class GoogleDelegate: NSObject, GIDSignInDelegate, ObservableObject {
             }
             return
         }
-        let idToken: String = user.authentication.idToken
+        
+        let clientID: String =  user.authentication.clientID
         let email: String = GIDSignIn.sharedInstance().currentUser!.profile.email
         let givenName: String = GIDSignIn.sharedInstance().currentUser!.profile.givenName
         let familyName: String = GIDSignIn.sharedInstance().currentUser!.profile.familyName
         
-        let userID: String = bytepalAuth.googleLogin(id: idToken, email: email, first_name: givenName, last_name: familyName)
+        print("------- Google: \(clientID)")
         
-        if userID != "" {
+        let userID: String = bytepalAuth.googleLogin(
+                                id: clientID,
+                                email: email,
+                                first_name: givenName,
+                                last_name: familyName
+                            )
+
+        if clientID != "" {
             // Save user metadata
             self.userID = userID
             self.email = email
             self.firstName = givenName
             self.lastName = familyName
             self.signedIn = true
-            
-            // Create agent
-            self.createAgent(id: userID)
         }
     }
     

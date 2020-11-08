@@ -18,7 +18,11 @@ struct HomeViewOnly: View {
                 }
                 VStack {
                     Spacer()
-                    NavigationBarOnly()
+                    NavigationBarOnly(
+                        width: geometry.size.width,
+                        height: geometry.size.height*0.10,
+                        color: convertHextoRGB(hexColor: "9FA7A3")
+                    )
                         .frame(width: geometry.size.width, height: 104)
                 }
             }
@@ -54,9 +58,6 @@ struct UpgradeButtonOnly: View {
     
     var body: some View {
         Group {
-//                if deviceInfo.deviceSizeGroup == "375,6" {
-//                    Text("This is an iPhone6s")
-//                }
                 HStack {
                     Spacer()
                     VStack {

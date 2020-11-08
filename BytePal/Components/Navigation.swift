@@ -8,61 +8,66 @@
 
 import SwiftUI
 
-struct SettingsNavigation: View {
-    var body: some View {
-        HStack {
-            NavigationLink(destination: AccountSettingsView()) {
-                Text("Account")
-                    .font(.custom(fontStyle, size: 24))
-                    .foregroundColor(convertHextoRGB(hexColor: blueColor))
-                    .underline()
-                    .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
-            }
-            NavigationLink(destination: ContactSettingsView()) {
-                Text("Contact")
-                    .font(.custom(fontStyle, size: 24))
-                    .foregroundColor(convertHextoRGB(hexColor: blueColor))
-                    .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
-            }
-        }
-            .padding(EdgeInsets(top: 64, leading: 64, bottom: 32, trailing: 0))
-    }
-}
-
 struct NavigationBar: View {
+    var width: CGFloat
+    var height: CGFloat
+    var color: Color
+    @Binding var rootViewIsActive: Bool
     @Environment(\.managedObjectContext) var moc
     @EnvironmentObject var messages: Messages
     @EnvironmentObject var userInformation: UserInformation
     @EnvironmentObject var googleDelegate: GoogleDelegate
+    @Binding var isHiddenHomeView: Bool
+    @Binding var isHiddenChatView: Bool
+    @Binding var isHiddenAccountSettingsView: Bool
     
     var body: some View {
-        GeometryReader { geometry in
-            HStack {
-                NavigationLink(destination: HomeView().environment(\.managedObjectContext, moc) .environmentObject(userInformation).environmentObject(messages).environmentObject(googleDelegate)){
-                    Image(systemName: "house.fill")
-                        .font(.system(size: 34))
-                        .foregroundColor(convertHextoRGB(hexColor: "EAEEED"))
-                        .padding(EdgeInsets(top: 0, leading: 0, bottom: 32, trailing: 64))
-                        .shadow(color: convertHextoRGB(hexColor: "000000").opacity(0.48), radius: 3, x: 3, y: 7)
-                }
-                NavigationLink(destination: ChatView().environment(\.managedObjectContext, moc).environmentObject(userInformation).environmentObject(messages).environmentObject(googleDelegate)){
-                    Image(systemName: "bubble.left.fill")
-                        .font(.system(size: 34))
-                        .foregroundColor(convertHextoRGB(hexColor: "EAEEED"))
-                        .shadow(color: convertHextoRGB(hexColor: "000000").opacity(0.48), radius: 3, x: 3, y: 7)
-                        .padding(EdgeInsets(top: 6, leading: 0, bottom: 32, trailing: 0))
-                }
-                NavigationLink(destination: AccountSettingsView().environment(\.managedObjectContext, moc).environmentObject(userInformation).environmentObject(messages).environmentObject(googleDelegate)){
-                    Image(systemName: "person.fill")
-                        .font(.system(size: 34))
-                        .foregroundColor(convertHextoRGB(hexColor: "EAEEED"))
-                        .shadow(color: convertHextoRGB(hexColor: "000000").opacity(0.48), radius: 3, x: 3, y: 7)
-                        .padding(EdgeInsets(top: 0, leading: 64, bottom: 32, trailing: 0))
-                }
-            }
-                .frame(width: geometry.size.width, height: 104)
-                .background(convertHextoRGB(hexColor: "9FA7A3"))
-                .shadow(radius: 1)
+        HStack {
+            Button(action: {
+                isHiddenHomeView = false
+                isHiddenChatView = true
+                isHiddenAccountSettingsView = true
+            }, label: {
+                Image(systemName: "house.fill")
+                    .font(.system(size: 34))
+                    .foregroundColor(convertHextoRGB(hexColor: "EAEEED"))
+                    .padding(EdgeInsets(top: 0, leading: 0, bottom: 32, trailing: 64))
+                    .shadow(color: convertHextoRGB(hexColor: "000000").opacity(0.48), radius: 3, x: 3, y: 7)
+            })
+            
+            Button(action: {
+                isHiddenHomeView = true
+                isHiddenChatView = false
+                isHiddenAccountSettingsView = true
+            }, label: {
+                Image(systemName: "bubble.left.fill")
+                    .font(.system(size: 34))
+                    .foregroundColor(convertHextoRGB(hexColor: "EAEEED"))
+                    .shadow(color: convertHextoRGB(hexColor: "000000").opacity(0.48), radius: 3, x: 3, y: 7)
+                    .padding(EdgeInsets(top: 6, leading: 0, bottom: 32, trailing: 0))
+            })
+            
+            Button(action: {
+                isHiddenHomeView = true
+                isHiddenChatView = true
+                isHiddenAccountSettingsView = false
+            }, label: {
+                Image(systemName: "person.fill")
+                    .font(.system(size: 34))
+                    .foregroundColor(convertHextoRGB(hexColor: "EAEEED"))
+                    .shadow(color: convertHextoRGB(hexColor: "000000").opacity(0.48), radius: 3, x: 3, y: 7)
+                    .padding(EdgeInsets(top: 0, leading: 64, bottom: 32, trailing: 0))
+            })
+
         }
+            .frame(width: width, height: height)
+            .background(convertHextoRGB(hexColor: "9FA7A3"))
+            .shadow(radius: 1)
+    }
+}
+
+struct Navigation_Previews: PreviewProvider {
+    static var previews: some View {
+        /*@START_MENU_TOKEN@*/Text("Hello, World!")/*@END_MENU_TOKEN@*/
     }
 }

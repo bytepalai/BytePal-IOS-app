@@ -11,6 +11,9 @@ import CoreData
 
 
 struct HomeMessageCell: View {
+    @Binding var rootViewIsActive: Bool
+    @Binding var isHiddenHomeView: Bool
+    @Binding var isHiddenIAPView: Bool
     var messageCreator: messagecreater
     
     var body: some View {
@@ -22,7 +25,14 @@ struct HomeMessageCell: View {
                     HStack {
                         Spacer(minLength: 40)
                         HStack {
-                            MessageBodyTexts(messageCreator: messageCreator)
+                            
+                            MessageBodyTexts(
+                                messageCreator: self.messageCreator,
+                                rootViewIsActive: self.$rootViewIsActive,
+                                isHiddenHomeView: self.$isHiddenHomeView,
+                                isHiddenIAPView: self.$isHiddenIAPView
+                            )
+                            
                             HomeMessageCellImage(messageCreator: messageCreator)
                                 .padding(EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 0))
                         }
@@ -37,7 +47,12 @@ struct HomeMessageCell: View {
                     HStack {
                         HomeMessageCellImage(messageCreator: messageCreator)
                             .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 8))
-                        MessageBodyTexts(messageCreator: messageCreator)
+                        MessageBodyTexts(
+                            messageCreator: messageCreator,
+                            rootViewIsActive: self.$rootViewIsActive,
+                            isHiddenHomeView: self.$isHiddenHomeView,
+                            isHiddenIAPView: self.$isHiddenIAPView
+                        )
                     }
                     .padding()
                     .background(getBackgroundColor(accordingTo: messageCreator))
@@ -88,24 +103,29 @@ struct HomeMessageCell: View {
     }
 }
 
-struct HomeMessageCell_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
-            HomeMessageCell(messageCreator: .user(message: "hi I am user"))
-            HomeMessageCell(messageCreator: .bytePal(message: "hi I am BytePal"))
-        }
-    }
-}
+//struct HomeMessageCell_Previews: PreviewProvider {
+//    
+//    static var previews: some View {
+//        Group {
+//            HomeMessageCell(messageCreator: .user(message: "hi I am user"), rootViewIsActive: self.$rootViewIsActive)
+//            HomeMessageCell(messageCreator: .bytePal(message: "hi I am BytePal"), rootViewIsActive: self.$rootViewIsActive)
+//        }
+//    }
+//}
 
 //MARK: Sub views
 struct MessageBodyTexts: View {
     var messageCreator: HomeMessageCell.messagecreater
+    @Binding var rootViewIsActive: Bool
+    @Binding var isHiddenHomeView: Bool
+    @Binding var isHiddenIAPView: Bool
     @FetchRequest(entity: Message.entity(), sortDescriptors: []) var MessagesCoreData: FetchedResults<Message>
     @FetchRequest(entity: User.entity(), sortDescriptors: []) var UserInformationCoreData: FetchedResults<User>
     @Environment(\.managedObjectContext) var moc
     @EnvironmentObject var messages: Messages
     @EnvironmentObject var userInformation: UserInformation
     @State var isShowingChatView: Bool = false
+    
     
     var body: some View {
         VStack(alignment: getAlignment(from: messageCreator)) {
@@ -121,7 +141,8 @@ struct MessageBodyTexts: View {
             
             //here we have given explicit animation so that parents animation will not work here
             Button(action: {
-                self.isShowingChatView = true
+                self.isHiddenHomeView = true
+                self.isHiddenIAPView = false
             }){
                 Image(systemName: "arrow.right.circle.fill")
                     .font(.title)
@@ -129,7 +150,8 @@ struct MessageBodyTexts: View {
                         Animation.interpolatingSpring(stiffness: 50, damping: 10, initialVelocity: 0)
                     )
             }
-            NavigationLink(destination: ChatView().environment(\.managedObjectContext, moc) .environmentObject(userInformation).environmentObject(messages), isActive: self.$isShowingChatView){EmptyView()}
+            NavigationLink(destination: ChatView(rootViewIsActive: self.$rootViewIsActive).environment(\.managedObjectContext, moc) .environmentObject(userInformation).environmentObject(messages)){EmptyView()}
+                    .isDetailLink(false)
         }
         .foregroundColor(getFontColor(acordingTo: messageCreator) )
     }

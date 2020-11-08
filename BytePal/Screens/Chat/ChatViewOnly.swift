@@ -10,26 +10,30 @@ import Foundation
 import SwiftUI
 
 struct ChatViewOnly: View {
-    @State var heightMessageHistory: CGFloat = CGFloat(0.0)
-    var relativeSize: ViewRelativeSize = ViewRelativeSize()
     
     var body: some View {
         GeometryReader{ geometry  in
-            ZStack {
-                UserBar()
-                    .zIndex(1)
-                MessageHistoryOnly()
-                    .frame(width: geometry.size.width, height: relativeSize.heightMessageHistoryView)
-                    .alignmentGuide(.bottom) { d in d[.bottom] }
-                    .zIndex(0)
+            VStack{
+                // User Bar (Size: 6%)
+                UserBarOnly(
+                    width: geometry.size.width,
+                    sideSquareLength: geometry.size.height*0.06
+                )
+                .frame(alignment: .bottom)
+                
+                // Space (4%)
+                
+                // User Bar (Size: 90%)
+                MessageHistoryOnly(
+                    width: geometry.size.width,
+                    height: geometry.size.height
+                )
+                .frame(alignment: .bottom)
             }
+            .frame(height: geometry.size.height, alignment: .bottom)
         }
         .edgesIgnoringSafeArea(.bottom)
         .navigationBarBackButtonHidden(true)
-    }
-    
-    func setHeightMessageHistory(height: CGFloat) {
-        self.heightMessageHistory = height
     }
 }
 

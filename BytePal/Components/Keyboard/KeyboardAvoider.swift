@@ -9,9 +9,9 @@
 import SwiftUI
 
 final class KeyboardResponder: ObservableObject {
-    let keyBoardHeight: Int = 144
+//    let keyBoardHeight: Int = 144
     private var notificationCenter: NotificationCenter
-    @Published private(set) var currentHeight: CGFloat = 0
+    @Published var currentHeight: CGFloat = 0
     @Published private(set) var isUp: Bool = false
 
     init(center: NotificationCenter = .default) {
@@ -26,13 +26,21 @@ final class KeyboardResponder: ObservableObject {
 
     @objc func keyBoardWillShow(notification: Notification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
-            currentHeight = keyboardSize.height + CGFloat(keyBoardHeight)
+            currentHeight = keyboardSize.height
             isUp = true
         }
     }
 
     @objc func keyBoardWillHide(notification: Notification) {
         currentHeight = 0
-        isUp = false
+        isUp = false 
+    }
+}
+
+extension UIApplication {
+    // Force keyboard to go down
+    
+    func endEditing() {
+        sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 }

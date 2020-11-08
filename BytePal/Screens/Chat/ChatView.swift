@@ -8,32 +8,57 @@
 
 import Foundation
 import SwiftUI
-import Speech
-import Combine
 import CoreData
-import GoogleSignIn
-import FBSDKLoginKit
 
 struct ChatView: View {
-    var relativeSize: ViewRelativeSize = ViewRelativeSize()
-    
+    @Binding var rootViewIsActive: Bool
+    @EnvironmentObject var userInformation: UserInformation
+
     var body: some View {
         GeometryReader{ geometry  in
             VStack{
-                UserBar()
-                MessageHistory()
-                    .frame(width: geometry.size.width, height: relativeSize.heightMessageHistoryView)
+                // User Bar (Size: 6%)
+                UserBar(
+                    width: geometry.size.width,
+                    sideSquareLength: geometry.size.height*0.06,
+                    rootViewIsActive: self.$rootViewIsActive
+                )
+                
+                // Space (4%)
+                
+                // User Bar (Size: 90%)
+                MessageHistory(
+                    width: geometry.size.width,
+                    height: geometry.size.height,
+                    rootViewIsActive: self.$rootViewIsActive
+                )
             }
         }
-        .edgesIgnoringSafeArea(.vertical)
-        .navigationBarBackButtonHidden(true)
+            .edgesIgnoringSafeArea(.bottom)
+            .navigationBarHidden(true)
+            .onAppear(perform: {
+                // Set current view
+                userInformation.currentView = "Chat"
+            })
     }
+
 }
 
-#if DEBUG
+//#if DEBUG
+//struct ChatView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ChatView()
+//            .environment(\.colorScheme, .dark)
+//        
+//        ChatView()
+//            .environment(\.colorScheme, .light)
+//        
+//    }
+//}
+//#endif
+
 struct ChatView_Previews: PreviewProvider {
     static var previews: some View {
-        ChatView()
+        /*@START_MENU_TOKEN@*/Text("Hello, World!")/*@END_MENU_TOKEN@*/
     }
 }
-#endif

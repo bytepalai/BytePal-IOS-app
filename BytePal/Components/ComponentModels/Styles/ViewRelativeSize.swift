@@ -85,3 +85,9 @@ extension ViewRelativeSize {
 //struct iPhon6S {
 //    let heightScalingFactorMessageHistoryView: Float = 0.825
 //}
+
+struct ViewRelativeSize_Previews: PreviewProvider {
+    static var previews: some View {
+        /*@START_MENU_TOKEN@*/Text("Hello, World!")/*@END_MENU_TOKEN@*/
+    }
+}

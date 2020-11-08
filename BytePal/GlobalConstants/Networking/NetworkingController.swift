@@ -7,62 +7,71 @@
 //
 
 import Foundation
+import Network
+import SwiftUI
 
-class Networking {
-    
-    enum endpoinType {
-        case login
-        case register
-        case interact
-    }
-    
-//    func post(endpointName: String, data: [String: String]) ->
-//        String {
-//        let semaphore = DispatchSemaphore (value: 0)
-//        var errorMessage = ""
-//
-//        let parameters = self.createJSON(data: data)
-//        let postData = parameters.data(using: .utf8)
-//        var request = URLRequest(url: URL(string: "https://webhook.site/4f91114f-dd94-4561-8e53-f25051252002")!,timeoutInterval: Double.infinity)
-//        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-//        request.addValue("laravel_session=FxGC1WedUank4QrxSoXk1QyW2t0ZmFrN7tW7gRbg", forHTTPHeaderField: "Cookie")
-//
-//        request.httpMethod = "POST"
-//        request.httpBody = postData
-//
-//        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-//                    guard let data = data else {
-//                        print(String(describing: error))
-//                        return
-//                    }
-//                    do {
-//                        if String(data: data, encoding: .utf8)! == "Wrong Password" {
-//                            print(" --------------- Wrong Password ---------------")
-//                            errorMessage = "Wrong email or password"
-//                        } else {
-//                            // Set user_id
-//                            let reponseObject = try JSONDecoder().decode(responseStruct.self, from: data)
-//                            let user_id: String = reponseObject.user_id
-//
-//                            print(" --------------- USER ID Response \(user_id) ---------------")
-//                            self.userinfo.userID = user_id
-//        //              Go to ChatView
-//                            self.isShowingChatView = true
-//                        }
-//                    } catch {
-//                        print(error)
-//                    }
-//                    semaphore.signal()
-//                }
-//
-//        task.resume()
-//        semaphore.wait()
+//extension NetStatus {
+//    static func startNetworkMonitoring() {
+//        let monitor = NWPathMonitor()
+//        let queue = DispatchQueue(label: "Monitor")
+//        monitor.start(queue: queue)
 //    }
-    
-    func createJSON(data: [String: String]) -> String {
-        let jsonData = try! JSONSerialization.data(withJSONObject: data)
-        let jsonNSString = NSString(data: jsonData, encoding: String.Encoding.utf8.rawValue)
-        let jsonString = jsonNSString! as String
-        return jsonString
-    }
+//
+//    static func getNetworkConnectionStatus() -> Bool {
+//        return self.monitor.currentPath.status == .satisfied
+//    }
+//
+//    static func getCellularConnectionStatus() -> Bool {
+//        return self.monitor.currentPath.isExpensive
+//    }
+//
+//    static func createJSON(data: [String: String]) -> String {
+//        let jsonData = try! JSONSerialization.data(withJSONObject: data)
+//        let jsonNSString = NSString(data: jsonData, encoding: String.Encoding.utf8.rawValue)
+//        let jsonString = jsonNSString! as String
+//        return jsonString
+//    }
+//}
+
+import Network
+
+public enum ConnectionType {
+    case wifi
+    case ethernet
+    case cellular
+    case unknown
 }
+
+class NetworkStatus {
+    
+    static func getNetworkStatus() {
+        let monitor = NWPathMonitor()
+        print("-------- status: \(monitor.currentPath.status)")
+        print("-------- isConstrained: \(monitor.currentPath.isConstrained)")
+        print("-------- availableInterfaces: \(monitor.currentPath.availableInterfaces)")
+    }
+    
+    static func checkNetworkStatus(completion: @escaping ([String : Bool]) -> Void) {
+        let monitor = NWPathMonitor()
+        var connectionStatus = [String: Bool]()
+        
+        monitor.pathUpdateHandler = { path in
+            if path.status == .satisfied {
+                print("----- Connected")
+                connectionStatus["status"] = true
+            } else {
+                print("----- NOT Connected")
+                connectionStatus["status"] = false
+            }
+
+            connectionStatus["cellular"] = path.isExpensive ? true : false
+            print("------ cellular: \(connectionStatus["cellular"]! ? true: false)")
+            completion(connectionStatus)
+        }
+        
+        let queue = DispatchQueue(label: "Monitor")
+        monitor.start(queue: queue)
+    }
+
+}
+

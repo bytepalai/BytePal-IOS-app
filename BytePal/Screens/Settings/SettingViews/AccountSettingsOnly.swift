@@ -34,11 +34,7 @@ struct AccountSettingsViewOnly: View {
             
             GeometryReader { proxy in
                 List {
-                                        NavigationLink(
-                        destination: Text("Destination"),
-                        label: {
-                            TitleWithSubTitleCellOnly(title: "Email", subTitle: "example@domain.com")
-                        })
+                    TitleWithSubTitleCellOnly(title: "Email", subTitle: "example@domain.com")
                     TextLinkOnly(title: "Terms and Conditions", url: "Terms and Conditions")
                     TextLinkOnly(title: "Privacy Policy", url: "Privacy Policy")
                     

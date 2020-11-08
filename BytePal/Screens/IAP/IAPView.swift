@@ -12,10 +12,13 @@ import SwiftUI
 import Combine
 import StoreKit
 
-struct IAPView : View {
-
-    @ObservedObject var productsStore : ProductsStore
+struct IAPView: View {
+    @Binding var rootViewIsActive: Bool
+    @Binding var isHiddenHomeView: Bool
+    @Binding var isHiddenIAPView: Bool
+//    @ObservedObject var productsStore : ProductsStore
     @ObservedObject var viewModel: IAPViewModel
+    @EnvironmentObject var userInformation: UserInformation
     @State var show_modal = false
     
     var body: some View {
@@ -24,31 +27,50 @@ struct IAPView : View {
                 if #available(iOS 14.0, *) {
                     LazyVGrid(columns: [GridItem(.flexible() )]) {
                         ForEach(viewModel.subscriptions) { (subscription)  in
-                            SubscriptionCell(subscription: subscription)
+                            SubscriptionCell(
+                                subscription: subscription,
+                                isHiddenHomeView: self.$isHiddenHomeView,
+                                isHiddenIAPView: self.$isHiddenIAPView
+                            )
                                 .padding()
                         }
                         TermsOfConditionView()
                     }
                 } else {
                     ForEach(viewModel.subscriptions) { (subscription)  in
-                        SubscriptionCell(subscription: subscription)
+                        SubscriptionCell(
+                            subscription: subscription,
+                            isHiddenHomeView: self.$isHiddenHomeView,
+                            isHiddenIAPView: self.$isHiddenIAPView
+                        )
                             .padding()
                     }
                     TermsOfConditionView()
                 }
             }
         }
+            .onAppear(perform: {
+                // Set current view
+                userInformation.currentView = "IAP"
+            })
     }
 }
 
 //MARK: SubViews
 struct SubscriptionCell: View {
     var subscription: IAPViewModel.Subscription
+    @Binding var isHiddenHomeView: Bool
+    @Binding var isHiddenIAPView: Bool
+    
     var body: some View {
         ZStack {
             BackgroundImageView(subscription: subscription)
             
-            SubscriptionCellTopView(subscription: subscription)
+            SubscriptionCellTopView(
+                subscription: subscription,
+                isHiddenHomeView: self.$isHiddenHomeView,
+                isHiddenIAPView: self.$isHiddenIAPView
+            )
         }
             .background(Color.applightgreenPure)
             .cornerRadius(20, antialiased: true)
@@ -77,6 +99,8 @@ struct BackgroundImageView: View {
 
 struct SubscriptionCellTopView: View {
     var subscription: IAPViewModel.Subscription
+    @Binding var isHiddenHomeView: Bool
+    @Binding var isHiddenIAPView: Bool
     
     var body: some View {
         VStack {
@@ -158,19 +182,19 @@ struct TopButtonViews: View {
 
 
 
-struct IAPView_Previews: PreviewProvider {
-    
-    static var previews: some View {
-        NavigationView {
-            IAPView(productsStore: BytePal.ProductsStore.shared, viewModel: .init())
-                .environment(\.colorScheme, .dark)
-        }
-        
-        NavigationView {
-            IAPView(productsStore: BytePal.ProductsStore.shared, viewModel: .init())
-                .environment(\.colorScheme, .light)
-        }
-        
-    }
-    
-}
+//struct IAPView_Previews: PreviewProvider {
+//
+//    static var previews: some View {
+//        NavigationView {
+//            IAPView(productsStore: BytePal.ProductsStore.shared, viewModel: .init())
+//                .environment(\.colorScheme, .dark)
+//        }
+//
+//        NavigationView {
+//            IAPView(productsStore: BytePal.ProductsStore.shared, viewModel: .init())
+//                .environment(\.colorScheme, .light)
+//        }
+//
+//    }
+//
+//}

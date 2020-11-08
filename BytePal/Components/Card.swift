@@ -18,19 +18,9 @@ struct ButtonCard: View {
     @EnvironmentObject var messages: Messages
     @EnvironmentObject var userInformation: UserInformation
     @EnvironmentObject var googleDelegate: GoogleDelegate
+    @Binding var rootViewIsActive: Bool
     @State var isShowingIAPView: Bool = false
     @State var isShowingChatView: Bool = false
-    
-    func updateView(type: String) {
-        switch type {
-            case "typing":
-                self.isShowingIAPView = true
-            case "female user", "BytePal":
-                self.isShowingChatView = true
-            default:
-                print("Error")
-        }
-    }
     
     var body: some View {
         ZStack {
@@ -63,13 +53,26 @@ struct ButtonCard: View {
                             }
                         }
                     }
-                NavigationLink(destination: IAPView(productsStore: ProductsStore.shared, viewModel: .init()).environment(\.managedObjectContext, moc) .environmentObject(userInformation).environmentObject(messages).environmentObject(googleDelegate), isActive: self.$isShowingIAPView){EmptyView()}
-                NavigationLink(destination: ChatView().environment(\.managedObjectContext, moc) .environmentObject(userInformation).environmentObject(messages).environmentObject(googleDelegate), isActive: self.$isShowingChatView){EmptyView()}
+//                NavigationLink(destination: IAPView( productsStore: ProductsStore.shared, viewModel: .init(), rootViewIsActive: self.$rootViewIsActive).environment(\.managedObjectContext, moc) .environmentObject(userInformation).environmentObject(messages).environmentObject(googleDelegate)){EmptyView()}
+//                NavigationLink(destination: ChatView(rootViewIsActive: self.$rootViewIsActive).environment(\.managedObjectContext, moc) .environmentObject(userInformation).environmentObject(messages).environmentObject(googleDelegate)){EmptyView()}
+                
             }
                 .padding(16)
         }
         .padding(16)
     }
+    
+    func updateView(type: String) {
+        switch type {
+            case "typing":
+                self.isShowingIAPView = true
+            case "female user", "BytePal":
+                self.isShowingChatView = true
+            default:
+                print("Error")
+        }
+    }
+    
 }
 
 struct Card_Previews: PreviewProvider {

@@ -10,9 +10,26 @@ import SwiftUI
 
 class IAPViewModel: ObservableObject {
     var subscriptions = [
-        Subscription(price: 14.99, messageCount: -1, imageName: "unlimitedMessages"),
-        Subscription(price: 11.99, messageCount: 10000, imageName: "10000Messages"),
-        Subscription(price: 9.99, messageCount: 5000, imageName: "5000Messages")]
+        Subscription(
+            id: UUID(uuidString: "BytePal.AI.Unlimited.Messages.Subscription") ?? UUID(),
+            price: 14.99,
+            messageCount: -1,
+            imageName: "unlimitedMessages"
+        ),
+        Subscription(
+            id: UUID(uuidString: "BytePal.AI.10000.Messages.Subscription") ?? UUID(),
+            price: 12.99,
+            messageCount: 10000,
+            imageName: "10000Messages"
+        ),
+        Subscription(
+            id: UUID(uuidString: "BytePal.AI.5000.Messages.Subscription") ?? UUID(),
+            price: 10.99,
+            messageCount: 5000,
+            imageName: "5000Messages"
+        )
+    ]
+    
     
     struct Subscription: Identifiable {
         var id: UUID = UUID()

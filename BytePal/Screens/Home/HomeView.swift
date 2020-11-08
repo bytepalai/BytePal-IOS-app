@@ -9,9 +9,16 @@
 import SwiftUI
 
 struct HomeView: View {
+    let width: CGFloat?
+    let height: CGFloat?
     var number: NumberController = NumberController()
     @EnvironmentObject var messages: Messages
     @EnvironmentObject var userInformation: UserInformation
+    @Binding var rootViewIsActive: Bool
+    @Binding var isHiddenHomeView: Bool
+    @Binding var isHiddenIAPView: Bool
+    @Binding var isHiddenChatView: Bool
+    @Binding var isHiddenAccountSettingsView: Bool
     
     //  Attributes Cards
     @State var homeViewCardAttributes: [String: [String: String]] = [
@@ -37,6 +44,48 @@ struct HomeView: View {
                     "buttonText": "Continue"
                 ]
     ]
+
+    var body: some View {
+        GeometryReader { geometry in
+            ZStack{
+                VStack {
+                    ScrollView {
+                        VStack {
+                            CompanyLogo()
+                            UpgradeButton(
+                                rootViewIsActive: self.$rootViewIsActive,
+                                isHiddenHomeView: self.$isHiddenHomeView,
+                                isHiddenIAPView: self.$isHiddenIAPView
+                            )
+                            MessageCellScrollView(
+                                rootViewIsActive: self.$rootViewIsActive,
+                                isHiddenHomeView: self.$isHiddenHomeView,
+                                isHiddenIAPView: self.$isHiddenIAPView
+                            )
+                        }
+                    }
+                }
+                VStack {
+                    Spacer()
+                    NavigationBar(
+                        width: width!,
+                        height: height!*0.10,
+                        color: Color(UIColor.systemGray3),
+                        rootViewIsActive: self.$rootViewIsActive,
+                        isHiddenHomeView: self.$isHiddenHomeView,
+                        isHiddenChatView: self.$isHiddenChatView,
+                        isHiddenAccountSettingsView: self.$isHiddenAccountSettingsView
+                    )
+                    
+                }
+            }
+        }
+            .edgesIgnoringSafeArea(.bottom)
+            .onAppear(perform: {
+                // Set current view
+                userInformation.currentView = "Home"
+            })
+    }
     
     func updateHomeViewCards(attributes: [String: [String: String]]) -> [String: [String: String]] {
         var mutatedAttributes = attributes
@@ -59,28 +108,7 @@ struct HomeView: View {
         }
         return mutatedAttributes
     }
-
-    var body: some View {
-        GeometryReader { geometry in
-            ZStack{
-                VStack {
-                    ScrollView {
-                        VStack {
-                            CompanyLogo()
-                            UpgradeButton()
-                            MessageCellScrollView()
-                        }
-                    }
-                }
-                VStack {
-                    Spacer()
-                    NavigationBar()
-                        .frame(width: geometry.size.width, height: 104)
-                }
-            }
-        }
-            .edgesIgnoringSafeArea(.bottom)
-    }
+    
 }
 
 struct CompanyLogo: View {
@@ -107,11 +135,15 @@ struct CompanyLogo: View {
 }
 
 struct UpgradeButton: View {
+    @Binding var rootViewIsActive: Bool
+    @Binding var isHiddenHomeView: Bool
+    @Binding var isHiddenIAPView: Bool
     @Environment(\.managedObjectContext) var moc
     @EnvironmentObject var messages: Messages
     @EnvironmentObject var userInformation: UserInformation
-    @State var isShowingIAPView: Bool = false
+//    @State var isShowingIAPView: Bool = false
     @State var messagesLeftAmount: String = ""
+    
     
     var body: some View {
         Group {
@@ -123,7 +155,8 @@ struct UpgradeButton: View {
                         Text(messagesLeftAmount)
                             .bold()
                         Button(action: {
-                            self.isShowingIAPView = true
+                            self.isHiddenHomeView = true
+                            self.isHiddenIAPView = false
                         }) {
                             Text("Upgrade")
                                 .font(.title)
@@ -141,9 +174,11 @@ struct UpgradeButton: View {
                     .cornerRadius(10)
                     .shadow(color: .appGreen, radius: 1, x: 0, y: 0)
                     .padding()
-                NavigationLink(
-                    destination: IAPView(productsStore: ProductsStore.shared, viewModel: .init()).environment(\.managedObjectContext, moc) .environmentObject(userInformation).environmentObject(messages),
-                    isActive: self.$isShowingIAPView){EmptyView()}
+            
+                // Navigation Link IAP View
+            
+//                NavigationLink(
+//                    destination: IAPView(productsStore: ProductsStore.shared, viewModel: .init(), rootViewIsActive: self.$rootViewIsActive).environment(\.managedObjectContext, moc) .environmentObject(userInformation).environmentObject(messages)){EmptyView()}
         }
             .onAppear(perform: {
                 messagesLeftAmount = self.messages.getMessagesLeft(userID: self.userInformation.id)
@@ -152,6 +187,9 @@ struct UpgradeButton: View {
 }
 
 struct MessageCellScrollView: View {
+    @Binding var rootViewIsActive: Bool
+    @Binding var isHiddenHomeView: Bool
+    @Binding var isHiddenIAPView: Bool
     @State var userCellAppear: Bool = false
     @State var bytePalCellAppear: Bool = false
     @EnvironmentObject var messages: Messages
@@ -160,11 +198,11 @@ struct MessageCellScrollView: View {
         ScrollView {
             VStack {
                 if self.messages.list.count != 0 {
-                    HomeMessageCell(messageCreator: .user(message: self.messages.list[1]["content"] as! String))
-                    HomeMessageCell(messageCreator: .bytePal(message: self.messages.list[0]["content"] as! String))
+                    HomeMessageCell(rootViewIsActive: self.$rootViewIsActive, isHiddenHomeView: self.$isHiddenHomeView, isHiddenIAPView: self.$isHiddenIAPView, messageCreator: .user(message: self.messages.list[1]["content"] as! String))
+                    HomeMessageCell(rootViewIsActive: self.$rootViewIsActive, isHiddenHomeView: self.$isHiddenHomeView, isHiddenIAPView: self.$isHiddenIAPView, messageCreator: .bytePal(message: self.messages.list[0]["content"] as! String))
                 } else {
-                    HomeMessageCell(messageCreator: .user(message: "No messages sent to BytePal"))
-                    HomeMessageCell(messageCreator: .bytePal(message: "No messages received from BytePal"))
+                    HomeMessageCell(rootViewIsActive: self.$rootViewIsActive, isHiddenHomeView: self.$isHiddenHomeView, isHiddenIAPView: self.$isHiddenIAPView, messageCreator: .user(message: "No messages sent to BytePal"))
+                    HomeMessageCell(rootViewIsActive: self.$rootViewIsActive, isHiddenHomeView: self.$isHiddenHomeView, isHiddenIAPView: self.$isHiddenIAPView, messageCreator: .bytePal(message: "No messages received from BytePal"))
                 }
                 
             }
@@ -250,8 +288,8 @@ struct MessageCellScrollView: View {
 //    }
 //}
 
-struct Home_Previews: PreviewProvider {
-    static var previews: some View {
-        HomeView()
-    }
-}
+//struct Home_Previews: PreviewProvider {
+//    static var previews: some View {
+//        HomeView()
+//    }
+//}

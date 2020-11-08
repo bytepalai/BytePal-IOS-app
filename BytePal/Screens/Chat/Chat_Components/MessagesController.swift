@@ -39,11 +39,7 @@ extension Messages {
                 do {
                     let responseJSON = try? JSONSerialization.jsonObject(with: data, options: [])
                     if let responseJSON = responseJSON as? [String: [[String: String]]] {
-                        print("----- rawResponse: ")
-                        print(responseJSON)
                         messagHistoryData = responseJSON[userID]
-                        print("----- messageHistory: ")
-                        print(messagHistoryData!)
                     }
                 } catch {
                     print(error)
@@ -99,6 +95,6 @@ extension Messages {
             task.resume()
             semaphore.wait()
             // Return loginStatus
-            return messagesLeftResponse!
+            return messagesLeftResponse ?? "Error: Unable to get number of messages left"
     }
 }

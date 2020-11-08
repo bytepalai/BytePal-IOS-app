@@ -12,7 +12,7 @@ import SwiftUI
 
 struct IAPViewOnly: View {
 
-    @ObservedObject var productsStore : ProductsStore
+//    @ObservedObject var productsStore : ProductsStore
     @ObservedObject var viewModel: IAPViewModel
     @State var show_modal = false
     
@@ -155,16 +155,16 @@ struct TopButtonViewsOnly: View {
 
 
 
-struct IAPViewOnly_Previews: PreviewProvider {
-    
-    static var previews: some View {
-        
-        IAPViewOnly(productsStore: BytePal.ProductsStore.shared, viewModel: .init())
-            .environment(\.colorScheme, .dark)
-        
-        IAPViewOnly(productsStore: BytePal.ProductsStore.shared, viewModel: .init())
-            .environment(\.colorScheme, .light)
-        
-    }
-    
-}
+//struct IAPViewOnly_Previews: PreviewProvider {
+//    
+//    static var previews: some View {
+//        
+//        IAPViewOnly(productsStore: BytePal.ProductsStore.shared, viewModel: .init())
+//            .environment(\.colorScheme, .dark)
+//        
+//        IAPViewOnly(productsStore: BytePal.ProductsStore.shared, viewModel: .init())
+//            .environment(\.colorScheme, .light)
+//        
+//    }
+//    
+//}

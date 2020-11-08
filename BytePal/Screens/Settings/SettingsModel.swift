@@ -9,5 +9,5 @@
 import Foundation
 import SwiftUI
 
-let termsAndConditions: String = "\(Webpage_HOSTNAME)/terms"
-let privacyPolicy: String = "\(Webpage_HOSTNAME)/privacy"
+let termsAndConditions: String = "\(WEBPAGE_HOSTNAME)/terms"
+let privacyPolicy: String = "\(WEBPAGE_HOSTNAME)/privacy"

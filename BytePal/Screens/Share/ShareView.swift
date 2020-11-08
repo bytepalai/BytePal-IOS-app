@@ -9,14 +9,29 @@
 import SwiftUI
 
 struct ShareView: View {
-    
+    var height: CGFloat
+    @Binding var rootViewIsActive: Bool
     @State private var isShareSheetShowing = false
+     
     
     var body: some View {
-        Button(action:shareButton){
-            Image(systemName: "square.and.arrow.up")
-                .font(.largeTitle)
+        HStack{
+            Image("female user")
+                .resizable()
+                .frame(width: 100, height: 100, alignment: .center)
+                .clipShape(Circle())
+                .overlay(Circle().strokeBorder(Color.appTranspatentWhite, lineWidth: 5, antialiased: true)  )
+                .shadow(radius: 50)
+            
+            Button(action:shareButton){
+                Text("Share")
+                    .font(.custom(fontStyle, size: 36))
+                    .foregroundColor(Color(UIColor.black))
+            }
+            
+            Spacer()
         }
+            .frame(height: self.height)
     }
     
     func shareButton(){
@@ -30,12 +45,12 @@ struct ShareView: View {
     }
 }
 
-struct ShareView_Previews: PreviewProvider {
-    static var previews: some View {
-        ShareView()
-            .environment(\.colorScheme, .dark)
-        
-        ShareView()
-            .environment(\.colorScheme, .light)
-    }
-}
+//struct ShareView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ShareView()
+//            .environment(\.colorScheme, .dark)
+//        
+//        ShareView()
+//            .environment(\.colorScheme, .light)
+//    }
+//}
