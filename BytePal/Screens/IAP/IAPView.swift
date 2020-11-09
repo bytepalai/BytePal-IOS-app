@@ -23,9 +23,38 @@ struct IAPView: View {
     
     var body: some View {
         GeometryReader {geometry in
-            ScrollView {
-                if #available(iOS 14.0, *) {
-                    LazyVGrid(columns: [GridItem(.flexible() )]) {
+            VStack {
+                Button (
+                    action: {
+                        self.isHiddenHomeView = false
+                        self.isHiddenIAPView = true
+                    },
+                    label: {
+                        HStack {
+                            Image(systemName: "chevron.left")
+                                .foregroundColor(Color(UIColor.systemBlue))
+                                .font(title2Custom)
+                            Text("Back")
+                                .foregroundColor(Color(UIColor.systemBlue))
+                                .font(title2Custom)
+                            Spacer()
+                        }
+                    }
+                )
+                    .padding()
+                ScrollView {
+                    if #available(iOS 14.0, *) {
+                        LazyVGrid(columns: [GridItem(.flexible() )]) {
+                            ForEach(viewModel.subscriptions) { (subscription)  in
+                                SubscriptionCell(
+                                    subscription: subscription,
+                                    isHiddenHomeView: self.$isHiddenHomeView,
+                                    isHiddenIAPView: self.$isHiddenIAPView
+                                )
+                                    .padding()
+                            }
+                        }
+                    } else {
                         ForEach(viewModel.subscriptions) { (subscription)  in
                             SubscriptionCell(
                                 subscription: subscription,
@@ -34,18 +63,7 @@ struct IAPView: View {
                             )
                                 .padding()
                         }
-                        TermsOfConditionView()
                     }
-                } else {
-                    ForEach(viewModel.subscriptions) { (subscription)  in
-                        SubscriptionCell(
-                            subscription: subscription,
-                            isHiddenHomeView: self.$isHiddenHomeView,
-                            isHiddenIAPView: self.$isHiddenIAPView
-                        )
-                            .padding()
-                    }
-                    TermsOfConditionView()
                 }
             }
         }
@@ -101,6 +119,7 @@ struct SubscriptionCellTopView: View {
     var subscription: IAPViewModel.Subscription
     @Binding var isHiddenHomeView: Bool
     @Binding var isHiddenIAPView: Bool
+    @State var isShowingPurchaseView: Bool = false
     
     var body: some View {
         VStack {
@@ -118,16 +137,25 @@ struct SubscriptionCellTopView: View {
                 }
                 .foregroundColor(.appFontColorBlack)
                 
-                Button(action: {
-                    
-                }, label: {
+                Button(
+                action: {
+                    self.isShowingPurchaseView.toggle()
+                },
+                label: {
                     Text("Select")
-                        .bold()
-                        .padding(10)
-                })
-                .buttonStyle(WidthStrechyBackgroundButtonStyle(backgroundColor: .appGreen))
-                .cornerRadius(5, antialiased: true)
-                .shadow(radius: 2)
+                    .bold()
+                    .padding(10)
+                    }
+                )
+                    .sheet(
+                        isPresented: self.$isShowingPurchaseView,
+                        content: {
+                            PurchaseView()
+                        }
+                    )
+                    .buttonStyle(WidthStrechyBackgroundButtonStyle(backgroundColor: .appGreen))
+                    .cornerRadius(5, antialiased: true)
+                    .shadow(radius: 2)
             }
             .padding()
             .background(Color.appTranspatentWhite)

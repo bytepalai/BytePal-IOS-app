@@ -10,7 +10,6 @@ import AVFoundation
 import Alamofire
 
 class Receipt {
-    
     static func sendReceipt(productID:String,
                             receiptUrl:String,
                             originalTransactionId:String,

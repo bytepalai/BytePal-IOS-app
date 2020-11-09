@@ -66,6 +66,18 @@
 		6C5CEAC324D904E6004DCAB0 /* MultiLineTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5CEAAC24D904E5004DCAB0 /* MultiLineTextField.swift */; };
 		6C67DE8824DA467F0027E6BF /* APIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C67DE8724DA467F0027E6BF /* APIView.swift */; };
 		6C9357FE254739E3007BE2FE /* generalUIController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9357FD254739E3007BE2FE /* generalUIController.swift */; };
+		6C96E88E25592AE100592B57 /* NavigationLinkPopToRootEnvObj.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C96E88D25592AE100592B57 /* NavigationLinkPopToRootEnvObj.swift */; };
+		6C96E8912559C14700592B57 /* Sheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C96E8902559C14700592B57 /* Sheet.swift */; };
+		6C96E8952559C59200592B57 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C96E8942559C59200592B57 /* WebView.swift */; };
+		6C96E8A12559D7EB00592B57 /* PurchaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C96E8982559D7EA00592B57 /* PurchaseView.swift */; };
+		6C96E8A22559D7EB00592B57 /* MapIAP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C96E8992559D7EA00592B57 /* MapIAP.swift */; };
+		6C96E8A32559D7EB00592B57 /* IAPCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C96E89A2559D7EA00592B57 /* IAPCard.swift */; };
+		6C96E8A42559D7EB00592B57 /* IAPManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C96E89B2559D7EB00592B57 /* IAPManager.swift */; };
+		6C96E8A52559D7EB00592B57 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C96E89C2559D7EB00592B57 /* Constants.swift */; };
+		6C96E8A62559D7EB00592B57 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C96E89D2559D7EB00592B57 /* Extensions.swift */; };
+		6C96E8A72559D7EB00592B57 /* ProductsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C96E89E2559D7EB00592B57 /* ProductsStore.swift */; };
+		6C96E8A82559D7EB00592B57 /* PurchaseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C96E89F2559D7EB00592B57 /* PurchaseButton.swift */; };
+		6C96E8A92559D7EB00592B57 /* SendReceipt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C96E8A02559D7EB00592B57 /* SendReceipt.swift */; };
 		6CA840E4254CA43B001A3F68 /* IAPViewOnly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CA840E3254CA43A001A3F68 /* IAPViewOnly.swift */; };
 		6CA840E7254CA45C001A3F68 /* AccountSettingsOnly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CA840E6254CA45B001A3F68 /* AccountSettingsOnly.swift */; };
 		6CA840EA254CA47D001A3F68 /* LoginViewOnly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CA840E9254CA47C001A3F68 /* LoginViewOnly.swift */; };
@@ -182,6 +194,18 @@
 		6C67DE8724DA467F0027E6BF /* APIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = APIView.swift; path = BytePal/Proof_of_Concept/APIView.swift; sourceTree = SOURCE_ROOT; };
 		6C88837424F8A6ED0091FA49 /* MessagesJSONFormat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesJSONFormat.swift; sourceTree = "<group>"; };
 		6C9357FD254739E3007BE2FE /* generalUIController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = generalUIController.swift; sourceTree = "<group>"; };
+		6C96E88D25592AE100592B57 /* NavigationLinkPopToRootEnvObj.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationLinkPopToRootEnvObj.swift; sourceTree = "<group>"; };
+		6C96E8902559C14700592B57 /* Sheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sheet.swift; sourceTree = "<group>"; };
+		6C96E8942559C59200592B57 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
+		6C96E8982559D7EA00592B57 /* PurchaseView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PurchaseView.swift; path = BytePal/Components/IAP_Components/PurchaseView.swift; sourceTree = SOURCE_ROOT; };
+		6C96E8992559D7EA00592B57 /* MapIAP.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MapIAP.swift; path = BytePal/Screens/IAP/IAPFunctional/IAPModel/MapIAP.swift; sourceTree = SOURCE_ROOT; };
+		6C96E89A2559D7EA00592B57 /* IAPCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IAPCard.swift; path = BytePal/Components/IAP_Components/IAPCard.swift; sourceTree = SOURCE_ROOT; };
+		6C96E89B2559D7EB00592B57 /* IAPManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IAPManager.swift; path = BytePal/Components/IAP_Components/IAPManager.swift; sourceTree = SOURCE_ROOT; };
+		6C96E89C2559D7EB00592B57 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Constants.swift; path = BytePal/Screens/IAP/IAPFunctional/IAPModel/Constants.swift; sourceTree = SOURCE_ROOT; };
+		6C96E89D2559D7EB00592B57 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Extensions.swift; path = BytePal/Screens/IAP/IAPFunctional/IAPController/Extensions.swift; sourceTree = SOURCE_ROOT; };
+		6C96E89E2559D7EB00592B57 /* ProductsStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProductsStore.swift; path = BytePal/Screens/IAP/IAPFunctional/IAPModel/ProductsStore.swift; sourceTree = SOURCE_ROOT; };
+		6C96E89F2559D7EB00592B57 /* PurchaseButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PurchaseButton.swift; path = BytePal/Components/IAP_Components/PurchaseButton.swift; sourceTree = SOURCE_ROOT; };
+		6C96E8A02559D7EB00592B57 /* SendReceipt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SendReceipt.swift; path = BytePal/Screens/IAP/IAPFunctional/IAPController/SendReceipt.swift; sourceTree = SOURCE_ROOT; };
 		6CA6AD9F248365B300724EE3 /* BytePal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BytePal.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6CA840E3254CA43A001A3F68 /* IAPViewOnly.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IAPViewOnly.swift; sourceTree = "<group>"; };
 		6CA840E6254CA45B001A3F68 /* AccountSettingsOnly.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsOnly.swift; sourceTree = "<group>"; };
@@ -272,13 +296,6 @@
 			path = Share;
 			sourceTree = "<group>";
 		};
-		5E86E56B24F6D06C00D63448 /* IAP_Components */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = IAP_Components;
-			sourceTree = "<group>";
-		};
 		5E86E57824F6D11F00D63448 /* IAP */ = {
 			isa = PBXGroup;
 			children = (
@@ -345,6 +362,7 @@
 		6C5050D12555E1CA0067D78E /* IAPFunctional */ = {
 			isa = PBXGroup;
 			children = (
+				6C96E8AB2559D7F300592B57 /* IAPModel */,
 				6C5050D22555E1DE0067D78E /* IAPView */,
 				6C5050D32555E1E40067D78E /* IAPController */,
 			);
@@ -354,6 +372,9 @@
 		6C5050D22555E1DE0067D78E /* IAPView */ = {
 			isa = PBXGroup;
 			children = (
+				6C96E8982559D7EA00592B57 /* PurchaseView.swift */,
+				6C96E89F2559D7EB00592B57 /* PurchaseButton.swift */,
+				6C96E89A2559D7EA00592B57 /* IAPCard.swift */,
 			);
 			path = IAPView;
 			sourceTree = "<group>";
@@ -361,6 +382,9 @@
 		6C5050D32555E1E40067D78E /* IAPController */ = {
 			isa = PBXGroup;
 			children = (
+				6C96E89D2559D7EB00592B57 /* Extensions.swift */,
+				6C96E89B2559D7EB00592B57 /* IAPManager.swift */,
+				6C96E8A02559D7EB00592B57 /* SendReceipt.swift */,
 			);
 			path = IAPController;
 			sourceTree = "<group>";
@@ -407,7 +431,9 @@
 				6C67DE8724DA467F0027E6BF /* APIView.swift */,
 				6CD1593725524D0400C375A3 /* Alert.swift */,
 				6C5CEAAA24D904E5004DCAB0 /* Avatar.swift */,
+				6C96E8902559C14700592B57 /* Sheet.swift */,
 				6CD73401254EA12F006CAE90 /* NavigationLinkPopToRoot.swift */,
+				6C96E88D25592AE100592B57 /* NavigationLinkPopToRootEnvObj.swift */,
 				6C4C3399254FA94F00F21E16 /* HiddenView.swift */,
 				6CD733FE254E87AE006CAE90 /* ActivityIndicator.swift */,
 				6C88837424F8A6ED0091FA49 /* MessagesJSONFormat.swift */,
@@ -432,6 +458,24 @@
 			);
 			name = ProofofConcept;
 			path = Home_1/ProofofConcept;
+			sourceTree = "<group>";
+		};
+		6C96E8932559C58300592B57 /* WebView */ = {
+			isa = PBXGroup;
+			children = (
+				6C96E8942559C59200592B57 /* WebView.swift */,
+			);
+			path = WebView;
+			sourceTree = "<group>";
+		};
+		6C96E8AB2559D7F300592B57 /* IAPModel */ = {
+			isa = PBXGroup;
+			children = (
+				6C96E89E2559D7EB00592B57 /* ProductsStore.swift */,
+				6C96E8992559D7EA00592B57 /* MapIAP.swift */,
+				6C96E89C2559D7EB00592B57 /* Constants.swift */,
+			);
+			path = IAPModel;
 			sourceTree = "<group>";
 		};
 		6CA6AD96248365B300724EE3 = {
@@ -506,7 +550,7 @@
 		6CC3501924DA1DDB0036808C /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				5E86E56B24F6D06C00D63448 /* IAP_Components */,
+				6C96E8932559C58300592B57 /* WebView */,
 				5EC57F8824F580C300A81974 /* Request_Components */,
 				6CC3502024DA1DF70036808C /* ComponentModels */,
 				6C4A1C5A25551FCC000EE5B4 /* LargeLogo.swift */,
@@ -778,18 +822,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6C96E8A42559D7EB00592B57 /* IAPManager.swift in Sources */,
 				6C4A1C5E255521D8000EE5B4 /* LoginButtonView.swift in Sources */,
+				6C96E8A82559D7EB00592B57 /* PurchaseButton.swift in Sources */,
 				6C5CEAB924D904E5004DCAB0 /* InviteAFriendView.swift in Sources */,
 				6C5CEAAE24D904E5004DCAB0 /* CombineHTTPRequest.swift in Sources */,
 				5E19CBDC24F41A1D005CAAD5 /* BytepalWav.swift in Sources */,
 				6CA840E4254CA43B001A3F68 /* IAPViewOnly.swift in Sources */,
 				5EC57F8624F57FF100A81974 /* ChatView.swift in Sources */,
+				6C96E8A62559D7EB00592B57 /* Extensions.swift in Sources */,
 				6CD1593825524D0400C375A3 /* Alert.swift in Sources */,
 				6C5CEAC324D904E6004DCAB0 /* MultiLineTextField.swift in Sources */,
 				6C5CEAAF24D904E5004DCAB0 /* PrivacyPolicyView.swift in Sources */,
 				6CE09CAF2543949900936120 /* ButtonStyles.swift in Sources */,
 				6CC3501F24DA1DDB0036808C /* UpgradeView.swift in Sources */,
 				6C1B3AD324F28F5A005961EA /* ColorModel.swift in Sources */,
+				6C96E88E25592AE100592B57 /* NavigationLinkPopToRootEnvObj.swift in Sources */,
 				6C4A1C75255527F7000EE5B4 /* PersonalLoginButton.swift in Sources */,
 				6CD73402254EA12F006CAE90 /* NavigationLinkPopToRoot.swift in Sources */,
 				5E19CBDE24F41A44005CAAD5 /* BytepalRequest.swift in Sources */,
@@ -799,6 +847,7 @@
 				6CC34FF824DA1BF70036808C /* SettingsModel.swift in Sources */,
 				6CC3505F24DA256F0036808C /* SceneDelegate.swift in Sources */,
 				6CE09CA12543937200936120 /* MessagesController.swift in Sources */,
+				6C96E8A32559D7EB00592B57 /* IAPCard.swift in Sources */,
 				6C5CEAB724D904E5004DCAB0 /* UsernameView.swift in Sources */,
 				6C5CEABF24D904E6004DCAB0 /* NetworkConnection.swift in Sources */,
 				6C4A1C582554FEF9000EE5B4 /* ShareViewOnly.swift in Sources */,
@@ -824,6 +873,7 @@
 				6C67DE8824DA467F0027E6BF /* APIView.swift in Sources */,
 				6CC34FF724DA1BF70036808C /* SettingsController.swift in Sources */,
 				6CE09CB6254395C100936120 /* BytePalButton.swift in Sources */,
+				6C96E8A12559D7EB00592B57 /* PurchaseView.swift in Sources */,
 				6C4A1C6125552513000EE5B4 /* SignupBar.swift in Sources */,
 				6C34D69624DB1F9100BD2489 /* Forms.swift in Sources */,
 				6C5050EE2555E3D20067D78E /* IAPView.swift in Sources */,
@@ -852,6 +902,7 @@
 				6C4A1C6C25552664000EE5B4 /* FacebookLoginOnly.swift in Sources */,
 				6CC3506124DA256F0036808C /* BytePal.xcdatamodeld in Sources */,
 				5EC57F9024F5960D00A81974 /* MessageView.swift in Sources */,
+				6C96E8A52559D7EB00592B57 /* Constants.swift in Sources */,
 				6CA84101254CA6C7001A3F68 /* NavigationBarOnly.swift in Sources */,
 				6C4C3396254F942600F21E16 /* ViewMod.swift in Sources */,
 				6C5CEAB024D904E5004DCAB0 /* TextFieldAboveKeyboard.swift in Sources */,
@@ -869,10 +920,13 @@
 				6C5CEABE24D904E6004DCAB0 /* TermsOfServiceView.swift in Sources */,
 				6CC34FE524DA0A3F0036808C /* HomeModel.swift in Sources */,
 				6C1B3AD224F28F5A005961EA /* ColorController.swift in Sources */,
+				6C96E8A22559D7EB00592B57 /* MapIAP.swift in Sources */,
+				6C96E8A72559D7EB00592B57 /* ProductsStore.swift in Sources */,
 				6CA840EA254CA47D001A3F68 /* LoginViewOnly.swift in Sources */,
 				6CE09C97254392F700936120 /* HomeMessageCell.swift in Sources */,
 				6C4A1C552554FEBC000EE5B4 /* ShareViewAccountSettingsOnly.swift in Sources */,
 				6C4C339D254FE1C000F21E16 /* Divider.swift in Sources */,
+				6C96E8912559C14700592B57 /* Sheet.swift in Sources */,
 				6CC3501D24DA1DDB0036808C /* Navigation.swift in Sources */,
 				6CE09CA02543937200936120 /* MessagesModel.swift in Sources */,
 				6CC3503124DA216D0036808C /* SignupModel.swift in Sources */,
@@ -881,6 +935,8 @@
 				6CC3505024DA228F0036808C /* KeyboardAvoider.swift in Sources */,
 				6CC3502624DA1E2D0036808C /* ChatController.swift in Sources */,
 				6C5CEAB824D904E5004DCAB0 /* RelativeAlignement.swift in Sources */,
+				6C96E8A92559D7EB00592B57 /* SendReceipt.swift in Sources */,
+				6C96E8952559C59200592B57 /* WebView.swift in Sources */,
 				6C5CEAB524D904E5004DCAB0 /* EmailView.swift in Sources */,
 				5EC57F8E24F5849600A81974 /* MessageBubble.swift in Sources */,
 			);
@@ -1011,14 +1067,14 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = BytePal/BytePalDebug.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = PCK46MLF23;
 				INFOPLIST_FILE = BytePal/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.11;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "BytePal-AI";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1035,14 +1091,14 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = BytePal/BytePalRelease.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = PCK46MLF23;
 				INFOPLIST_FILE = BytePal/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.11;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "BytePal-AI";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

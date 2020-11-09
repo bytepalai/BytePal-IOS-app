@@ -10,6 +10,8 @@ import SwiftUI
 import CoreData
 
 struct SignupView: View {
+    var width: CGFloat?
+    var height: CGFloat?
     var container: NSPersistentContainer!
     @FetchRequest(entity: User.entity(), sortDescriptors: []) var UserInformationCoreData: FetchedResults<User>
     @Environment(\.managedObjectContext) var moc
@@ -35,37 +37,37 @@ struct SignupView: View {
     let backgroundBlurRadious: CGFloat = 400
 
     var body: some View {
+        
         VStack(alignment: .leading) {
-            Button(action: {
-                self.isHiddenLoginView = false
-                self.isHiddenSignupView = true
-            }, label: {
-                HStack {
-                    Image(systemName: "chevron.compact.left")
-                        .foregroundColor(Color(UIColor.systemBlue))
-                    Text("Back")
-                        .foregroundColor(Color(UIColor.systemBlue))
+            Button (
+                action: {
+                    self.isHiddenLoginView = false
+                    self.isHiddenSignupView = true
+                },
+                label: {
+                    HStack {
+                        Image(systemName: "chevron.left")
+                            .foregroundColor(Color(UIColor.systemBlue))
+                            .font(title2Custom)
+                        Text("Back")
+                            .foregroundColor(Color(UIColor.systemBlue))
+                            .font(title2Custom)
+                    }
                 }
-            })
+            )
+                .padding()
             
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading,spacing: mainViewSpacing) {
-                    VStack {
+                    VStack(spacing: textFieldSpace){
                         Text("I am full of thoughts to share with you")
                             .foregroundColor(.appFontColorBlack)
                             .font(.largeTitle)
                             .fontWeight(.regular)
                             .multilineTextAlignment(.leading)
                             .fixedSize(horizontal: false, vertical: true)
+                            .padding()
                         
-                        Text(self.signupError)
-                            .foregroundColor(Color(UIColor.systemRed))
-                            .font(title3Custom)
-                            .fontWeight(.regular)
-                            .isHidden(self.isShowingSignupError, remove: self.isShowingSignupError)
-                    }
-
-                    VStack(spacing: textFieldSpace){
                         ZStack {
                             TransparentRoundedBackgroundView(cornerRadius: cornerRadiusTextField)
                             VStack(alignment: .leading) {
@@ -73,7 +75,6 @@ struct SignupView: View {
                                     .fontWeight(.semibold)
                                     .foregroundColor(.appFontColorBlack)
                                 TextField("", text: $email)
-                                    .autocapitalization(.none)
                             }
                             .padding()
                         }
@@ -107,42 +108,38 @@ struct SignupView: View {
                                 Text("Password")
                                     .fontWeight(.semibold)
                                     .foregroundColor(.appFontColorBlack)
-                                SecureField("", text: $password)
-                                
-                                
+                                TextField("", text: $password)
                             }
                             .padding()
                         }
                         .frame(height: viewHeightTextField, alignment: .center)
                     }
-                    .zIndex(1.0)
+                        .padding()
                     
-                    Button(action: {
-                        if self.email != "" && self.firstName != "" && self.lastName != "" && self.password != "" {
-                            print("---- signing up!")
-                                self.signup()
-                        }
-                        else {
-                            print("---- ERROR!")
-                            self.isShowingSignupError = true
-                            self.signupError = "Error missing signup field"
-                            
-                        }
-                    }, label: {
-                        Text("Signup")
-                            .foregroundColor(.white)
-                            .fontWeight(.semibold)
-                    })
-                        .frame(width: 300, height: 60, alignment: .center)
-                        .background(Color.appGreen)
-                        .cornerRadius(cornerRadious, antialiased: true)
-                        .shadow(radius: 50)
-                        .animation(.easeIn)
+                    VStack {
+                        Button(action: {
+                            if self.email != "" && self.firstName != "" && self.lastName != "" && self.password != "" {
+                                    print("signup")
+                            }
+                            else {
+                                self.signupError = "Error missing signup field"
+                            }
+                        }, label: {
+                            Text("Signup")
+                                .foregroundColor(.white)
+                                .fontWeight(.semibold)
+                        })
+                        .frame(width: (width ?? CGFloat(200))*0.70, height: 60, alignment: .center)
+                            .background(Color.appGreen)
+                            .cornerRadius(cornerRadious, antialiased: true)
+                            .shadow(radius: 50)
+                            .animation(.easeIn)
+                    }
+                        .alignmentGuide(.leading, computeValue: { _ in ( -((width ?? CGFloat(200)) - (width ?? CGFloat(200))*0.70)/2)})
+                    
                 }
-                .padding()
+                
             }
-            NavigationLink(destination: ChatView(rootViewIsActive: self.$rootViewIsActive).environment(\.managedObjectContext, moc) .environmentObject(userInformation).environmentObject(messages).environmentObject(googleDelegate), isActive: self.$rootViewIsActive){EmptyView()}
-                    .isDetailLink(false)
         }
             .background(
                 LinearGradient(
@@ -159,6 +156,7 @@ struct SignupView: View {
                     .blur(radius: backgroundBlurRadious)
                     .edgesIgnoringSafeArea(.all)
             )
+            .frame(width: self.width, height: self.height)
             .onAppear(perform: {
                 // Set current view
                 userInformation.currentView = "Signup"

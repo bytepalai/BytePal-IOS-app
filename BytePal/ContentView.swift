@@ -12,15 +12,17 @@ import Foundation
 struct ContentView: View {
     var body: some View {
         
-//        LoginView()
-
-        NavigationLinkPopToRoot()
+        LoginView()
+        
+//        NavigationLinkPopToRootEnvObj()
+        
+//        SheetView()
         
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        /*@START_MENU_TOKEN@*/Text("Hello, World!")/*@END_MENU_TOKEN@*/
-    }
-}
+//struct ContentView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        /*@START_MENU_TOKEN@*/Text("Hello, World!")/*@END_MENU_TOKEN@*/
+//    }
+//}

@@ -30,6 +30,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Information on device Group
         let deviceInfo = DeviceInfo()
         
+        // PopToRootViewEnvObj (Proof of concept)
+        let popToRootView: NavLinkPopToRoot = NavLinkPopToRoot()
+        
         // Create Objet to store user ID
         // Get the googleDelegate from AppDelegate
         let userInformation = UserInformation()
@@ -38,7 +41,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         // Create the SwiftUI view and set the context as the value for the managedObjectContext environment keyPath.
         // Add `@Environment(\.managedObjectContext)` in the views that will need the context.
-        let contentView = ContentView().environment(\.managedObjectContext, context).environmentObject(messages).environmentObject(userInformation).environmentObject(googleDelegate).environmentObject(deviceInfo)
+        let contentView = ContentView().environment(\.managedObjectContext, context).environmentObject(messages).environmentObject(userInformation).environmentObject(googleDelegate).environmentObject(deviceInfo).environmentObject(popToRootView)
 
         // Use a UIHostingController as window root view controller.
         if let windowScene = scene as? UIWindowScene {

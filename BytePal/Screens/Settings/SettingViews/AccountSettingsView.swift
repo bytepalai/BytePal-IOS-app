@@ -43,17 +43,10 @@ struct AccountSettingsView: View {
                 
             GeometryReader { proxy in
                 List {
-                    //TODO: use data arry instead of hardcoded strings and destinations
-                    NavigationLink(
-                        destination: Text("Destination"),
-                        label: {
-                            TitleWithSubTitleCell(title: "Email", subTitle: self.userInformation.email)
-                        })
-//                        TextLink(title: "About", url: "Terms and Conditions")
-                    TextLink(title: "Terms and Conditions", url: "Terms and Conditions")
-                    TextLink(title: "Privacy Policy", url: "Privacy Policy")
-                    
-                    
+                    TitleWithSubTitleCell(title: "Email", subTitle: self.userInformation.email)
+                    TextLink(name: "Terms and Conditions")
+                    TextLink(name: "Privacy Policy")
+
                     Button(action: {
                         self.logout()
                     }, label: {
@@ -144,16 +137,21 @@ struct TitleWithSubTitleCell: View {
 }
 
 struct TextLink: View {
-    var title: String
-    var url: String
+    var name: String
+    @State var isShowingDetail: Bool = false
     
     var body: some View {
-        NavigationLink(
-            destination: self.getWebPage(name: url),
-            label: {
-                Text(title)
-            }
-        )
+        Button(action: {
+            self.isShowingDetail.toggle()
+        }, label: {
+            Text(name)
+        })
+            .sheet(
+                isPresented: self.$isShowingDetail,
+                content: {
+                    WebView(url: URL(string: self.getWebURL(name: name))!)
+                }
+            )
             .padding([.top, .bottom], 20)
     }
 }
@@ -171,6 +169,20 @@ extension TextLink {
         }
         
         return Page(request: URLRequest(url: URL(string: url)!))
+    }
+    
+    func getWebURL(name: String) -> String{
+        var url: String = ""
+        
+        if name == "Terms and Conditions" {
+            url = termsAndConditions
+        } else if name == "Privacy Policy" {
+            url = privacyPolicy
+        } else {
+            url = "Error"
+        }
+        
+        return url
     }
 }
 
