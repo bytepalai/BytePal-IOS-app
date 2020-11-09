@@ -36,18 +36,6 @@ struct SignupView: View {
 
     var body: some View {
         VStack(alignment: .leading) {
-            Button(action: {
-                self.isHiddenLoginView = false
-                self.isHiddenSignupView = true
-            }, label: {
-                HStack {
-                    Image(systemName: "chevron.compact.left")
-                        .foregroundColor(Color(UIColor.systemBlue))
-                    Text("Back")
-                        .foregroundColor(Color(UIColor.systemBlue))
-                }
-            })
-            
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading,spacing: mainViewSpacing) {
                     VStack {
@@ -166,7 +154,6 @@ struct SignupView: View {
     }
     
     func signup () {
-        print("---- test1")
         let semaphore = DispatchSemaphore (value: 0)
         let parameters = """
         {
@@ -235,8 +222,6 @@ struct SignupView: View {
     }
     
     func createAgent(id: String) {
-        print("---- CREATE test1")
-    
         var err: Int = 0
         let semaphore = DispatchSemaphore (value: 0)
         let createAgentParameter = """

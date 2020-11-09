@@ -12,9 +12,9 @@ import Foundation
 struct ContentView: View {
     var body: some View {
         
-//        LoginView()
+        LoginView()
 
-        NavigationLinkPopToRoot()
+//        NavigationLinkPopToRoot()
         
     }
 }

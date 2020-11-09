@@ -47,18 +47,23 @@ struct NavigationBar: View {
                     .padding(EdgeInsets(top: 6, leading: 0, bottom: 32, trailing: 0))
             })
             
-            Button(action: {
-                isHiddenHomeView = true
-                isHiddenChatView = true
-                isHiddenAccountSettingsView = false
-            }, label: {
-                Image(systemName: "person.fill")
-                    .font(.system(size: 34))
-                    .foregroundColor(convertHextoRGB(hexColor: "EAEEED"))
-                    .shadow(color: convertHextoRGB(hexColor: "000000").opacity(0.48), radius: 3, x: 3, y: 7)
-                    .padding(EdgeInsets(top: 0, leading: 64, bottom: 32, trailing: 0))
-            })
-
+            NavigationLink(destination: AccountSettingsView(
+                width: self.width,
+                height: self.height,
+                rootViewIsActive: self.$rootViewIsActive,
+                isHiddenHomeView: self.$isHiddenHomeView,
+                isHiddenChatView: self.$isHiddenChatView,
+                isHiddenAccountSettingsView: self.$isHiddenAccountSettingsView
+            ).environment(\.managedObjectContext, moc) .environmentObject(userInformation).environmentObject(messages).environmentObject(googleDelegate))
+                {
+                    Image(systemName: "person.fill")
+                        .font(.system(size: 34))
+                        .foregroundColor(convertHextoRGB(hexColor: "EAEEED"))
+                        .shadow(color: convertHextoRGB(hexColor: "000000").opacity(0.48), radius: 3, x: 3, y: 7)
+                        .padding(EdgeInsets(top: 0, leading: 64, bottom: 32, trailing: 0))
+                }
+                .isDetailLink(false)
+            
         }
             .frame(width: width, height: height)
             .background(convertHextoRGB(hexColor: "9FA7A3"))
