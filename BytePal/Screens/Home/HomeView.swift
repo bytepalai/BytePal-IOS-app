@@ -60,7 +60,7 @@ struct HomeView: View {
                             MessageCellScrollView(
                                 rootViewIsActive: self.$rootViewIsActive,
                                 isHiddenHomeView: self.$isHiddenHomeView,
-                                isHiddenIAPView: self.$isHiddenIAPView
+                                isHiddenChatView: self.$isHiddenChatView
                             )
                         }
                     }
@@ -143,6 +143,7 @@ struct UpgradeButton: View {
     @EnvironmentObject var userInformation: UserInformation
 //    @State var isShowingIAPView: Bool = false
     @State var messagesLeftAmount: String = ""
+    @State var isShowingPurchaseView: Bool = false
     
     
     var body: some View {
@@ -155,8 +156,7 @@ struct UpgradeButton: View {
                         Text(messagesLeftAmount)
                             .bold()
                         Button(action: {
-                            self.isHiddenHomeView = true
-                            self.isHiddenIAPView = false
+                            self.isShowingPurchaseView.toggle()
                         }) {
                             Text("Upgrade")
                                 .font(.title)
@@ -164,6 +164,12 @@ struct UpgradeButton: View {
                                 .fontWeight(.bold)
                                 .padding(EdgeInsets(top: 8, leading: 0, bottom: 0, trailing: 0))
                         }
+                            .sheet(
+                                isPresented: self.$isShowingPurchaseView,
+                                content: {
+                                    PurchaseView()
+                                }
+                            )
                     }
                         .font(title2Custom)
                         .foregroundColor(.gray)
@@ -189,7 +195,7 @@ struct UpgradeButton: View {
 struct MessageCellScrollView: View {
     @Binding var rootViewIsActive: Bool
     @Binding var isHiddenHomeView: Bool
-    @Binding var isHiddenIAPView: Bool
+    @Binding var isHiddenChatView: Bool
     @State var userCellAppear: Bool = false
     @State var bytePalCellAppear: Bool = false
     @EnvironmentObject var messages: Messages
@@ -198,11 +204,31 @@ struct MessageCellScrollView: View {
         ScrollView {
             VStack {
                 if self.messages.list.count != 0 {
-                    HomeMessageCell(rootViewIsActive: self.$rootViewIsActive, isHiddenHomeView: self.$isHiddenHomeView, isHiddenIAPView: self.$isHiddenIAPView, messageCreator: .user(message: self.messages.list[1]["content"] as! String))
-                    HomeMessageCell(rootViewIsActive: self.$rootViewIsActive, isHiddenHomeView: self.$isHiddenHomeView, isHiddenIAPView: self.$isHiddenIAPView, messageCreator: .bytePal(message: self.messages.list[0]["content"] as! String))
+                    HomeMessageCell(
+                        rootViewIsActive: self.$rootViewIsActive,
+                        isHiddenHomeView: self.$isHiddenHomeView,
+                        isHiddenIAPView: self.$isHiddenChatView,
+                        messageCreator: .user(
+                            message: self.messages.list[1]["content"] as! String))
+                    HomeMessageCell(
+                        rootViewIsActive: self.$rootViewIsActive,
+                        isHiddenHomeView: self.$isHiddenHomeView,
+                        isHiddenIAPView: self.$isHiddenChatView,
+                        messageCreator: .bytePal(
+                            message: self.messages.list[0]["content"] as! String))
                 } else {
-                    HomeMessageCell(rootViewIsActive: self.$rootViewIsActive, isHiddenHomeView: self.$isHiddenHomeView, isHiddenIAPView: self.$isHiddenIAPView, messageCreator: .user(message: "No messages sent to BytePal"))
-                    HomeMessageCell(rootViewIsActive: self.$rootViewIsActive, isHiddenHomeView: self.$isHiddenHomeView, isHiddenIAPView: self.$isHiddenIAPView, messageCreator: .bytePal(message: "No messages received from BytePal"))
+                    HomeMessageCell(
+                        rootViewIsActive: self.$rootViewIsActive,
+                        isHiddenHomeView: self.$isHiddenHomeView,
+                        isHiddenIAPView: self.$isHiddenChatView,
+                        messageCreator: .user(message: "No messages sent to BytePal")
+                    )
+                    HomeMessageCell(
+                        rootViewIsActive: self.$rootViewIsActive,
+                        isHiddenHomeView: self.$isHiddenHomeView,
+                        isHiddenIAPView: self.$isHiddenChatView,
+                        messageCreator: .bytePal(message: "No messages received from BytePal")
+                    )
                 }
                 
             }

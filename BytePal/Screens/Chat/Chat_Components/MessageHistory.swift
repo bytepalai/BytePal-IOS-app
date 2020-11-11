@@ -24,7 +24,7 @@ struct MessageHistory: View{
     @Environment(\.managedObjectContext) var moc
     @EnvironmentObject var messages: Messages
     @EnvironmentObject var userInformation: UserInformation
-    @ObservedObject private var keyboard = KeyboardResponder()
+    @ObservedObject var keyboard = KeyboardResponder()
 //    @ObservedObject var productStore: ProductsStore = ProductsStore()
     @ObservedObject var iapViewModel: IAPViewModel = IAPViewModel()
     @State var tempUserID: String = ""
@@ -78,7 +78,12 @@ struct MessageHistory: View{
                         .rotationEffect(.radians(.pi))
                 }
             }
-                .frame(width: (width ?? CGFloat(100)), height: (height ?? CGFloat(200))*0.72 - keyboard.currentHeight)
+                .frame(
+                    width: (width ?? CGFloat(100)),
+                    height: self.keyboard.isUp ?
+                        ((height ?? CGFloat(200))*0.82 - keyboard.currentHeight):   // keyboard up (+ 8% for nav. bar)
+                        ((height ?? CGFloat(200))*0.72)
+                )
                 .rotationEffect(.radians(.pi))
                 .onAppear {
 
@@ -147,7 +152,7 @@ struct MessageHistory: View{
                     height: (height ?? CGFloat(200))*0.02,
                     alignment: .top
                 )
-                .padding([.bottom], (height ?? CGFloat(200))*0.06 + keyboard.currentHeight)
+                .padding([.bottom], keyboard.isUp ? 0 : (height ?? CGFloat(200))*0.06)
             
             // NavigationBar (height: 10%)
             NavigationBar(
@@ -159,6 +164,7 @@ struct MessageHistory: View{
                 isHiddenChatView: self.$isHiddenChatView,
                 isHiddenAccountSettingsView: self.$isHiddenAccountSettingsView
             )
+                .isHidden(keyboard.isUp, remove: keyboard.isUp)
             
         }
             .frame(alignment: .bottom)

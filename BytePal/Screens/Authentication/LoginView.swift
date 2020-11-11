@@ -94,11 +94,12 @@ struct LoginView: View {
                         isHiddenSignupView: self.$isHiddenSignupView
                     )
                     
-                }.onAppear(perform: {
-                    self.onAppearLoginView()
-                })
+                }
+                    .onAppear(perform: {
+                        self.onAppearLoginView()
+                    })
             }
-                .navigationBarBackButtonHidden(true)
+                .navigationBarHidden(true)
                 .isHidden(self.isHiddenLoginView, remove: isHiddenLoginView)
             
             // Signup View
@@ -113,8 +114,6 @@ struct LoginView: View {
         
         }
             
-        
-        
         NavigationLink(destination: ChatView(rootViewIsActive: self.$rootViewIsActive).environment(\.managedObjectContext, moc) .environmentObject(userInformation).environmentObject(messages).environmentObject(googleDelegate), isActive: self.$rootViewIsActive){EmptyView()}
                 .isDetailLink(false)
         

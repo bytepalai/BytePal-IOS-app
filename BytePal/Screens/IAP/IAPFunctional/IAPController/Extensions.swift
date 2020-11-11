@@ -22,11 +22,14 @@ extension SKProduct {
             let dateString = formatter.string(from: expDate)
             
             if Date() > expDate {
+                print("Subscription expired: \(localizedTitle) at: \(dateString)")
                 return "Subscription expired: \(localizedTitle) at: \(dateString)"
             } else {
+                print("Subscription active: \(localizedTitle) until:\(dateString)")
                 return "Subscription active: \(localizedTitle) until:\(dateString)"
             }
         } else {
+            print("Subscription not purchased: \(localizedTitle)")
             return "Subscription not purchased: \(localizedTitle)"
         }
     }

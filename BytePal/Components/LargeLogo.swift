@@ -40,7 +40,8 @@ struct LargeLogo: View {
                 top: (height ?? CGFloat(200))*0.125,
                 leading: 16,
                 bottom: (height ?? CGFloat(200))*0.025,
-                trailing: 16)
+                trailing: 16
+            )
         )
     }
 }

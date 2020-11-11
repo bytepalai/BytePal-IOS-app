@@ -63,37 +63,14 @@ struct PurchaseView : View {
         // remake to ScrollView if has more than 2 products because they won't fit on screen.
         VStack {
             ForEach(ProductsStore.shared.products, id: \.self) { prod in
-
                 VStack {
-                PurchaseButton(block: {
-                    self.purchaseProduct(skproduct:prod)
-                    //Spacer()
-                }, product: prod).disabled(IAPManager.shared.isActive(product:prod))
-                    Spacer()
-                    Spacer()
+                    PurchaseButton(block: {
+                        self.purchaseProduct(skproduct:prod)
+                    }, product: prod).disabled(IAPManager.shared.isActive(product:prod))
+                        Spacer()
+                        Spacer()
                 }
-
-                /*PurchaseButton(block: {
-                    self.purchaseProduct(skproduct:ProductsStore.shared.products[0])
-                    //Spacer()
-                }, product: ProductsStore.shared.products[0]).disabled(IAPManager.shared.isActive(product: ProductsStore.shared.products[0]))
-
-            Spacer()
-            Spacer()
-
-             PurchaseButton(block: {
-                              self.purchaseProduct(skproduct:ProductsStore.shared.products[1])
-                              //Spacer()
-                          }, product: ProductsStore.shared.products[1]).disabled(IAPManager.shared.isActive(product: ProductsStore.shared.products[1]))
-            Spacer()
-            Spacer()
-              PurchaseButton(block: {
-                              self.purchaseProduct(skproduct:ProductsStore.shared.products[2])
-                              //Spacer()
-                          }, product: ProductsStore.shared.products[2]).disabled(IAPManager.shared.isActive(product: ProductsStore.shared.products[2]))*/
             }
-            //Spacer()
-            //Spacer()
         }
     }
 

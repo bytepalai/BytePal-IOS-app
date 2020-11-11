@@ -40,6 +40,7 @@ class IAPManager : NSObject{
         self.didLoadsProducts = callback
         self.sharedSecret = sharedSecret
         self.productIds = arrayOfIds // The error is happening right here
+        
         loadProducts()
     }
 
@@ -176,6 +177,23 @@ class IAPManager : NSObject{
         request.delegate = self
         request.start()
     }
+    
+//    private func sortProducts(products: [SKProduct], completion: @escaping ([SKProduct]) -> Void) {
+//        for index in 1..<products.count {
+//            var value = products[index].price.doubleValue
+//            var product = products[index]
+//            var position = index
+//
+//            while position > 0 && products[position - 1].price.doubleValue > value {
+//                self.products[position] = products[position - 1]
+//                position -= 1
+//            }
+//
+//            self.products[position] = product
+//        }
+//
+//        completion(products)
+//    }
 
     private func cleanUpRefeshReceiptBlocks(){
         self.refreshSubscriptionSuccessBlock = nil
@@ -202,14 +220,22 @@ extension IAPManager : SKRequestDelegate {
     }
 }
 
+extension SKProduct {
+    
+}
+
 // MARK:- SKProducts Request Delegate
 
 extension IAPManager: SKProductsRequestDelegate {
 
     public func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
+        
+        // Load products
         products = response.products
+        
         DispatchQueue.main.async {
             NotificationCenter.default.post(name: IAP_PRODUCTS_DID_LOAD_NOTIFICATION, object: nil)
+            
             if response.products.count > 0 {
                 self.didLoadsProducts?(self.products)
                 self.didLoadsProducts = nil

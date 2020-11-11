@@ -27,7 +27,9 @@ class Receipt {
         request.httpMethod = "POST"
         //Define body of POST Request
         // Change this to the environment variable when the user logs in
-        let userID = "$2b$12$xJXcbdImoWCCa4oQlPO0J.Y0YhA0/y3NycPJAQfT.GevVxki4biXu"
+        let userInformation: UserInformation = UserInformation()
+        let userID = userInformation.id
+        print("----------- receipt(USER ID): \(userInformation.id)")
         
         let parameters : Parameters = [
             "user_id": userID,

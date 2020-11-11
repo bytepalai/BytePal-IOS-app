@@ -594,9 +594,9 @@
 		6CC3502824DA1F4D0036808C /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				6C5CE9EF24D8FF3B004DCAB0 /* LaunchScreen.storyboard */,
 				5E13055124FF2F3A00DDF48E /* Share */,
 				5E86E57824F6D11F00D63448 /* IAP */,
-				6C5CE9EF24D8FF3B004DCAB0 /* LaunchScreen.storyboard */,
 				6CC3503424DA21920036808C /* Authentication */,
 				6CC3502A24DA20E10036808C /* Signup */,
 				6C5CEA0B24D9006F004DCAB0 /* Home */,
@@ -1067,14 +1067,14 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = BytePal/BytePalDebug.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = PCK46MLF23;
 				INFOPLIST_FILE = BytePal/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 1.12;
 				PRODUCT_BUNDLE_IDENTIFIER = "BytePal-AI";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1091,14 +1091,14 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = BytePal/BytePalRelease.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = PCK46MLF23;
 				INFOPLIST_FILE = BytePal/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 1.12;
 				PRODUCT_BUNDLE_IDENTIFIER = "BytePal-AI";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

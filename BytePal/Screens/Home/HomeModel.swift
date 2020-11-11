@@ -24,3 +24,5 @@ let homeViewCardType: [String] = [
     "BytePal",
     "BytePal"
     ]
+
+// Card button types
