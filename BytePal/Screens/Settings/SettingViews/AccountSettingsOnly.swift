@@ -1,46 +1,25 @@
 import SwiftUI
 
 struct AccountSettingsViewOnly: View {
+    var width: CGFloat?
+    var height: CGFloat?
     var email: String = ""
     @State var name: String = ""
     @State var fullName: String = "ExampleUsername"
     
     var body: some View {
         VStack {
-            
-            VStack(alignment:.leading) {
-                Text("Account")
-                    .foregroundColor(.appFontColorBlack)
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
+            // Share button
+            ShareViewAccountSettingsOnly(width: width, height: (height ?? CGFloat(500))*0.30)
                 
-                HStack {
-                    Image("profileImage")
-                        .resizable()
-                        .frame(width: 100, height: 100, alignment: .center)
-                        .clipShape(Circle())
-                        .overlay(Circle().strokeBorder(Color.appTranspatentWhite, lineWidth: 5, antialiased: true)  )
-                        .shadow(radius: 50)
-                    BytePalTextFieldView(title: "Username", textFieldPlaceHolder: "", text: self.$fullName)
-                        .disabled(true)
-
-                }
-            }
-            .padding()
-            .padding(.bottom, 100)
-            .background(LinearGradient(gradient: Gradient(colors: [Color.appGreen, Color.appLightGreen]), startPoint: .bottomLeading, endPoint: .topLeading)
-                            .blur(radius: 100.0)
-                            .edgesIgnoringSafeArea(.all))
-            
             GeometryReader { proxy in
                 List {
-                    TitleWithSubTitleCellOnly(title: "Email", subTitle: "example@domain.com")
-                    TextLinkOnly(title: "Terms and Conditions", url: "Terms and Conditions")
-                    TextLinkOnly(title: "Privacy Policy", url: "Privacy Policy")
-                    
-                    
+                    TitleWithSubTitleCell(title: "Email", subTitle: "example@gmail.com")
+                    TextLink(name: "Terms and Conditions")
+                    TextLink(name: "Privacy Policy")
+
                     Button(action: {
-                        print("Logout")
+                        print("logout")
                     }, label: {
                         Text("Logout")
                             .foregroundColor(.darkRed)
@@ -58,8 +37,12 @@ struct AccountSettingsViewOnly: View {
                 .offset(x: 10, y: -proxy.size.height/6)
             }
             .background(Color.appLightGray)
-            .edgesIgnoringSafeArea(.all)
+            
+            
+            NavigationBarOnly(width: (width ?? CGFloat(200)), height: (height ?? CGFloat(400))*0.08, color: Color(UIColor.systemGray3))
+            
         }
+            .edgesIgnoringSafeArea(.bottom)
     }
 }
 
@@ -111,10 +94,8 @@ extension TextLinkOnly {
 struct AccountSettingsViewOnly_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-//            AccountSettingsViewOnly()
-//                .environment(\.colorScheme, .dark)
-            
-            AccountSettingsViewOnly()
+
+            AccountSettingsViewOnly(width: CGFloat(414),height: CGFloat(800) )
                 .environment(\.colorScheme, .light)
         }
     }

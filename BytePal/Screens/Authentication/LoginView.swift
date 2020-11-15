@@ -134,10 +134,10 @@ struct LoginView: View {
             userInformation.currentView = "Login"
             
             // Load messages from cache
-            NetworkStatus.checkNetworkStatus(completion: {netStat in
-                let isNotConnected: Bool = !netStat["status"]!
-                
-                if userInformation.currentView == "Login" &&  isNotConnected {
+//            NetworkStatus.checkNetworkStatus(completion: {netStat in
+//                let isNotConnected: Bool = !netStat["status"]!
+//
+//                if userInformation.currentView == "Login" &&  isNotConnected {
                     print("-------------------- CACHE --------------------- ")
                     var messageNumber: Int = 0
                     if self.MessagesCoreData.isEmpty != true {
@@ -157,8 +157,8 @@ struct LoginView: View {
                         self.messages.lastMessages.append(userNoMessages)
                         self.messages.lastMessages.append(chatbotNoMessages)
                     }
-                }
-            })
+//                }
+//            })
 
             // Load user information from cache and go to Chat View (login)
             if self.socialMediaAuth.getAccountLoginStatus(personalLoginStatus: self.userInformation.isLoggedIn) != "logged out" {
@@ -227,8 +227,8 @@ struct LoginView: View {
                         
                         
                         // Load messages from server
-                        NetworkStatus.checkNetworkStatus(completion: { netStat in
-                            if netStat["status"] == true {
+//                        NetworkStatus.checkNetworkStatus(completion: { netStat in
+//                            if netStat["status"] == true {
                                 print("-------------------- SERVER --------------------- ")
                                 
                                 DispatchQueue.main.async {
@@ -238,8 +238,10 @@ struct LoginView: View {
                                     // Set user id
                                     self.userInformation.id = user_id
                                 }
-                            }
-                        })
+//                            }
+//                        })
+                        
+                        print("-------- userID (Login, response): \(user_id)")
     
                         // Set Personal login status, email
                         DispatchQueue.main.async {
@@ -247,6 +249,8 @@ struct LoginView: View {
                             self.userInformation.id = user_id
                             self.userInformation.email = self.email
                         }
+                        
+                        print("-------- userID (UserInformation): \(self.userInformation.id)")
                         
                         // Clear states
                         self.email = ""
@@ -364,11 +368,11 @@ struct FacebookLoginButton: View {
             self.loginFB(completion: { id in
                 
                 // Load messages from server
-                NetworkStatus.checkNetworkStatus(completion: { netStat in
+//                NetworkStatus.checkNetworkStatus(completion: { netStat in
                     
-                    print("-------- NetStat Completion: \(netStat)")
+//                    print("-------- NetStat Completion: \(netStat)")
                     
-                    if netStat["status"] == true {
+//                    if netStat["status"] == true {
                         print("-------------------- SERVER (Facebook) --------------------- ")
                         
                         DispatchQueue.main.async {
@@ -377,8 +381,8 @@ struct FacebookLoginButton: View {
                             self.rootViewIsActive = true
                             print("------ change root view: \(self.rootViewIsActive)")
                         }
-                    }
-                })
+//                    }
+//                })
             })
         }){
             VStack {

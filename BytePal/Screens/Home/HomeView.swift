@@ -9,6 +9,7 @@
 import SwiftUI
 
 struct HomeView: View {
+    var userID: String?
     let width: CGFloat?
     let height: CGFloat?
     var number: NumberController = NumberController()
@@ -53,6 +54,7 @@ struct HomeView: View {
                         VStack {
                             CompanyLogo()
                             UpgradeButton(
+                                userID: self.userID,
                                 rootViewIsActive: self.$rootViewIsActive,
                                 isHiddenHomeView: self.$isHiddenHomeView,
                                 isHiddenIAPView: self.$isHiddenIAPView
@@ -135,6 +137,7 @@ struct CompanyLogo: View {
 }
 
 struct UpgradeButton: View {
+    var userID: String?
     @Binding var rootViewIsActive: Bool
     @Binding var isHiddenHomeView: Bool
     @Binding var isHiddenIAPView: Bool
@@ -187,7 +190,8 @@ struct UpgradeButton: View {
 //                    destination: IAPView(productsStore: ProductsStore.shared, viewModel: .init(), rootViewIsActive: self.$rootViewIsActive).environment(\.managedObjectContext, moc) .environmentObject(userInformation).environmentObject(messages)){EmptyView()}
         }
             .onAppear(perform: {
-                messagesLeftAmount = self.messages.getMessagesLeft(userID: self.userInformation.id)
+                print("------ messages left \(self.userID ?? "Error: user ID not set")")
+                messagesLeftAmount = self.messages.getMessagesLeft(userID: self.userID ?? "Error: user ID not set")
             })
     }
 }

@@ -86,7 +86,7 @@ struct MessageHistory: View{
                 )
                 .rotationEffect(.radians(.pi))
                 .onAppear {
-
+                    
                     UITableView.appearance().separatorStyle = .none
                     
                     if #available(iOS 14.0, *) {
@@ -106,6 +106,7 @@ struct MessageHistory: View{
                         UIApplication.shared.endEditing()
                     }
                 })
+                
             
             // Message bar
             DividerCustom(color: Color(UIColor.systemGray3), length: Float(width ?? CGFloat(100)), width: 1)
@@ -174,9 +175,10 @@ struct MessageHistory: View{
                 self.tempUserID = self.userInformation.id
             })
             .isHidden(self.isHiddenChatView, remove: self.isHiddenChatView)
-        
+
         // Home
         HomeView(
+            userID: self.tempUserID,
             width: self.width,
             height: self.height,
             rootViewIsActive: self.$rootViewIsActive,

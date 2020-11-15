@@ -119,7 +119,7 @@ struct SignupView: View {
                     VStack {
                         Button(action: {
                             if self.email != "" && self.firstName != "" && self.lastName != "" && self.password != "" {
-                                    print("signup")
+                                self.signup()
                             }
                             else {
                                 self.signupError = "Error missing signup field"
@@ -209,7 +209,7 @@ struct SignupView: View {
                     }
                     
                     // Write user information to RAM
-                    DispatchQueue.global(qos: .userInitiated).async {
+                    DispatchQueue.main.async {
                         self.userInformation.id = userID
                         self.userInformation.email = self.email
                         self.userInformation.firstName = self.firstName
@@ -233,7 +233,6 @@ struct SignupView: View {
     }
     
     func createAgent(id: String) {
-        print("---- CREATE test1")
     
         var err: Int = 0
         let semaphore = DispatchSemaphore (value: 0)
