@@ -19,15 +19,14 @@ struct MessageHistory: View{
     let height: CGFloat?
     @Binding var rootViewIsActive: Bool
     var container: NSPersistentContainer!
-    @FetchRequest(entity: Message.entity(), sortDescriptors: []) var MessagesCoreData: FetchedResults<Message>
-    @FetchRequest(entity: User.entity(), sortDescriptors: []) var UserInformationCoreData: FetchedResults<User>
+    @FetchRequest(entity: Message.entity(), sortDescriptors: []) var MessagesCoreDataRead: FetchedResults<Message>
+    @FetchRequest(entity: User.entity(), sortDescriptors: []) var UserInformationCoreDataRead: FetchedResults<User>
     @Environment(\.managedObjectContext) var moc
     @EnvironmentObject var messages: Messages
     @EnvironmentObject var userInformation: UserInformation
     @ObservedObject var keyboard = KeyboardResponder()
 //    @ObservedObject var productStore: ProductsStore = ProductsStore()
     @ObservedObject var iapViewModel: IAPViewModel = IAPViewModel()
-    @State var tempUserID: String = ""
     @State public var textFieldString: String = ""
     @State public var messageString: String = ""
     @State var TextForMultiLine: String =
@@ -86,7 +85,6 @@ struct MessageHistory: View{
                 )
                 .rotationEffect(.radians(.pi))
                 .onAppear {
-                    
                     UITableView.appearance().separatorStyle = .none
                     
                     if #available(iOS 14.0, *) {
@@ -171,14 +169,27 @@ struct MessageHistory: View{
             .frame(alignment: .bottom)
             .edgesIgnoringSafeArea(.bottom)
             .onAppear(perform: {
+                for userInfo in UserInformationCoreDataRead {
+                    print("------ user info(number): \(UserInformationCoreDataRead.count)")
+                    print("-------- Personal Login (id): \(userInfo.id)")
+                    print("-------- Personal Login (email): \(userInfo.email)")
+                    print("-------- Personal Login (isLoggedIn): \(userInfo.isLoggedIn)")
+                }
                 // Fix, dissapearing id in env obj userInformation
-                self.tempUserID = self.userInformation.id
+                print("------- userID (Chat): \(self.userInformation.id)")
+//                print("------- userID (Chat): \(self.userInformation.email)")
+//                print("------- userID (Chat): \(self.userInformation.firstName)")
+//                print("------- userID (Chat): \(self.userInformation.lastName)")
+//                print("------- userID (Chat): \(self.userInformation.fullName)")
+//                print("------- userID (Chat): \(self.userInformation.messagesLeft)")
+//                print("------- userID (Chat): \(self.userInformation.isLoggedIn)")
+//                print("------- userID (Chat): \(self.userInformation.currentView)")
             })
             .isHidden(self.isHiddenChatView, remove: self.isHiddenChatView)
 
         // Home
         HomeView(
-            userID: self.tempUserID,
+            userID: self.userInformation.id,
             width: self.width,
             height: self.height,
             rootViewIsActive: self.$rootViewIsActive,
@@ -249,7 +260,7 @@ struct MessageHistory: View{
         let messageListCoreData = Message(context: self.moc)
         var message: String = ""
         
-        MakeRequest.sendMessage(message: self.messageString, userID: self.tempUserID){
+        MakeRequest.sendMessage(message: self.messageString, userID: self.userInformation.id){
             response1, response2 in
             
             message = response1

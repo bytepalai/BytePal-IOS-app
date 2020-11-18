@@ -36,7 +36,7 @@ struct ChatView: View {
         }
             .edgesIgnoringSafeArea(.bottom)
             .navigationBarHidden(true)
-            .onAppear(perform: {
+            .onAppear(perform: {                
                 // Set current view
                 userInformation.currentView = "Chat"
             })

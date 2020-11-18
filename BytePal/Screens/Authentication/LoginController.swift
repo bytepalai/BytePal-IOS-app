@@ -255,15 +255,13 @@ class GoogleDelegate: NSObject, GIDSignInDelegate, ObservableObject {
         let givenName: String = GIDSignIn.sharedInstance().currentUser!.profile.givenName
         let familyName: String = GIDSignIn.sharedInstance().currentUser!.profile.familyName
         
-        print("------- Google: \(clientID)")
-        
         let userID: String = bytepalAuth.googleLogin(
                                 id: clientID,
                                 email: email,
                                 first_name: givenName,
                                 last_name: familyName
                             )
-
+        
         if clientID != "" {
             // Save user metadata
             self.userID = userID

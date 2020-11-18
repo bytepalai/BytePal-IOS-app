@@ -84,6 +84,8 @@ struct UserBar: View {
         
         // Clear Environment Object
         //// User info
+        
+        print("---------- !!!USERBAR!!! ----------")
         self.userInformation.id = ""
         self.userInformation.email = ""
         self.userInformation.firstName = ""

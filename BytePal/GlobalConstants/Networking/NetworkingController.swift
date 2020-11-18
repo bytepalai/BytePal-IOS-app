@@ -46,9 +46,6 @@ class NetworkStatus {
     
     static func getNetworkStatus() {
         let monitor = NWPathMonitor()
-        print("-------- status: \(monitor.currentPath.status)")
-        print("-------- isConstrained: \(monitor.currentPath.isConstrained)")
-        print("-------- availableInterfaces: \(monitor.currentPath.availableInterfaces)")
     }
     
     static func checkNetworkStatus(completion: @escaping ([String : Bool]) -> Void) {
@@ -57,15 +54,12 @@ class NetworkStatus {
         
         monitor.pathUpdateHandler = { path in
             if path.status == .satisfied {
-                print("----- Connected")
                 connectionStatus["status"] = true
             } else {
-                print("----- NOT Connected")
                 connectionStatus["status"] = false
             }
 
             connectionStatus["cellular"] = path.isExpensive ? true : false
-            print("------ cellular: \(connectionStatus["cellular"]! ? true: false)")
             completion(connectionStatus)
         }
         

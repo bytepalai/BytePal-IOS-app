@@ -92,9 +92,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate  {
     
     func signIn(signIn: GIDSignIn!, didSignInForUser user: GIDGoogleUser!,
       withError error: NSError!) {
-        
-        print("------------ USING THIS HANDLER --------")
-        
         if (error == nil) {
           print("Callback Success!!!")
         } else {

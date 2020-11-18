@@ -96,10 +96,11 @@ struct AccountSettingsView: View {
         for message in MessagesCoreDataRead {
             moc.delete(message)
         }
-        try? self.moc.save()
-        
+        DispatchQueue.main.async {
+            try? self.moc.save()
+        }
+
         // Clear Environment Object
-        //// User info
         self.userInformation.id = ""
         self.userInformation.email = ""
         self.userInformation.firstName = ""
@@ -113,7 +114,12 @@ struct AccountSettingsView: View {
         // Set personal login status to logged out
         let userInformationCoreDataWrite: User = User(context: self.moc)
         userInformationCoreDataWrite.isLoggedIn = false
-        try? self.moc.save()
+        DispatchQueue.main.async {
+            try? self.moc.save()
+        }
+        for userInfo in UserInformationCoreDataRead {
+            print("------------ LOGOUT (status): \(userInfo.isLoggedIn)")
+        }
         self.userInformation.isLoggedIn = false
         self.rootViewIsActive = false
 

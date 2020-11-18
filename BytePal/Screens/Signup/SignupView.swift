@@ -13,7 +13,7 @@ struct SignupView: View {
     var width: CGFloat?
     var height: CGFloat?
     var container: NSPersistentContainer!
-    @FetchRequest(entity: User.entity(), sortDescriptors: []) var UserInformationCoreData: FetchedResults<User>
+    @FetchRequest(entity: User.entity(), sortDescriptors: []) var UserInformationCoreDataRead: FetchedResults<User>
     @Environment(\.managedObjectContext) var moc
     @EnvironmentObject var userInformation: UserInformation
     @EnvironmentObject var messages: Messages
@@ -198,14 +198,34 @@ struct SignupView: View {
                     let reponseObject = try JSONDecoder().decode(responseStruct.self, from: data)
                     let userID: String = reponseObject.user_id
 
-                    // Write user information to cache
-                    let userInformationCoreDataWrite: User = User(context: self.moc)
-                    userInformationCoreDataWrite.id = userID
-                    userInformationCoreDataWrite.email = self.email
-                    userInformationCoreDataWrite.firstName = self.firstName
-                    userInformationCoreDataWrite.lastName = self.lastName
-                    DispatchQueue.global(qos: .background).async {
-                        try? self.moc.save()
+                    // Save user information to cache
+                    if UserInformationCoreDataRead.count == 0 {
+                        // Is not logged in
+                        
+                        let userInformationCoreDataWrite: User = User(context: self.moc)
+                        userInformationCoreDataWrite.id = userID
+                        userInformationCoreDataWrite.email = self.email
+                        userInformationCoreDataWrite.firstName = self.firstName
+                        userInformationCoreDataWrite.lastName = self.lastName
+                        DispatchQueue.main.async {
+                            try? self.moc.save()
+                        }
+                    } else if UserInformationCoreDataRead.count > 0 && UserInformationCoreDataRead[0].isLoggedIn == false {
+                        // Is logged (After termination)
+                        
+                        for userInformation in UserInformationCoreDataRead {
+                            moc.delete(userInformation)
+                        }
+                        
+                        let userInformationCoreDataWrite: User = User(context: self.moc)
+                        userInformationCoreDataWrite.id = userID
+                        userInformationCoreDataWrite.email = self.email
+                        userInformationCoreDataWrite.firstName = self.firstName
+                        userInformationCoreDataWrite.lastName = self.lastName
+                        
+                        DispatchQueue.main.async {
+                            try? self.moc.save()
+                        }
                     }
                     
                     // Write user information to RAM

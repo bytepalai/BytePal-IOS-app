@@ -30,8 +30,7 @@ struct GoogleLoginButtonOnly: View {
                         )
                             .padding([.leading, .trailing], (width ?? CGFloat(100))*0.03)
                 }
-            }.onAppear(perform: {
-            })
+            }
         }
     }
 }
