@@ -63,12 +63,13 @@ struct GoogleLoginButton: View {
                                         
                     // Saved userID if it exists
                     if self.googleDelegate.userID != "" {
-
+                        
+                        // Init IAP
+                        IAPManager.shared.initIAP(userID: self.googleDelegate.userID)
                         
                         // Save user information to cache
                         if UserInformationCoreDataRead.count == 0 {
                             // Is not logged in
-                            
                             let userInformationCoreDataWrite: User = User(context: self.moc)
                             userInformationCoreDataWrite.id = self.googleDelegate.userID
                             userInformationCoreDataWrite.email = self.googleDelegate.email

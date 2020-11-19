@@ -300,8 +300,8 @@
 			isa = PBXGroup;
 			children = (
 				6C5050D12555E1CA0067D78E /* IAPFunctional */,
-				6CA840E3254CA43A001A3F68 /* IAPViewOnly.swift */,
 				6C5050ED2555E3D20067D78E /* IAPView.swift */,
+				6CA840E3254CA43A001A3F68 /* IAPViewOnly.swift */,
 				6CE09C8D254391FD00936120 /* IAPModel.swift */,
 			);
 			path = IAP;

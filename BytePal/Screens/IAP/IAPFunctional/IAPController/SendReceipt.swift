@@ -8,9 +8,11 @@
 import Foundation
 import AVFoundation
 import Alamofire
+import SwiftUI
 
-class Receipt {
-    static func sendReceipt(productID:String,
+class Receipt {    
+    static func sendReceipt(userID: String,
+                            productID:String,
                             receiptUrl:String,
                             originalTransactionId:String,
                             purchaseDateMs:String,
@@ -26,10 +28,6 @@ class Receipt {
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpMethod = "POST"
         //Define body of POST Request
-        // Change this to the environment variable when the user logs in
-        let userInformation: UserInformation = UserInformation()
-        let userID = userInformation.id
-        print("----------- receipt(USER ID): \(userInformation.id)")
         
         let parameters : Parameters = [
             "user_id": userID,
@@ -57,10 +55,15 @@ class Receipt {
                    headers: headers
                   )
             .responseString  { response in
-                print(response.request) // original url request
-                print(response.response) // http url reponse
-            
-        }
+                
+                // IAP Purchase Error handeling
+                if response.response?.statusCode == 200 {
+                    print("Purchased subscription succesfully")
+                } else {
+                    print("Error: Subscription purchased unsecesfully. HTTP Status Code: \(String(describing: response.response?.statusCode))")
+                }
+                
+            }
         
     }
     

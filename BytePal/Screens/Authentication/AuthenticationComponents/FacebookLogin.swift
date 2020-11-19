@@ -32,17 +32,11 @@ struct FacebookLoginButton: View {
 
                 // Load messages from server
                 NetworkStatus.checkNetworkStatus(completion: { netStat in
-
-                    print("-------- NetStat Completion: \(netStat)")
-
                     if netStat["status"] == true {
-                        print("-------------------- SERVER (Facebook) --------------------- ")
-
                         DispatchQueue.main.async {
                             // Update messages
                             self.updateMessageHistoryServer(userID: id)
                             self.rootViewIsActive = true
-                            print("------ change root view: \(self.rootViewIsActive)")
                         }
                     }
                 })
@@ -115,8 +109,10 @@ struct FacebookLoginButton: View {
 
                         // Saved userID if it exists
                         if fbUserInformation["id"]! != "" {
-                            print("------- facebook: \(fbUserInformation["id"]!)")
-
+                            
+                            // Check IAP Subscription
+                            IAPManager.shared.initIAP(userID: fbUserInformation["id"]!)
+                            
                             // Create Agent
                             self.createAgent(id: fbUserInformation["id"]!)
 

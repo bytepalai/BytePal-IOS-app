@@ -170,7 +170,7 @@ struct UpgradeButton: View {
                             .sheet(
                                 isPresented: self.$isShowingPurchaseView,
                                 content: {
-                                    PurchaseView()
+                                    PurchaseView(userID: self.userInformation.id)
                                 }
                             )
                     }

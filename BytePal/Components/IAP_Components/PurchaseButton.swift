@@ -24,7 +24,7 @@ struct PurchaseButton : View {
     
     var body: some View {
         
-        Button(action: { 
+        Button(action: {
             self.block()
             print("price is", self.product.localizedPrice())
             print(self.product.localizedPrice())

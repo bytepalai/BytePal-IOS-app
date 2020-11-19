@@ -21,8 +21,13 @@ class IAPManager : NSObject{
     private var sharedSecret = ""
     @objc static let shared = IAPManager()
     @objc private(set) var products = [SKProduct]()
-
+    
+    // BytePal server variable
+    var userID: String?
+    
+    // Store Kit server variable
     private override init(){}
+
     private var productIds : Set<String> = []
 
     private var didLoadsProducts : ProductsBlock?
@@ -35,6 +40,7 @@ class IAPManager : NSObject{
 
     // MARK:- Main methods
 
+    // Init
     @objc func startWith(arrayOfIds : Set<String>!, sharedSecret : String, callback : @escaping  ProductsBlock){
         SKPaymentQueue.default().add(self)
         self.didLoadsProducts = callback
@@ -42,6 +48,11 @@ class IAPManager : NSObject{
         self.productIds = arrayOfIds // The error is happening right here
         
         loadProducts()
+    }
+    
+    func initIAP(userID: String) {
+        IAPManager.shared.userID = userID
+        ProductsStore.shared.initializeProducts()
     }
 
     func expirationDateFor(_ identifier : String) -> Date?{
@@ -57,7 +68,7 @@ class IAPManager : NSObject{
     }
 
     func purchaseProduct(product : SKProduct, success: @escaping SuccessBlock, failure: @escaping FailureBlock){
-
+        
         guard SKPaymentQueue.canMakePayments() else {
             return
         }
@@ -79,8 +90,7 @@ class IAPManager : NSObject{
     /* It's the most simple way to send verify receipt request. Consider this code as for learning purposes. You shouldn't use current code in production apps.
      This code doesn't handle errors.
      */
-    func refreshSubscriptionsStatus(callback : @escaping SuccessBlock, failure : @escaping FailureBlock){
-
+    func refreshSubscriptionsStatus(userID: String, callback : @escaping SuccessBlock, failure : @escaping FailureBlock){
         self.refreshSubscriptionSuccessBlock = callback
         self.refreshSubscriptionFailureBlock = failure
 
@@ -90,13 +100,12 @@ class IAPManager : NSObject{
             return
         }
 
-        //print("receipt Url is", receiptUrl)
-
         #if DEBUG
         let urlString = "https://sandbox.itunes.apple.com/verifyReceipt"
         #else
         let urlString = "https://buy.itunes.apple.com/verifyReceipt"
         #endif
+        
         let receiptData = try? Data(contentsOf: receiptUrl).base64EncodedString()
         let requestData = ["receipt-data" : receiptData ?? "", "password" : self.sharedSecret, "exclude-old-transactions" : true] as [String : Any]
         var request = URLRequest(url: URL(string: urlString)!)
@@ -109,7 +118,7 @@ class IAPManager : NSObject{
             DispatchQueue.main.async {
                 if data != nil {
                     if let json = try? JSONSerialization.jsonObject(with: data!, options: .allowFragments){
-                        self.parseReceipt(json as! Dictionary<String, Any>, url:receiptUrl)
+                        self.parseReceipt(userID: userID, json as! Dictionary<String, Any>, url:receiptUrl)
                         return
                     }
                 } else {
@@ -124,7 +133,7 @@ class IAPManager : NSObject{
     /* It's the most simple way to get latest expiration date. Consider this code as for learning purposes. You shouldn't use current code in production apps.
      This code doesn't handle errors or some situations like cancellation date.
      */
-    private func parseReceipt(_ json : Dictionary<String, Any>, url:URL ) {
+    private func parseReceipt(userID:String, _ json : Dictionary<String, Any>, url:URL ) {
         guard let receipts_array = json["latest_receipt_info"] as? [Dictionary<String, Any>] else {
             self.refreshSubscriptionFailureBlock?(nil)
             self.cleanUpRefeshReceiptBlocks()
@@ -142,7 +151,8 @@ class IAPManager : NSObject{
             let webOrderLineItemId = receipt["web_order_line_item_id"] as! String
 
             // Post the receipt data to the backend
-            Receipt.sendReceipt(productID: productID,
+            Receipt.sendReceipt(userID: userID,
+                                productID: productID,
                                 receiptUrl: receiptUrl,
                                 originalTransactionId: originalTransactionId,
                                 purchaseDateMs: purchaseDateMs,
@@ -207,7 +217,7 @@ extension IAPManager : SKRequestDelegate {
 
     func requestDidFinish(_ request: SKRequest) {
         if request is SKReceiptRefreshRequest {
-            refreshSubscriptionsStatus(callback: self.successBlock ?? {}, failure: self.failureBlock ?? {_ in})
+            refreshSubscriptionsStatus(userID: self.userID!,callback: self.successBlock ?? {}, failure: self.failureBlock ?? {_ in})
         }
     }
 
@@ -250,7 +260,6 @@ extension IAPManager: SKProductsRequestDelegate {
 extension IAPManager: SKPaymentTransactionObserver {
 
     public func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
-
         for transaction in transactions {
             switch (transaction.transactionState) {
             case .purchased:
@@ -276,7 +285,9 @@ extension IAPManager: SKPaymentTransactionObserver {
     }
 
     private func notifyIsPurchased(transaction: SKPaymentTransaction) {
-        refreshSubscriptionsStatus(callback: {
+        refreshSubscriptionsStatus(
+            userID: self.userID!,
+            callback: {
             self.successBlock?()
             self.cleanUp()
         }) { (error) in

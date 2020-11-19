@@ -168,23 +168,6 @@ struct MessageHistory: View{
         }
             .frame(alignment: .bottom)
             .edgesIgnoringSafeArea(.bottom)
-            .onAppear(perform: {
-                for userInfo in UserInformationCoreDataRead {
-                    print("------ user info(number): \(UserInformationCoreDataRead.count)")
-                    print("-------- Personal Login (id): \(userInfo.id)")
-                    print("-------- Personal Login (email): \(userInfo.email)")
-                    print("-------- Personal Login (isLoggedIn): \(userInfo.isLoggedIn)")
-                }
-                // Fix, dissapearing id in env obj userInformation
-                print("------- userID (Chat): \(self.userInformation.id)")
-//                print("------- userID (Chat): \(self.userInformation.email)")
-//                print("------- userID (Chat): \(self.userInformation.firstName)")
-//                print("------- userID (Chat): \(self.userInformation.lastName)")
-//                print("------- userID (Chat): \(self.userInformation.fullName)")
-//                print("------- userID (Chat): \(self.userInformation.messagesLeft)")
-//                print("------- userID (Chat): \(self.userInformation.isLoggedIn)")
-//                print("------- userID (Chat): \(self.userInformation.currentView)")
-            })
             .isHidden(self.isHiddenChatView, remove: self.isHiddenChatView)
 
         // Home

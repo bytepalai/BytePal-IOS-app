@@ -12,7 +12,7 @@ import StoreKit
 import Combine
 
 struct PurchaseView : View {
-
+    var userID: String?
     @State private var isDisabled : Bool = false
 
     @Environment(\.presentationMode) var presentationMode
@@ -65,7 +65,7 @@ struct PurchaseView : View {
             ForEach(ProductsStore.shared.products, id: \.self) { prod in
                 VStack {
                     PurchaseButton(block: {
-                        self.purchaseProduct(skproduct:prod)
+                        self.purchaseProduct(userID: self.userID!, skproduct:prod)
                     }, product: prod).disabled(IAPManager.shared.isActive(product:prod))
                         Spacer()
                         Spacer()
@@ -142,9 +142,11 @@ struct PurchaseView : View {
 
     }
 
-    func purchaseProduct(skproduct : SKProduct){
+    func purchaseProduct(userID: String, skproduct : SKProduct){
         print("did tap purchase product: \(skproduct.productIdentifier)")
         isDisabled = true
+        
+        IAPManager.shared.userID = userID
         IAPManager.shared.purchaseProduct(product: skproduct, success: {
             self.isDisabled = false
             ProductsStore.shared.handleUpdateStore()

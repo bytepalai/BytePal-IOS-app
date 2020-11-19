@@ -197,6 +197,9 @@ struct SignupView: View {
                     // Set user id
                     let reponseObject = try JSONDecoder().decode(responseStruct.self, from: data)
                     let userID: String = reponseObject.user_id
+                    
+                    // Init IAP
+                    IAPManager.shared.initIAP(userID: self.googleDelegate.userID)
 
                     // Save user information to cache
                     if UserInformationCoreDataRead.count == 0 {

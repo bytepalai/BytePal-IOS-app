@@ -134,7 +134,7 @@ struct LoginView: View {
                 let isNotConnected: Bool = !netStat["status"]!
 
                 if userInformation.currentView == "Login" &&  isNotConnected {
-                    print("-------------------- CACHE --------------------- ")
+                    print("Loading messages from cache ...")
                     var messageNumber: Int = 0
                     if self.MessagesCoreDataRead.isEmpty != true {
                         let messageCount: Int = self.MessagesCoreDataRead.count
@@ -159,9 +159,6 @@ struct LoginView: View {
 
             // Load user information from cache and go to Chat View (login)
             if self.socialMediaAuth.getAccountLoginStatus(personalLoginStatus: self.userInformation.isLoggedIn) != "logged out" {
-                
-                print("--------- Logged in -----------")
-
                 // Load user information from cache to RAM
                 for userInfo in self.UserInformationCoreDataRead {
                     self.userInformation.id = userInfo.id ?? "Error: ID not unwrapped succesfully onAppearLoginView()"
@@ -213,6 +210,9 @@ struct LoginView: View {
                     let user_id: String = reponseObject.user_id
                     loginStatus = user_id
                     
+                    // Check IAP Subscription
+                    IAPManager.shared.initIAP(userID: user_id)
+                    
                     // Save user information to cache
                     if UserInformationCoreDataRead.count == 0 {
                         // Is not logged in
@@ -241,8 +241,6 @@ struct LoginView: View {
                         }
                     }
                     
-                    
-
                     // Save user information to RAM
                     DispatchQueue.main.async {
                         self.userInformation.isLoggedIn = true
@@ -254,7 +252,7 @@ struct LoginView: View {
                     NetworkStatus.checkNetworkStatus(completion: { netStat in
                         
                         if netStat["status"] == true {
-                            print("-------------------- SERVER --------------------- ")
+                            print("Loading messages from server ...")
                             
                             DispatchQueue.main.async {
                                 
@@ -289,7 +287,6 @@ struct LoginView: View {
     }
     
     func loadMessageHistoryCache(message: Message) {
-        print("----------- load CACHE")
         
         if message.id != nil {
             self.messages.list.insert(["id": message.id!, "content": message.content!, "isCurrentUser": message.isCurrentUser], at: self.messages.list.startIndex)
