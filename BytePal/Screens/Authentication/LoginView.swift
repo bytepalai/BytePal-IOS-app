@@ -17,6 +17,7 @@ struct LoginView: View {
     // Controller both views
     @State var isHiddenLoginView: Bool = false
     @State var isHiddenSignupView: Bool = true
+    @State var isHiddenChatView: Bool = true
     
     // Login View
     var loginViewModel: LoginViewModel = LoginViewModel()
@@ -58,49 +59,46 @@ struct LoginView: View {
     
     var body: some View {
         GeometryReader { geometry in
-            NavigationView {
-                VStack {
-                    LargeLogo(
+            
+            VStack {
+                LargeLogo(
+                    width: geometry.size.width,
+                    height: geometry.size.height
+                )
+                Text(loginError)
+                    .foregroundColor(Color(UIColor.systemRed))
+                    .font(.custom(fontStyle, size: 18))
+                TextField("Enter email", text: $email)
+                    .padding(EdgeInsets(top: 0, leading: geometry.size.width*0.04, bottom: geometry.size.width*0.02, trailing: 0))
+                    .autocapitalization(.none)
+                SecureField("Enter password", text: $password)
+                    .padding(EdgeInsets(top: 0, leading: geometry.size.width*0.04, bottom: geometry.size.width*0.02, trailing: 0))
+                    .autocapitalization(.none)
+                Button(action: {
+                    self.personalLogin(email: self.email, password: self.password)
+                }){
+                    LoginButtonView(
                         width: geometry.size.width,
                         height: geometry.size.height
                     )
-                    Text(loginError)
-                        .foregroundColor(Color(UIColor.systemRed))
-                        .font(.custom(fontStyle, size: 18))
-                    TextField("Enter email", text: $email)
-                        .padding(EdgeInsets(top: 0, leading: geometry.size.width*0.04, bottom: geometry.size.width*0.02, trailing: 0))
-                        .autocapitalization(.none)
-                    SecureField("Enter password", text: $password)
-                        .padding(EdgeInsets(top: 0, leading: geometry.size.width*0.04, bottom: geometry.size.width*0.02, trailing: 0))
-                        .autocapitalization(.none)
-                    Button(action: {
-                        self.personalLogin(email: self.email, password: self.password)
-                    }){
-                        LoginButtonView(
-                            width: geometry.size.width,
-                            height: geometry.size.height
-                        )
-                    }
-                    DividerCustom(
-                        color: Color(UIColor.black).opacity(0.60),
-                        length: Float(geometry.size.width)*(7/10),
-                        width: 1
-                    )
-                    SignupBar(
-                        width: geometry.size.width,
-                        height: geometry.size.width,
-                        rootViewIsActive: self.$rootViewIsActive,
-                        isHiddenLoginView: self.$isHiddenLoginView,
-                        isHiddenSignupView: self.$isHiddenSignupView
-                    )
-                    
                 }
-                    .onAppear(perform: {
-                        self.onAppearLoginView()
-                    })
+                DividerCustom(
+                    color: Color(UIColor.black).opacity(0.60),
+                    length: Float(geometry.size.width)*(7/10),
+                    width: 1
+                )
+                SignupBar(
+                    width: geometry.size.width,
+                    height: geometry.size.width,
+                    rootViewIsActive: self.$rootViewIsActive,
+                    isHiddenLoginView: self.$isHiddenLoginView,
+                    isHiddenSignupView: self.$isHiddenSignupView
+                )
+                
             }
-                .navigationBarTitle("")
-                .navigationBarHidden(true)
+                .onAppear(perform: {
+                    self.onAppearLoginView()
+                })
                 .isHidden(self.isHiddenLoginView, remove: isHiddenLoginView)
             
             // Signup View
@@ -112,12 +110,13 @@ struct LoginView: View {
                 isHiddenSignupView: self.$isHiddenSignupView
             )
                 .isHidden(self.isHiddenSignupView, remove: self.isHiddenSignupView)
-        
+            
+            
+            ChatView(rootViewIsActive: self.$rootViewIsActive)
+                .isHidden(self.isHiddenChatView, remove: self.isHiddenChatView)
         }
             
-        NavigationLink(destination: ChatView(rootViewIsActive: self.$rootViewIsActive).environment(\.managedObjectContext, moc) .environmentObject(userInformation).environmentObject(messages).environmentObject(googleDelegate), isActive: self.$rootViewIsActive){EmptyView()}
-                .isDetailLink(false)
-        
+
     }
     
     func onAppearLoginView() {
@@ -273,7 +272,9 @@ struct LoginView: View {
                     self.loginError = ""
                     
                     // Go to chat view
-                    self.rootViewIsActive = true
+                    self.isHiddenLoginView = true
+                    self.isHiddenSignupView = true
+                    self.isHiddenChatView = false
                     
                 }
             } catch {
