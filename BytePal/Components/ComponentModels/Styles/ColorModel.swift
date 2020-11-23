@@ -2,7 +2,7 @@
 //  Color.swift
 //  BytePal
 //
-//  Created by may on 7/8/20.
+//  Created by Scott Hom on 7/8/20.
 //  Copyright © 2020 BytePal-AI. All rights reserved.
 //
 

@@ -2,6 +2,7 @@ import Foundation
 import SwiftUI
 
 struct LoginViewOnly: View {
+    
     @State var email: String = ""
     @State var password: String = ""
     @State var loginError: String = ""

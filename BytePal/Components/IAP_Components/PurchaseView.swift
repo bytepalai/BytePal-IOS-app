@@ -14,7 +14,6 @@ import Combine
 struct PurchaseView : View {
     var userID: String?
     @State private var isDisabled : Bool = false
-
     @Environment(\.presentationMode) var presentationMode
 
     private func dismiss() {
@@ -22,54 +21,86 @@ struct PurchaseView : View {
     }
 
     var body: some View {
-
-        ScrollView (showsIndicators: false) {
-            VStack {
-                Text("Get Premium Membership").font(.title)
-                    .fontWeight(.black)
-                    .foregroundColor(.primary)
-                    .lineLimit(3)
-                Text("Choose one of the packages below")
-                    .font(.headline)
-                    .foregroundColor(.secondary)
-
-                self.purchaseButtons()
-                //self.aboutText()
-
-                ZStack{
-                    RoundedRectangle(cornerRadius: 25, style: .continuous)
-                    .fill(convertHextoRGB(hexColor: "ffffff"))
-                    .padding(EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 0))
-                    .shadow(color: convertHextoRGB(hexColor: "000000").opacity(0.33), radius: 4, x: 3, y: 3)
-                    VStack {
-                        self.helperButtons()
-                        self.termsText().frame(width: UIScreen.main.bounds.size.width)
-                        self.dismissButton()
-
+        GeometryReader { geometry in
+            ScrollView (showsIndicators: false) {
+                VStack {
+                    if ProductsStore.shared.products.count != 0 {
+                        Text("Get Premium Membership").font(.title)
+                            .fontWeight(.black)
+                            .foregroundColor(.primary)
+                            .lineLimit(3)
+                        Text("Choose one of the packages below")
+                            .font(.headline)
+                            .foregroundColor(.secondary)
+                        
+                        Button(action: {
+                            IAPManager.shared.restorePurchases(success: {
+                                print("---- success")
+                            }, failure: { error in
+                                print("failure")
+                                print("\(String(describing: error))")
+                            })
+                        }, label: {
+                            Text("Restore")
+                                .foregroundColor(Color(UIColor.systemBlue))
+                        })
                     }
-                    .background(convertHextoRGB(hexColor:"f8f4f4"))
+        
+                    self.purchaseButtons(width: geometry.size.width, height: geometry.size.height)
+                    //self.aboutText()
+                    
+                    if ProductsStore.shared.products.count != 0 {
+                        ZStack{
+                            RoundedRectangle(cornerRadius: 25, style: .continuous)
+                            .fill(convertHextoRGB(hexColor: "ffffff"))
+                            .padding(EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 0))
+                            .shadow(color: convertHextoRGB(hexColor: "000000").opacity(0.33), radius: 4, x: 3, y: 3)
+                            VStack {
+                                self.helperButtons()
+                                self.termsText().frame(width: UIScreen.main.bounds.size.width)
+                                self.dismissButton()
 
+                            }
+                            .background(convertHextoRGB(hexColor:"f8f4f4"))
+
+                        }
+                    }
                 }
-
-            }
-            .background(convertHextoRGB(hexColor:"ebf6f5"))
-            .frame(width : UIScreen.main.bounds.size.width)
-        }.disabled(self.isDisabled)
+                .background(convertHextoRGB(hexColor:"ebf6f5"))
+                .frame(width : UIScreen.main.bounds.size.width)
+            }.disabled(self.isDisabled)
+        }
+            .navigationBarTitle("")
+            .navigationBarHidden(true)
     }
 
     // MARK:- View creations
 
-    func purchaseButtons() -> some View {
+    func purchaseButtons(width: CGFloat, height: CGFloat) -> some View {
         // remake to ScrollView if has more than 2 products because they won't fit on screen.
         VStack {
-            ForEach(ProductsStore.shared.products, id: \.self) { prod in
-                VStack {
-                    PurchaseButton(block: {
-                        self.purchaseProduct(userID: self.userID!, skproduct:prod)
-                    }, product: prod).disabled(IAPManager.shared.isActive(product:prod))
-                        Spacer()
-                        Spacer()
+            if ProductsStore.shared.products.count != 0 {
+                ForEach(ProductsStore.shared.products, id: \.self) { prod in
+                    VStack {
+                        PurchaseButton(block: {
+                            self.purchaseProduct(userID: self.userID!, skproduct:prod)
+                        }, product: prod).disabled(IAPManager.shared.isActive(product:prod))
+                            Spacer()
+                            Spacer()
+                    }
                 }
+            } else {
+                VStack {
+                    Image(systemName: "wifi.exclamationmark")
+                        .foregroundColor(Color(UIColor.systemGray3))
+                        .font(.custom(fontStyle, size: 72))
+                        .padding()
+                    Text("Unable to load products at this time. Please check your internet connection")
+                        .font(.custom(fontStyle, size: 28))
+                        .foregroundColor(Color(UIColor.black))
+                        .padding()
+                }
+                    .frame(width: width, height: height)
             }
         }
     }

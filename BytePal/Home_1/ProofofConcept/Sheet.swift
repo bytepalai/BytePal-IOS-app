@@ -2,7 +2,7 @@
 //  Sheet.swift
 //  BytePal
 //
-//  Created by may on 11/9/20.
+//  Created by Scott Hom on 11/9/20.
 //  Copyright © 2020 BytePal-AI. All rights reserved.
 //
 

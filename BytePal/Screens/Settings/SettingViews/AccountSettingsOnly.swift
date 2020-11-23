@@ -43,6 +43,8 @@ struct AccountSettingsViewOnly: View {
             
         }
             .edgesIgnoringSafeArea(.bottom)
+            .navigationBarTitle("")
+            .navigationBarHidden(true)
     }
 }
 

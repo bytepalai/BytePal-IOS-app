@@ -2,7 +2,7 @@
 //  RelativeAlignement.swift
 //  
 //
-//  Created by may on 7/15/20.
+//  Created by Scott Hom on 7/15/20.
 //
 
 import SwiftUI

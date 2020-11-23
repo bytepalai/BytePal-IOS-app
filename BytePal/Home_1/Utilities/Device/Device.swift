@@ -2,7 +2,7 @@
 //  Device.swift
 //  BytePal
 //
-//  Created by may on 10/29/20.
+//  Created by Scott Hom on 10/29/20.
 //  Copyright © 2020 BytePal-AI. All rights reserved.
 //
 
@@ -24,8 +24,8 @@ class DeviceInfo: ObservableObject {
             case .iPhone12, .iPhone12Pro:
                 print("390 x 844: .iPhone12, .iPhone12Pro")
                 self.deviceSizeGroup = "iPhone12DeviceGroup"
-            case .iPhone11Pro, .iPhoneX, .iPhoneXS:
-                print("375 x 812: .iPhone11Pro, .iPhoneX, .iPhoneXS")
+            case .iPhone11Pro, .iPhoneX, .iPhoneXS, .iPhone12Mini:
+                print("375 x 812: .iPhone11Pro, .iPhoneX, .iPhoneXS, iPhone12mini")
                 self.deviceSizeGroup = "iPhone11ProDeviceGroup"
             case .iPhone6SPlus:
                 print("414 x 736: .iPhone6SPlus")

@@ -169,6 +169,8 @@ struct MessageHistory: View{
             .frame(alignment: .bottom)
             .edgesIgnoringSafeArea(.bottom)
             .isHidden(self.isHiddenChatView, remove: self.isHiddenChatView)
+            .navigationBarTitle("")
+            .navigationBarHidden(true)
 
         // Home
         HomeView(

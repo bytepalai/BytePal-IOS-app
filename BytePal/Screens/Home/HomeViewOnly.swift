@@ -29,6 +29,8 @@ struct HomeViewOnly: View {
             
         }
             .edgesIgnoringSafeArea(.bottom)
+            .navigationBarTitle("")
+            .navigationBarHidden(true)
     }
     
     // Unique Device Identifier by width in points

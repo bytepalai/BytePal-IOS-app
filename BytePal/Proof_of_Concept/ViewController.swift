@@ -2,7 +2,7 @@
 //  ViewController.swift
 //  BytePal
 //
-//  Created by may on 5/30/20.
+//  Created by Scott Hom on 5/30/20.
 //  Copyright © 2020 BytePal-AI. All rights reserved.
 //
 

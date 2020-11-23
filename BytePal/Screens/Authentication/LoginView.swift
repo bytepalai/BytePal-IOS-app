@@ -2,7 +2,7 @@
 //  LoginView.swift
 //  SwiftUIChatMessage
 //
-//  Created by may on 6/28/20.
+//  Created by Scott Hom on 6/28/20.
 //  Copyright © 2020 BytePal-AI. All rights reserved.
 //
 
@@ -99,6 +99,7 @@ struct LoginView: View {
                         self.onAppearLoginView()
                     })
             }
+                .navigationBarTitle("")
                 .navigationBarHidden(true)
                 .isHidden(self.isHiddenLoginView, remove: isHiddenLoginView)
             

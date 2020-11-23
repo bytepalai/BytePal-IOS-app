@@ -18,6 +18,7 @@ struct SignupView: View {
     @EnvironmentObject var userInformation: UserInformation
     @EnvironmentObject var messages: Messages
     @EnvironmentObject var googleDelegate: GoogleDelegate
+    @ObservedObject var keyboard = KeyboardResponder()
     @Binding var rootViewIsActive: Bool
     @Binding var isHiddenLoginView: Bool
     @Binding var isHiddenSignupView: Bool
@@ -56,9 +57,10 @@ struct SignupView: View {
                 }
             )
                 .padding()
+                .isHidden(keyboard.isUp, remove: keyboard.isUp)
             
             ScrollView(showsIndicators: false) {
-                VStack(alignment: .leading,spacing: mainViewSpacing) {
+                VStack(alignment: .leading) {
                     VStack(spacing: textFieldSpace){
                         Text("I am full of thoughts to share with you")
                             .foregroundColor(.appFontColorBlack)
@@ -67,6 +69,7 @@ struct SignupView: View {
                             .multilineTextAlignment(.leading)
                             .fixedSize(horizontal: false, vertical: true)
                             .padding()
+                            .isHidden(keyboard.isUp, remove: keyboard.isUp)
                         
                         ZStack {
                             TransparentRoundedBackgroundView(cornerRadius: cornerRadiusTextField)
@@ -75,6 +78,7 @@ struct SignupView: View {
                                     .fontWeight(.semibold)
                                     .foregroundColor(.appFontColorBlack)
                                 TextField("", text: $email)
+                                    .autocapitalization(.none)
                             }
                             .padding()
                         }
@@ -108,7 +112,8 @@ struct SignupView: View {
                                 Text("Password")
                                     .fontWeight(.semibold)
                                     .foregroundColor(.appFontColorBlack)
-                                TextField("", text: $password)
+                                SecureField("Enter password", text: $password)
+                                    .autocapitalization(.none)
                             }
                             .padding()
                         }
@@ -164,7 +169,6 @@ struct SignupView: View {
     }
     
     func signup () {
-        print("---- test1")
         let semaphore = DispatchSemaphore (value: 0)
         let parameters = """
         {

@@ -2,7 +2,7 @@
 //  SignupBar.swift
 //  BytePal
 //
-//  Created by may on 11/5/20.
+//  Created by Scott Hom on 11/5/20.
 //  Copyright © 2020 BytePal-AI. All rights reserved.
 //
 
@@ -24,9 +24,6 @@ struct SignupBar: View {
         HStack {
 
             // SignupBar (height: 10%, heighest is TextView)
-            Text("Register")
-                .font(.custom(fontStyle, size: 20))
-                .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: (width ?? CGFloat(100))*0.10))
             FacebookLoginButton(
                 width: width,
                 rootViewIsActive: self.$rootViewIsActive

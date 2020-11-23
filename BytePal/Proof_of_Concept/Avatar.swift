@@ -2,7 +2,7 @@
 //  Avatar.swift
 //  BytePal
 //
-//  Created by may on 6/30/20.
+//  Created by Scott Hom on 6/30/20.
 //  Copyright © 2020 BytePal-AI. All rights reserved.
 //
 

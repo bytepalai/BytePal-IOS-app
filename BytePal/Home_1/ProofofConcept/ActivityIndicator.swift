@@ -2,7 +2,7 @@
 //  ActivityIndicator.swift
 //  BytePal
 //
-//  Created by may on 10/31/20.
+//  Created by Scott Hom on 10/31/20.
 //  Copyright © 2020 BytePal-AI. All rights reserved.
 //
 

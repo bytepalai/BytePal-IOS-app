@@ -32,8 +32,9 @@ struct ChatViewOnly: View {
             }
             .frame(height: geometry.size.height, alignment: .bottom)
         }
-        .edgesIgnoringSafeArea(.bottom)
-        .navigationBarBackButtonHidden(true)
+            .edgesIgnoringSafeArea(.bottom)
+            .navigationBarTitle("")
+            .navigationBarHidden(true)
     }
 }
 

@@ -2,7 +2,7 @@
 //  generalUIController.swift
 //  BytePal
 //
-//  Created by may on 10/26/20.
+//  Created by Scott Hom on 10/26/20.
 //  Copyright © 2020 BytePal-AI. All rights reserved.
 //
 
