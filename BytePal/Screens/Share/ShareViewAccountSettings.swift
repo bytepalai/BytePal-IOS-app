@@ -10,7 +10,6 @@ import SwiftUI
 
 struct ShareViewAccountSettings: View {
     var width: CGFloat?
-    @Binding var rootViewIsActive: Bool
     
     var body: some View {
         VStack(alignment:.leading) {
@@ -21,8 +20,7 @@ struct ShareViewAccountSettings: View {
                 .fontWeight(.bold)
             
             ShareView(
-                height: (width ?? CGFloat(50))*0.30,
-                rootViewIsActive: self.$rootViewIsActive
+                height: (width ?? CGFloat(50))*0.30
             )
             
         }

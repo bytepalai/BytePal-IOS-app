@@ -15,6 +15,8 @@ import FBSDKLoginKit
 // FacebookLoginButton (height: 7%)
 struct FacebookLoginButton: View {
     var width: CGFloat?
+    @Binding var isHiddenLoginView: Bool
+    @Binding var isHiddenChatView: Bool
     var container: NSPersistentContainer!
     @FetchRequest(entity: User.entity(), sortDescriptors: []) var UserInformationCoreDataRead: FetchedResults<User>
     @FetchRequest(entity: Message.entity(), sortDescriptors: []) var MessagesCoreDataRead: FetchedResults<Message>
@@ -22,9 +24,8 @@ struct FacebookLoginButton: View {
     @EnvironmentObject var messages: Messages
     @EnvironmentObject var userInformation: UserInformation
     @EnvironmentObject var googleDelegate: GoogleDelegate
-    @State var isShowingChatView = false
     @State var isCurrentUserLoadServer: Bool = true
-    @Binding var rootViewIsActive: Bool
+    
 
     var body: some View {
         Button(action: {
@@ -36,7 +37,8 @@ struct FacebookLoginButton: View {
                         DispatchQueue.main.async {
                             // Update messages
                             self.updateMessageHistoryServer(userID: id)
-                            self.rootViewIsActive = true
+                            self.isHiddenLoginView = true
+                            self.isHiddenChatView = false
                         }
                     }
                 })
@@ -53,8 +55,6 @@ struct FacebookLoginButton: View {
                             .shadow(color: Color(UIColor.black).opacity(0.48), radius: 4, x: 3, y: 3)
                     )
                         .padding([.trailing], (width ?? CGFloat(100))*0.05)
-                NavigationLink(destination: ChatView(rootViewIsActive: self.$rootViewIsActive).environment(\.managedObjectContext, moc) .environmentObject(userInformation).environmentObject(messages).environmentObject(googleDelegate), isActive: self.$rootViewIsActive){EmptyView()}
-                        .isDetailLink(false)
             }
         }
     }
@@ -203,7 +203,7 @@ struct FacebookLoginButton: View {
         semaphore.wait()
 
         if err == 0 {
-            self.rootViewIsActive = true
+            self.isHiddenLoginView = true
         } else {
             print("Agent ALREADY created")
         }

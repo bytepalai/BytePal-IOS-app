@@ -17,7 +17,9 @@ struct LoginView: View {
     // Controller both views
     @State var isHiddenLoginView: Bool = false
     @State var isHiddenSignupView: Bool = true
+    @State var isHiddenHomeView: Bool = true
     @State var isHiddenChatView: Bool = true
+    @State var isHiddenAccountSettingsView: Bool = true
     
     // Login View
     var loginViewModel: LoginViewModel = LoginViewModel()
@@ -30,7 +32,6 @@ struct LoginView: View {
     @EnvironmentObject var messages: Messages
     @EnvironmentObject var userInformation: UserInformation
     @EnvironmentObject var googleDelegate: GoogleDelegate
-    @State var rootViewIsActive: Bool = false 
     @State var isCurrentUserLoadServer: Bool = true
     @State var TextForMultiLine: String =
         """
@@ -39,8 +40,6 @@ struct LoginView: View {
     @State var password: String = ""
     @State var loginResp: String = ""
     @State var loginError: String = ""
-    @State var isShowingChatView = false
-    @State var isShowingEnviromentObjectTestView = false
     
     // Signup (Hidden View, initial state)
     @State var emailSignup: String = ""
@@ -59,67 +58,78 @@ struct LoginView: View {
     
     var body: some View {
         GeometryReader { geometry in
-            
-            VStack {
-                LargeLogo(
-                    width: geometry.size.width,
-                    height: geometry.size.height
-                )
-                Text(loginError)
-                    .foregroundColor(Color(UIColor.systemRed))
-                    .font(.custom(fontStyle, size: 18))
-                TextField("Enter email", text: $email)
-                    .padding(EdgeInsets(top: 0, leading: geometry.size.width*0.04, bottom: geometry.size.width*0.02, trailing: 0))
-                    .autocapitalization(.none)
-                SecureField("Enter password", text: $password)
-                    .padding(EdgeInsets(top: 0, leading: geometry.size.width*0.04, bottom: geometry.size.width*0.02, trailing: 0))
-                    .autocapitalization(.none)
-                Button(action: {
-                    self.personalLogin(email: self.email, password: self.password)
-                }){
-                    LoginButtonView(
+            ZStack {
+                VStack {
+                    LargeLogo(
                         width: geometry.size.width,
                         height: geometry.size.height
                     )
+                    Text(loginError)
+                        .foregroundColor(Color(UIColor.systemRed))
+                        .font(.custom(fontStyle, size: 18))
+                    TextField("Enter email", text: $email)
+                        .padding(EdgeInsets(top: 0, leading: geometry.size.width*0.04, bottom: geometry.size.width*0.02, trailing: 0))
+                        .autocapitalization(.none)
+                    SecureField("Enter password", text: $password)
+                        .padding(EdgeInsets(top: 0, leading: geometry.size.width*0.04, bottom: geometry.size.width*0.02, trailing: 0))
+                        .autocapitalization(.none)
+                    Button(action: {
+                        self.personalLogin(email: self.email, password: self.password)
+                    }){
+                        LoginButtonView(
+                            width: geometry.size.width,
+                            height: geometry.size.height
+                        )
+                    }
+                    DividerCustom(
+                        color: Color(UIColor.black).opacity(0.60),
+                        length: Float(geometry.size.width)*(7/10),
+                        width: 1
+                    )
+                    SignupBar(
+                        width: geometry.size.width,
+                        height: geometry.size.width,
+                        isHiddenLoginView: self.$isHiddenLoginView,
+                        isHiddenChatView: self.$isHiddenChatView,
+                        isHiddenSignupView: self.$isHiddenSignupView
+                    )
+                    
                 }
-                DividerCustom(
-                    color: Color(UIColor.black).opacity(0.60),
-                    length: Float(geometry.size.width)*(7/10),
-                    width: 1
-                )
-                SignupBar(
+                    .onAppear(perform: {
+                        self.onAppearLoginView()
+                    })
+                    .isHidden(self.isHiddenLoginView, remove: isHiddenLoginView)
+                    .zIndex(2)
+                
+                // Signup View
+                SignupView(
                     width: geometry.size.width,
-                    height: geometry.size.width,
-                    rootViewIsActive: self.$rootViewIsActive,
+                    height: geometry.size.height,
                     isHiddenLoginView: self.$isHiddenLoginView,
+                    isHiddenChatView: self.$isHiddenChatView,
                     isHiddenSignupView: self.$isHiddenSignupView
                 )
+                    .isHidden(self.isHiddenSignupView, remove: self.isHiddenSignupView)
+                    .zIndex(1)
                 
+                // Chat View
+                ChatView(
+                    width: geometry.size.width,
+                    height: geometry.size.height,
+                    isHiddenLoginView: self.$isHiddenLoginView
+                )
+                    .isHidden(self.isHiddenChatView, remove: self.isHiddenChatView)
+                    .zIndex(0)
             }
-                .onAppear(perform: {
-                    self.onAppearLoginView()
-                })
-                .isHidden(self.isHiddenLoginView, remove: isHiddenLoginView)
             
-            // Signup View
-            SignupView(
-                width: geometry.size.width,
-                height: geometry.size.height,
-                rootViewIsActive: self.$rootViewIsActive,
-                isHiddenLoginView: self.$isHiddenLoginView,
-                isHiddenSignupView: self.$isHiddenSignupView
-            )
-                .isHidden(self.isHiddenSignupView, remove: self.isHiddenSignupView)
-            
-            
-            ChatView(rootViewIsActive: self.$rootViewIsActive)
-                .isHidden(self.isHiddenChatView, remove: self.isHiddenChatView)
         }
-            
 
     }
     
     func onAppearLoginView() {
+        
+        print("------ Login View State: \(self.isHiddenLoginView)")
+        
         // Set values on first application launch
         if UIApplication.isFirstLaunch() {
             let userInformationCoreDataWrite: User = User(context: self.moc)
@@ -169,7 +179,7 @@ struct LoginView: View {
                 }
                 
                 // Go to Chat View
-                self.rootViewIsActive = true
+                self.isHiddenLoginView = true
                 
             }
         }
@@ -240,6 +250,8 @@ struct LoginView: View {
                             try? self.moc.save()
                         }
                     }
+                    
+                    print("------ email(TextField): \(self.email)")
                     
                     // Save user information to RAM
                     DispatchQueue.main.async {

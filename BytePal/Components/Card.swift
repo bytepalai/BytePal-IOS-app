@@ -18,7 +18,6 @@ struct ButtonCard: View {
     @EnvironmentObject var messages: Messages
     @EnvironmentObject var userInformation: UserInformation
     @EnvironmentObject var googleDelegate: GoogleDelegate
-    @Binding var rootViewIsActive: Bool
     @State var isShowingIAPView: Bool = false
     @State var isShowingChatView: Bool = false
     
@@ -53,8 +52,6 @@ struct ButtonCard: View {
                             }
                         }
                     }
-//                NavigationLink(destination: IAPView( productsStore: ProductsStore.shared, viewModel: .init(), rootViewIsActive: self.$rootViewIsActive).environment(\.managedObjectContext, moc) .environmentObject(userInformation).environmentObject(messages).environmentObject(googleDelegate)){EmptyView()}
-//                NavigationLink(destination: ChatView(rootViewIsActive: self.$rootViewIsActive).environment(\.managedObjectContext, moc) .environmentObject(userInformation).environmentObject(messages).environmentObject(googleDelegate)){EmptyView()}
                 
             }
                 .padding(16)

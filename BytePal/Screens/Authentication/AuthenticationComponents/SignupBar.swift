@@ -16,8 +16,8 @@ import FBSDKLoginKit
 struct SignupBar: View {
     var width: CGFloat?
     var height: CGFloat?
-    @Binding var rootViewIsActive: Bool
     @Binding var isHiddenLoginView: Bool
+    @Binding var isHiddenChatView: Bool
     @Binding var isHiddenSignupView: Bool
 
     var body: some View {
@@ -26,16 +26,18 @@ struct SignupBar: View {
             // SignupBar (height: 10%, heighest is TextView)
             FacebookLoginButton(
                 width: width,
-                rootViewIsActive: self.$rootViewIsActive
+                isHiddenLoginView: self.$isHiddenLoginView,
+                isHiddenChatView: self.$isHiddenChatView
             )
             GoogleLoginButton(
                 width: width,
-                rootViewIsActive: self.$rootViewIsActive
+                isHiddenLoginView: self.$isHiddenLoginView,
+                isHiddenChatView: self.$isHiddenChatView
             )
             PersonalLoginButton(
                 width: width,
-                rootViewIsActive: self.$rootViewIsActive,
                 isHiddenLoginView: self.$isHiddenLoginView,
+                isHiddenChatView: self.$isHiddenChatView,
                 isHiddenSignupView: self.$isHiddenSignupView
             )
         }

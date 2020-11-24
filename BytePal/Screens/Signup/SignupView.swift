@@ -12,6 +12,9 @@ import CoreData
 struct SignupView: View {
     var width: CGFloat?
     var height: CGFloat?
+    @Binding var isHiddenLoginView: Bool
+    @Binding var isHiddenChatView: Bool
+    @Binding var isHiddenSignupView: Bool
     var container: NSPersistentContainer!
     @FetchRequest(entity: User.entity(), sortDescriptors: []) var UserInformationCoreDataRead: FetchedResults<User>
     @Environment(\.managedObjectContext) var moc
@@ -19,9 +22,6 @@ struct SignupView: View {
     @EnvironmentObject var messages: Messages
     @EnvironmentObject var googleDelegate: GoogleDelegate
     @ObservedObject var keyboard = KeyboardResponder()
-    @Binding var rootViewIsActive: Bool
-    @Binding var isHiddenLoginView: Bool
-    @Binding var isHiddenSignupView: Bool
     @State var email: String = ""
     @State var firstName: String = ""
     @State var lastName: String = ""
@@ -299,9 +299,9 @@ struct SignupView: View {
 
         if err == 0 {
             self.isShowingSignupError = false
-            self.rootViewIsActive = true
+            self.isHiddenLoginView = true
             self.isHiddenSignupView = true
-            self.isHiddenLoginView = false
+            self.isHiddenChatView = false
         } else {
             print("------- Agent ALREADY created")
         }

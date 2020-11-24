@@ -15,22 +15,6 @@ struct UserBar: View {
     var width: CGFloat
     var sideSquareLength: CGFloat
     
-    // AccountSettings View
-    @Binding var rootViewIsActive: Bool
-    var socialMediaAuth: SocialMediaAuth = SocialMediaAuth()
-    var container: NSPersistentContainer!
-    @FetchRequest(entity: Message.entity(), sortDescriptors: []) var MessagesCoreDataRead: FetchedResults<Message>
-    @FetchRequest(entity: User.entity(), sortDescriptors: []) var UserInformationCoreDataRead: FetchedResults<User>
-    @Environment(\.managedObjectContext) var moc
-    @EnvironmentObject var userInformation: UserInformation
-    @EnvironmentObject var messages: Messages
-    @EnvironmentObject var googleDelegate: GoogleDelegate
-    @State var isShowingChatView: Bool = false
-    var email: String = ""
-    @State var name: String = ""
-    // Temp
-    @State var fullName: String = "ExampleUsername963"
-    
     var body: some View {
         
         VStack {
@@ -68,41 +52,6 @@ struct UserBar: View {
                 height: sideSquareLength,
                 alignment: .center
             )
-    }
-    
-    func logout() {
-        // Clear user information on logout
-        socialMediaAuth.logout(personalLoginStatus: self.userInformation.isLoggedIn)
-        
-        for userInformation in UserInformationCoreDataRead {
-            moc.delete(userInformation)
-        }
-        for message in MessagesCoreDataRead {
-            moc.delete(message)
-        }
-        try? self.moc.save()
-        
-        // Clear Environment Object
-        //// User info
-        
-        print("---------- !!!USERBAR!!! ----------")
-        self.userInformation.id = ""
-        self.userInformation.email = ""
-        self.userInformation.firstName = ""
-        self.userInformation.lastName = ""
-        
-        //// Messages
-        self.messages.list = [[String: Any]]()
-        self.messages.messagesLeft = -1
-        self.messages.lastMessages = [String]()
-        
-        // Set personal login status to logged out
-        let userInformationCoreDataWrite: User = User(context: self.moc)
-        userInformationCoreDataWrite.isLoggedIn = false
-        try? self.moc.save()
-        self.userInformation.isLoggedIn = false
-        self.rootViewIsActive = false
-        
     }
     
 }

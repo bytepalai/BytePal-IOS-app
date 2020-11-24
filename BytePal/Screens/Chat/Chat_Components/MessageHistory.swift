@@ -17,7 +17,7 @@ import FBSDKLoginKit
 struct MessageHistory: View{
     let width: CGFloat?
     let height: CGFloat?
-    @Binding var rootViewIsActive: Bool
+    @Binding var isHiddenLoginView: Bool
     var container: NSPersistentContainer!
     @FetchRequest(entity: Message.entity(), sortDescriptors: []) var MessagesCoreDataRead: FetchedResults<Message>
     @FetchRequest(entity: User.entity(), sortDescriptors: []) var UserInformationCoreDataRead: FetchedResults<User>
@@ -25,8 +25,6 @@ struct MessageHistory: View{
     @EnvironmentObject var messages: Messages
     @EnvironmentObject var userInformation: UserInformation
     @ObservedObject var keyboard = KeyboardResponder()
-//    @ObservedObject var productStore: ProductsStore = ProductsStore()
-    @ObservedObject var iapViewModel: IAPViewModel = IAPViewModel()
     @State public var textFieldString: String = ""
     @State public var messageString: String = ""
     @State var TextForMultiLine: String =
@@ -35,40 +33,12 @@ struct MessageHistory: View{
     @State var keyboardIsUp: Bool = false
     @State var keyboardHeight: CGFloat = CGFloat(0)
     @State var isHiddenHomeView: Bool = true
-    @State var isHiddenIAPView: Bool = true
-    @State var isHiddenIAPFunctionalView: Bool = true
     @State var isHiddenChatView: Bool = false
     @State var isHiddenAccountSettingsView: Bool = true
     
-    // HomeView
-    var number: NumberController = NumberController()
-    @State var homeViewCardAttributes: [String: [String: String]] = [
-        "typing":
-                [
-                    "title": "",
-                    "image": "typing",
-                    "text": "",
-                    "buttonText": "Upgrade"
-                ],
-        "female user":
-                [
-                    "title": "Last message sent",
-                    "image": "female user",
-                    "text": "",
-                    "buttonText": "Continue"
-                ],
-        "BytePal":
-                [
-                    "title": "Last message sent by BytePal",
-                    "image": "BytePal",
-                    "text": "",
-                    "buttonText": "Continue"
-                ]
-    ]
-    
-
     var body: some View {
-        VStack{
+        
+        VStack {
 
             // Render messages
             ScrollView {
@@ -158,7 +128,6 @@ struct MessageHistory: View{
                 width: (width ?? CGFloat(100)),
                 height: (height ?? CGFloat(200))*0.10,
                 color: Color(UIColor.systemGray3),
-                rootViewIsActive: self.$rootViewIsActive,
                 isHiddenHomeView: self.$isHiddenHomeView,
                 isHiddenChatView: self.$isHiddenChatView,
                 isHiddenAccountSettingsView: self.$isHiddenAccountSettingsView
@@ -171,37 +140,28 @@ struct MessageHistory: View{
             .isHidden(self.isHiddenChatView, remove: self.isHiddenChatView)
             .navigationBarTitle("")
             .navigationBarHidden(true)
+            .onAppear(perform: {
+                        print("------ email(Chat): \(self.userInformation.email)")
+                
+            })
 
         // Home
+        
         HomeView(
-            userID: self.userInformation.id,
             width: self.width,
             height: self.height,
-            rootViewIsActive: self.$rootViewIsActive,
+            isHiddenLoginView: self.$isHiddenLoginView,
             isHiddenHomeView: self.$isHiddenHomeView,
-            isHiddenIAPView: self.$isHiddenIAPView,
             isHiddenChatView: self.$isHiddenChatView,
             isHiddenAccountSettingsView: self.$isHiddenAccountSettingsView
         )
             .isHidden(self.isHiddenHomeView, remove: self.isHiddenHomeView)
         
-        // IAP
-        IAPView(
-            rootViewIsActive: self.$rootViewIsActive,
-            isHiddenHomeView: self.$isHiddenHomeView,
-            isHiddenIAPView: self.$isHiddenIAPView,
-            viewModel: .init()
-        )
-            .isHidden(self.isHiddenIAPView, remove: self.isHiddenIAPView)
-        
-        // IAP Functional
-//        IAPViewFunctional()
-        
         // Settings
         AccountSettingsView(
-            width: self.width!,
-            height: self.height!,
-            rootViewIsActive: self.$rootViewIsActive,
+            width: self.width,
+            height: self.height,
+            isHiddenLoginView: self.$isHiddenLoginView,
             isHiddenHomeView: self.$isHiddenHomeView,
             isHiddenChatView: self.$isHiddenChatView,
             isHiddenAccountSettingsView: self.$isHiddenAccountSettingsView

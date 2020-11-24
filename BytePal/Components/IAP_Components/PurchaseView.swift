@@ -32,18 +32,6 @@ struct PurchaseView : View {
                         Text("Choose one of the packages below")
                             .font(.headline)
                             .foregroundColor(.secondary)
-                        
-                        Button(action: {
-                            IAPManager.shared.restorePurchases(success: {
-                                print("---- success")
-                            }, failure: { error in
-                                print("failure")
-                                print("\(String(describing: error))")
-                            })
-                        }, label: {
-                            Text("Restore")
-                                .foregroundColor(Color(UIColor.systemBlue))
-                        })
                     }
         
                     self.purchaseButtons(width: geometry.size.width, height: geometry.size.height)

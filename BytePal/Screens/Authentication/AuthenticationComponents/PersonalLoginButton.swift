@@ -11,13 +11,14 @@ import SwiftUI
 // PersonalLoginButton (height: 7%)
 struct PersonalLoginButton: View {
     var width: CGFloat?
+    @Binding var isHiddenLoginView: Bool
+    @Binding var isHiddenChatView: Bool
+    @Binding var isHiddenSignupView: Bool
     @Environment(\.managedObjectContext) var moc
     @EnvironmentObject var messages: Messages
     @EnvironmentObject var userInformation: UserInformation
     @EnvironmentObject var googleDelegate: GoogleDelegate
-    @Binding var rootViewIsActive: Bool
-    @Binding var isHiddenLoginView: Bool
-    @Binding var isHiddenSignupView: Bool
+    
     
     var body: some View {
         Button(action: {

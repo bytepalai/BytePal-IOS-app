@@ -9,42 +9,15 @@
 import SwiftUI
 
 struct HomeView: View {
-    var userID: String?
     let width: CGFloat?
     let height: CGFloat?
+    @Binding var isHiddenLoginView: Bool
+    @Binding var isHiddenHomeView: Bool
+    @Binding var isHiddenChatView: Bool
+    @Binding var isHiddenAccountSettingsView: Bool
     var number: NumberController = NumberController()
     @EnvironmentObject var messages: Messages
     @EnvironmentObject var userInformation: UserInformation
-    @Binding var rootViewIsActive: Bool
-    @Binding var isHiddenHomeView: Bool
-    @Binding var isHiddenIAPView: Bool
-    @Binding var isHiddenChatView: Bool
-    @Binding var isHiddenAccountSettingsView: Bool
-    
-    //  Attributes Cards
-    @State var homeViewCardAttributes: [String: [String: String]] = [
-        "typing":
-                [
-                    "title": "",
-                    "image": "typing",
-                    "text": "",
-                    "buttonText": "Upgrade"
-                ],
-        "female user":
-                [
-                    "title": "Last message sent",
-                    "image": "female user",
-                    "text": "",
-                    "buttonText": "Continue"
-                ],
-        "BytePal":
-                [
-                    "title": "Last message sent by BytePal",
-                    "image": "BytePal",
-                    "text": "",
-                    "buttonText": "Continue"
-                ]
-    ]
 
     var body: some View {
         GeometryReader { geometry in
@@ -53,13 +26,12 @@ struct HomeView: View {
                     ScrollView {
                         VStack {
                             UpgradeButton(
-                                userID: self.userID,
-                                rootViewIsActive: self.$rootViewIsActive,
-                                isHiddenHomeView: self.$isHiddenHomeView,
-                                isHiddenIAPView: self.$isHiddenIAPView
+                                userID: self.userInformation.id,
+                                isHiddenLoginView: self.$isHiddenLoginView,
+                                isHiddenHomeView: self.$isHiddenHomeView
                             )
                             MessageCellScrollView(
-                                rootViewIsActive: self.$rootViewIsActive,
+                                isHiddenLoginView: self.$isHiddenLoginView,
                                 isHiddenHomeView: self.$isHiddenHomeView,
                                 isHiddenChatView: self.$isHiddenChatView
                             )
@@ -72,7 +44,6 @@ struct HomeView: View {
                         width: width!,
                         height: height!*0.10,
                         color: Color(UIColor.systemGray3),
-                        rootViewIsActive: self.$rootViewIsActive,
                         isHiddenHomeView: self.$isHiddenHomeView,
                         isHiddenChatView: self.$isHiddenChatView,
                         isHiddenAccountSettingsView: self.$isHiddenAccountSettingsView
@@ -85,6 +56,7 @@ struct HomeView: View {
             .onAppear(perform: {
                 // Set current view
                 userInformation.currentView = "Home"
+                print("------ email(Home): \(self.userInformation.email)")
             })
                 .navigationBarTitle("")
                 .navigationBarHidden(true)
@@ -139,9 +111,8 @@ struct CompanyLogo: View {
 
 struct UpgradeButton: View {
     var userID: String?
-    @Binding var rootViewIsActive: Bool
+    @Binding var isHiddenLoginView: Bool
     @Binding var isHiddenHomeView: Bool
-    @Binding var isHiddenIAPView: Bool
     @Environment(\.managedObjectContext) var moc
     @EnvironmentObject var messages: Messages
     @EnvironmentObject var userInformation: UserInformation
@@ -185,10 +156,6 @@ struct UpgradeButton: View {
                     .shadow(color: .appGreen, radius: 1, x: 0, y: 0)
                     .padding()
             
-                // Navigation Link IAP View
-            
-//                NavigationLink(
-//                    destination: IAPView(productsStore: ProductsStore.shared, viewModel: .init(), rootViewIsActive: self.$rootViewIsActive).environment(\.managedObjectContext, moc) .environmentObject(userInformation).environmentObject(messages)){EmptyView()}
         }
             .onAppear(perform: {
                 print("------ messages left \(self.userID ?? "Error: user ID not set")")
@@ -198,7 +165,7 @@ struct UpgradeButton: View {
 }
 
 struct MessageCellScrollView: View {
-    @Binding var rootViewIsActive: Bool
+    @Binding var isHiddenLoginView: Bool
     @Binding var isHiddenHomeView: Bool
     @Binding var isHiddenChatView: Bool
     @State var userCellAppear: Bool = false
@@ -210,28 +177,24 @@ struct MessageCellScrollView: View {
             VStack {
                 if self.messages.list.count != 0 {
                     HomeMessageCell(
-                        rootViewIsActive: self.$rootViewIsActive,
+                        isHiddenLoginView: self.$isHiddenLoginView,
                         isHiddenHomeView: self.$isHiddenHomeView,
-                        isHiddenIAPView: self.$isHiddenChatView,
                         messageCreator: .user(
                             message: self.messages.list[1]["content"] as! String))
                     HomeMessageCell(
-                        rootViewIsActive: self.$rootViewIsActive,
+                        isHiddenLoginView: self.$isHiddenLoginView,
                         isHiddenHomeView: self.$isHiddenHomeView,
-                        isHiddenIAPView: self.$isHiddenChatView,
                         messageCreator: .bytePal(
                             message: self.messages.list[0]["content"] as! String))
                 } else {
                     HomeMessageCell(
-                        rootViewIsActive: self.$rootViewIsActive,
+                        isHiddenLoginView: self.$isHiddenLoginView,
                         isHiddenHomeView: self.$isHiddenHomeView,
-                        isHiddenIAPView: self.$isHiddenChatView,
                         messageCreator: .user(message: "No messages sent to BytePal")
                     )
                     HomeMessageCell(
-                        rootViewIsActive: self.$rootViewIsActive,
+                        isHiddenLoginView: self.$isHiddenLoginView,
                         isHiddenHomeView: self.$isHiddenHomeView,
-                        isHiddenIAPView: self.$isHiddenChatView,
                         messageCreator: .bytePal(message: "No messages received from BytePal")
                     )
                 }
@@ -240,87 +203,3 @@ struct MessageCellScrollView: View {
         }
     }
 }
-
-//struct HomeView: View {
-//    var number: NumberController = NumberController()
-//    @EnvironmentObject var messages: Messages
-//    @EnvironmentObject var userInformation: UserInformation
-//
-//    //  Attributes Cards
-//    @State var homeViewCardAttributes: [String: [String: String]] = [
-//        "typing":
-//                [
-//                    "title": "Messages",
-//                    "image": "typing",
-//                    "text": "",
-//                    "buttonText": "Upgrade"
-//                ],
-//        "female user":
-//                [
-//                    "title": "Last message sent",
-//                    "image": "female user",
-//                    "text": "",
-//                    "buttonText": "Continue"
-//                ],
-//        "BytePal":
-//                [
-//                    "title": "Last message sent by BytePal",
-//                    "image": "BytePal",
-//                    "text": "",
-//                    "buttonText": "Continue"
-//                ]
-//    ]
-//
-////    func updateLastMesasge() {
-////        let numberMessages: Int = self.messages.list.count
-////        self.messages.lastMessages[0] = self.messages.list[numberMessages-2]
-////        self.messages.lastMessages[1] = self.messages.list[numberMessages-1]
-////    }
-//
-//    var body: some View {
-//        GeometryReader { geometry in
-//            ZStack {
-//                VStack {
-//                    HStack {
-//                        Image("logo")
-//                            .resizable()
-//                            .frame(width: 60, height: 60)
-//                            .fixedSize()
-//                        Text("BytePal")
-//                            .font(.custom(fontStyle, size: 28))
-//                    }
-//                        .padding(16)
-//                        .zIndex(2)
-//                        .opacity(80)
-//                    ScrollView {
-//                        ForEach((0 ..< homeViewCardType.count), id: \.self) { i in
-//                            ButtonCard(
-//                                type: homeViewCardType[i],
-//                                title: self.homeViewCardAttributes[homeViewCardType[i]]?["title"] ?? "error",
-//                                image: self.homeViewCardAttributes[homeViewCardType[i]]?["image"] ?? "error",
-//                                text: self.homeViewCardAttributes[homeViewCardType[i]]?["text"] ?? "error",
-//                                buttonText: self.homeViewCardAttributes[homeViewCardType[i]]?["buttonText"] ?? "error"
-//                            )
-//                        }
-//                    }
-//                        .frame(width: geometry.size.width, height: 640)
-//                        .onAppear(perform: {
-//                            self.homeViewCardAttributes = self.updateHomeViewCards(attributes: self.homeViewCardAttributes)
-//                    })
-//                        .zIndex(0)
-//                    Spacer(minLength: CGFloat(40))
-//                    NavigationBar()
-//                        .zIndex(1)
-//                    Spacer(minLength: CGFloat(96))
-//                }
-//            }
-//                .navigationBarBackButtonHidden(true)
-//        }
-//    }
-//}
-
-//struct Home_Previews: PreviewProvider {
-//    static var previews: some View {
-//        HomeView()
-//    }
-//}

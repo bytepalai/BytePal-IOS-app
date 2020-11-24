@@ -10,7 +10,6 @@ import SwiftUI
 
 struct ShareView: View {
     var height: CGFloat
-    @Binding var rootViewIsActive: Bool
     @State private var isShareSheetShowing = false
      
     
@@ -44,13 +43,3 @@ struct ShareView: View {
         
     }
 }
-
-//struct ShareView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ShareView()
-//            .environment(\.colorScheme, .dark)
-//        
-//        ShareView()
-//            .environment(\.colorScheme, .light)
-//    }
-//}

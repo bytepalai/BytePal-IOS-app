@@ -12,7 +12,6 @@ struct NavigationBar: View {
     var width: CGFloat
     var height: CGFloat
     var color: Color
-    @Binding var rootViewIsActive: Bool
     @Environment(\.managedObjectContext) var moc
     @EnvironmentObject var messages: Messages
     @EnvironmentObject var userInformation: UserInformation

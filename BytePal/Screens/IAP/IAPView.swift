@@ -13,10 +13,8 @@ import Combine
 import StoreKit
 
 struct IAPView: View {
-    @Binding var rootViewIsActive: Bool
     @Binding var isHiddenHomeView: Bool
     @Binding var isHiddenIAPView: Bool
-//    @ObservedObject var productsStore : ProductsStore
     @ObservedObject var viewModel: IAPViewModel
     @EnvironmentObject var userInformation: UserInformation
     @State var show_modal = false

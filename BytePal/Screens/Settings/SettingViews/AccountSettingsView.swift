@@ -12,7 +12,7 @@ import CoreData
 struct AccountSettingsView: View {
     let width: CGFloat?
     let height: CGFloat?
-    @Binding var rootViewIsActive: Bool
+    @Binding var isHiddenLoginView: Bool
     @Binding var isHiddenHomeView: Bool
     @Binding var isHiddenChatView: Bool
     @Binding var isHiddenAccountSettingsView: Bool
@@ -36,10 +36,7 @@ struct AccountSettingsView: View {
         VStack {
             
             // Share button
-            ShareViewAccountSettings(
-                width: (width ?? 100),
-                rootViewIsActive: self.$rootViewIsActive
-            )
+            ShareViewAccountSettings(width: (width ?? 100))
                 
             GeometryReader { proxy in
                 List {
@@ -65,14 +62,16 @@ struct AccountSettingsView: View {
                 .shadow(radius: 0.5)
                 .offset(x: 10, y: -proxy.size.height/6)
             }
-            .background(Color.appLightGray)
-            .edgesIgnoringSafeArea(.all)
+                .background(Color.appLightGray)
+                .edgesIgnoringSafeArea(.all)
+                .onAppear(perform: {
+                    print("------ email(AccountSettings): \(self.userInformation.email)")
+                })
             
             NavigationBar(
                 width: width!,
                 height: height!*0.10,
                 color: Color(UIColor.systemGray3),
-                rootViewIsActive: self.$rootViewIsActive,
                 isHiddenHomeView: self.$isHiddenHomeView,
                 isHiddenChatView: self.$isHiddenChatView,
                 isHiddenAccountSettingsView: self.$isHiddenAccountSettingsView
@@ -123,7 +122,12 @@ struct AccountSettingsView: View {
             print("------------ LOGOUT (status): \(userInfo.isLoggedIn)")
         }
         self.userInformation.isLoggedIn = false
-        self.rootViewIsActive = false
+        
+        // Got Login View
+        self.isHiddenHomeView = true
+        self.isHiddenChatView = true
+        self.isHiddenAccountSettingsView = true
+        self.isHiddenLoginView = false
 
     }
 

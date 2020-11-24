@@ -11,7 +11,9 @@ import SwiftUI
 import CoreData
 
 struct ChatView: View {
-    @Binding var rootViewIsActive: Bool
+    var width: CGFloat?
+    var height: CGFloat?
+    @Binding var isHiddenLoginView: Bool
     @EnvironmentObject var userInformation: UserInformation
 
     var body: some View {
@@ -20,17 +22,16 @@ struct ChatView: View {
                 // User Bar (Size: 6%)
                 UserBar(
                     width: geometry.size.width,
-                    sideSquareLength: geometry.size.height*0.06,
-                    rootViewIsActive: self.$rootViewIsActive
+                    sideSquareLength: geometry.size.height*0.06
                 )
                 
                 // Space (4%)
                 
                 // User Bar (Size: 90%)
                 MessageHistory(
-                    width: geometry.size.width,
-                    height: geometry.size.height,
-                    rootViewIsActive: self.$rootViewIsActive
+                    width: self.width,
+                    height: self.height,
+                    isHiddenLoginView: self.$isHiddenLoginView
                 )
             }
         }
