@@ -17,21 +17,26 @@ struct LoginView: View {
     // Controller both views
     @State var isHiddenLoginView: Bool = false
     @State var isHiddenSignupView: Bool = true
-    @State var isHiddenHomeView: Bool = true
     @State var isHiddenChatView: Bool = true
-    @State var isHiddenAccountSettingsView: Bool = true
     
     // Login View
-    var loginViewModel: LoginViewModel = LoginViewModel()
+    
+    //
     var socialMediaAuth: SocialMediaAuth = SocialMediaAuth()
     var messageHistoryData: [[String: String]] = [[String: String]]()
+    
+    // Core Data
     var container: NSPersistentContainer!
     @FetchRequest(entity: Message.entity(), sortDescriptors: []) var MessagesCoreDataRead: FetchedResults<Message>
     @FetchRequest(entity: User.entity(), sortDescriptors: []) var UserInformationCoreDataRead: FetchedResults<User>
     @Environment(\.managedObjectContext) var moc
+    
+    // Environment Object
     @EnvironmentObject var messages: Messages
     @EnvironmentObject var userInformation: UserInformation
     @EnvironmentObject var googleDelegate: GoogleDelegate
+    
+    // States
     @State var isCurrentUserLoadServer: Bool = true
     @State var TextForMultiLine: String =
         """
@@ -60,6 +65,7 @@ struct LoginView: View {
         GeometryReader { geometry in
             ZStack {
                 VStack {
+                    
                     LargeLogo(
                         width: geometry.size.width,
                         height: geometry.size.height
