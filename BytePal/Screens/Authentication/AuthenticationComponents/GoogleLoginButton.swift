@@ -32,30 +32,30 @@ struct GoogleLoginButton: View {
                         GIDSignIn.sharedInstance().signIn()
                     }){
                         Text("G")
-                            .font(.custom(fontStyle, size: 24))
+                            .font(.custom(fontStyle, size: 26))
                             .foregroundColor(Color(UIColor.white))
                             .background(
                                 Circle()
                                     .fill(convertHextoRGB(hexColor: "DB3236"))
-                                    .frame(width: (width ?? CGFloat(100))*0.07 , height: (width ?? CGFloat(100))*0.07)
-                                    .shadow(color: Color(UIColor.black).opacity(0.32), radius: 4, x: 3, y: 3)
+                                    .frame(width: CGFloat(36), height: CGFloat(36))
+                                    .shadow(color: Color(UIColor.black).opacity(0.60), radius: 4, x: 3, y: 3)
                             )
-                                .padding([.leading, .trailing], (width ?? CGFloat(100))*0.03)
+                                .padding([.leading, .trailing], (width ?? CGFloat(100))*0.04)
                     }
                 } else {
                     Button(action: {
                         GIDSignIn.sharedInstance().signIn()
                     }){
                         Text("G")
-                            .font(.custom(fontStyle, size: 24))
+                            .font(.custom(fontStyle, size: 26))
                             .foregroundColor(Color(UIColor.white))
                             .background(
                                 Circle()
                                     .fill(convertHextoRGB(hexColor: "DB3236"))
-                                    .frame(width: 32, height: 32)
-                                    .shadow(color: Color(UIColor.black).opacity(0.32), radius: 4, x: 3, y: 3)
-                                )
-                            .padding(EdgeInsets(top: 0, leading: 12, bottom: 0, trailing: 12))
+                                    .frame(width: CGFloat(36), height: CGFloat(36))
+                                    .shadow(color: Color(UIColor.black).opacity(0.60), radius: 4, x: 3, y: 3)
+                            )
+                                .padding([.leading, .trailing], (width ?? CGFloat(100))*0.04)
                     }
                 }
             }.onAppear(perform: {

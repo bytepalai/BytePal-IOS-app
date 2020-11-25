@@ -203,7 +203,7 @@ struct SignupView: View {
                     let userID: String = reponseObject.user_id
                     
                     // Init IAP
-                    IAPManager.shared.initIAP(userID: self.googleDelegate.userID)
+                    IAPManager.shared.initIAP(userID: userID)
 
                     // Save user information to cache
                     if UserInformationCoreDataRead.count == 0 {

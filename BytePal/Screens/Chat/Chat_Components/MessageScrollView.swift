@@ -2,7 +2,7 @@
 //  MessageScrollView.swift
 //  BytePal
 //
-//  Created by may on 11/24/20.
+//  Created by Scott Hom on 11/24/20.
 //  Copyright © 2020 BytePal-AI. All rights reserved.
 //
 

@@ -175,6 +175,9 @@ struct LoginView: View {
 
             // Load user information from cache and go to Chat View (login)
             if self.socialMediaAuth.getAccountLoginStatus(personalLoginStatus: self.userInformation.isLoggedIn) != "logged out" {
+                
+                print("Logged in already!")
+                
                 // Load user information from cache to RAM
                 for userInfo in self.UserInformationCoreDataRead {
                     self.userInformation.id = userInfo.id ?? "Error: ID not unwrapped succesfully onAppearLoginView()"

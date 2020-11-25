@@ -17,12 +17,10 @@ struct SignupBarOnly: View {
         HStack {
             
             // SignupBar (height: 10%, heighest is TextView)
-            Text("Register")
-                .font(.custom(fontStyle, size: 20))
-                .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: (width ?? CGFloat(100))*0.10))
             FacebookLoginButtonOnly(width: width, height: height)
             GoogleLoginButtonOnly(width: width, height: height)
             PersonalLoginButtonOnly(width: width, height: height)
+            AppleLoginButton()
         }
             .padding(EdgeInsets(top: 0, leading: 0, bottom: (height ?? CGFloat(200))*0.30, trailing: 0))
     }

@@ -19,15 +19,15 @@ struct FacebookLoginButtonOnly: View {
         }){
             VStack {
                 Text("f")
-                    .font(.custom(fontStyle, size: 20))
+                    .font(.custom(fontStyle, size: 30))
                     .foregroundColor(Color(UIColor.white))
                     .background(
                         Circle()
                             .fill(convertHextoRGB(hexColor: "3B5998"))
-                            .frame(width: (width ?? CGFloat(100))*0.07 , height: (width ?? CGFloat(100))*0.07)
-                            .shadow(color: Color(UIColor.black).opacity(0.48), radius: 4, x: 3, y: 3)
+                            .frame(width: CGFloat(36), height: CGFloat(36))
+                            .shadow(color: Color(UIColor.black).opacity(0.70), radius: 4, x: 3, y: 3)
                     )
-                        .padding([.trailing], (width ?? CGFloat(100))*0.05)
+                        .padding([.trailing], (width ?? CGFloat(100))*0.06)
             }
         }
     }

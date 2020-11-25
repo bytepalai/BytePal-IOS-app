@@ -213,16 +213,21 @@ class SocialMediaAuth {
     func getAccountLoginStatus(personalLoginStatus: Bool) -> String {
         
         if(GIDSignIn.sharedInstance()?.currentUser != nil){
+            print("---- Google")
             return "Google"
         } else if (AccessToken.current ?? nil) != nil {
             if !AccessToken.current!.isExpired {
+                print("---- Facebook")
                 return "Facebook"
             }
         } else if personalLoginStatus {
+            print("---- Personal")
             return "Personal"
         } else {
+            print("---- Error 1")
             return "logged out"
         }
+        print("---- Error 2")
         return "logged out"
     }
 }
