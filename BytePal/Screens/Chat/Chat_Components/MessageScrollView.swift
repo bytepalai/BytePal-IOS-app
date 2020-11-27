@@ -31,6 +31,9 @@ struct MessageScrollView: View {
             )
             .rotationEffect(.radians(.pi))
             .onAppear {
+                print("----- messages (ScrollView): ")
+                print(messages.list)
+                
                 UITableView.appearance().separatorStyle = .none
                 
                 if #available(iOS 14.0, *) {

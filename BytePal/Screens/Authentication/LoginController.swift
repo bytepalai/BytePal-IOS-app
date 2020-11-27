@@ -12,7 +12,8 @@ import FBSDKLoginKit
 import GoogleSignIn
 
 class BytePalAuth {
-    func personalLogin (email: String, password: String) -> String {
+    
+    static func login (email: String, password: String, userID: @escaping (String) -> Void) {
 //      Init
         let semaphore = DispatchSemaphore (value: 0) //Create counter for async management
         var loginStatus: String = ""
@@ -58,10 +59,10 @@ class BytePalAuth {
         semaphore.wait()
         
 //      Return loginStatus
-        return loginStatus
+        userID(loginStatus)
     }
     
-    func facebookLogin (id: String, email: String, first_name: String, last_name: String) -> [String: String] {
+    static func facebookLogin (id: String, email: String, givenName: String, familyName: String) -> [String: String] {
         
             // Init
             let semaphore = DispatchSemaphore (value: 0) //Create counter for async management
@@ -70,8 +71,8 @@ class BytePalAuth {
         
             // Set email and name
             userInformation["email"] = email
-            userInformation["firstName"] = first_name
-            userInformation["lastName"] = last_name
+            userInformation["givenName"] = givenName
+            userInformation["familyName"] = familyName
 
             // Define header of POST Request
             var request = URLRequest(url: URL(string: "\(API_HOSTNAME)/facebook")!,timeoutInterval: Double.infinity)
@@ -83,8 +84,8 @@ class BytePalAuth {
             {
                 \"id\": \"\(id)\",
                 \"email\": \"\(email)\",
-                \"first_name\": \"\(first_name)\",
-                \"last_name\": \"\(last_name)\"
+                \"givenName\": \"\(givenName)\",
+                \"familyName\": \"\(familyName)\"
             }
             """
 
@@ -123,7 +124,7 @@ class BytePalAuth {
             return userInformation
     }
     
-    func googleLogin (id: String, email: String, first_name: String, last_name: String) -> String {
+    static func googleLogin (id: String, email: String, givenName: String, familyName: String) -> String {
     //      Init
             let semaphore = DispatchSemaphore (value: 0) //Create counter for async management
             var loginStatus: String = ""
@@ -139,8 +140,8 @@ class BytePalAuth {
             {
                 \"idToken\": \"\(id)\",
                 \"email\": \"\(email)\",
-                \"givenName\": \"\(first_name)\",
-                \"familyName\": \"\(last_name)\"
+                \"givenName\": \"\(givenName)\",
+                \"familyName\": \"\(familyName)\"
             }
             """
             
@@ -224,7 +225,7 @@ class SocialMediaAuth {
             print("---- Personal")
             return "Personal"
         } else {
-            print("---- Error 1")
+            print("---- Logged Out")
             return "logged out"
         }
         print("---- Error 2")
@@ -240,8 +241,8 @@ class GoogleDelegate: NSObject, GIDSignInDelegate, ObservableObject {
     let bytepalAuth: BytePalAuth = BytePalAuth()
     @Published var userID: String = ""
     @Published var email: String = ""
-    @Published var firstName: String = ""
-    @Published var lastName: String = ""
+    @Published var givenName: String = ""
+    @Published var familyName: String = ""
     @Published var signedIn: Bool = false
 
     // Signin Handeler
@@ -260,19 +261,19 @@ class GoogleDelegate: NSObject, GIDSignInDelegate, ObservableObject {
         let givenName: String = GIDSignIn.sharedInstance().currentUser!.profile.givenName
         let familyName: String = GIDSignIn.sharedInstance().currentUser!.profile.familyName
         
-        let userID: String = bytepalAuth.googleLogin(
+        let userID: String = BytePalAuth.googleLogin(
                                 id: clientID,
                                 email: email,
-                                first_name: givenName,
-                                last_name: familyName
+                                givenName: givenName,
+                                familyName: familyName
                             )
         
         if clientID != "" {
             // Save user metadata
             self.userID = userID
             self.email = email
-            self.firstName = givenName
-            self.lastName = familyName
+            self.givenName = givenName
+            self.familyName = familyName
             self.signedIn = true
         }
     }

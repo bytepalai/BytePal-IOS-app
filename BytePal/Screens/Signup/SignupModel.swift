@@ -18,13 +18,13 @@ class SignUpViewModel: ObservableObject {
     private var cancellables: [AnyCancellable] = []
     
     @Published var email = ""
-    @Published var firstName = ""
-    @Published var lastName = ""
+    @Published var givenName = ""
+    @Published var familyName = ""
     @Published var password = ""
     @Published var sinUpButtonDissabled = true
     
     var valiedCredentials: AnyPublisher<Bool, Never> {
-        Publishers.CombineLatest4($email, $firstName, $lastName, $password)
+        Publishers.CombineLatest4($email, $givenName, $familyName, $password)
             .map {
                 if !$0.0.isEmpty, !$0.1.isEmpty, !$0.2.isEmpty, !$0.3.isEmpty {
                     return true

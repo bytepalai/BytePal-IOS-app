@@ -40,7 +40,12 @@ struct SignupBar: View {
                 isHiddenChatView: self.$isHiddenChatView,
                 isHiddenSignupView: self.$isHiddenSignupView
             )
-            AppleLoginButton()
+            AppleLoginButton(
+                isHiddenLoginView: self.$isHiddenLoginView,
+                isHiddenSignupView: self.$isHiddenSignupView,
+                isHiddenChatView: self.$isHiddenChatView
+            )
+            
         }
             .padding(EdgeInsets(top: 0, leading: 0, bottom: (height ?? CGFloat(200))*0.30, trailing: 0))
     }

@@ -20,7 +20,10 @@ struct SignupBarOnly: View {
             FacebookLoginButtonOnly(width: width, height: height)
             GoogleLoginButtonOnly(width: width, height: height)
             PersonalLoginButtonOnly(width: width, height: height)
-            AppleLoginButton()
+            
+//            AppleLoginButtonViewOnly()
+            
+            
         }
             .padding(EdgeInsets(top: 0, leading: 0, bottom: (height ?? CGFloat(200))*0.30, trailing: 0))
     }

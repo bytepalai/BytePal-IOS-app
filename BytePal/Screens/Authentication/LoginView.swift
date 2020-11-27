@@ -19,9 +19,7 @@ struct LoginView: View {
     @State var isHiddenSignupView: Bool = true
     @State var isHiddenChatView: Bool = true
     
-    // Login View
-    
-    //
+    // Self defined object
     var socialMediaAuth: SocialMediaAuth = SocialMediaAuth()
     var messageHistoryData: [[String: String]] = [[String: String]]()
     
@@ -47,12 +45,6 @@ struct LoginView: View {
     @State var loginError: String = ""
     
     // Signup (Hidden View, initial state)
-    @State var emailSignup: String = ""
-    @State var firstName: String = ""
-    @State var lastName: String = ""
-    @State var passwordSignup: String = ""
-    @State var isShowingSignupError: Bool = false
-    @State var signupError: String = ""
     private let cornerRadious: CGFloat = 8
     private let buttonHeight: CGFloat = 60
     let cornerRadiusTextField: CGFloat = 15.0
@@ -76,9 +68,11 @@ struct LoginView: View {
                     TextField("Enter email", text: $email)
                         .padding(EdgeInsets(top: 0, leading: geometry.size.width*0.04, bottom: geometry.size.width*0.02, trailing: 0))
                         .autocapitalization(.none)
+                        .disableAutocorrection(true)
                     SecureField("Enter password", text: $password)
                         .padding(EdgeInsets(top: 0, leading: geometry.size.width*0.04, bottom: geometry.size.width*0.02, trailing: 0))
                         .autocapitalization(.none)
+                        .disableAutocorrection(true)
                     Button(action: {
                         self.personalLogin(email: self.email, password: self.password)
                     }){
@@ -152,28 +146,24 @@ struct LoginView: View {
                 if userInformation.currentView == "Login" &&  isNotConnected {
                     print("Loading messages from cache ...")
                     var messageNumber: Int = 0
+                    
                     if self.MessagesCoreDataRead.isEmpty != true {
-                        let messageCount: Int = self.MessagesCoreDataRead.count
-                        let lastMessageLowestIndex: Int = messageCount - 2
                         
                         for message in self.MessagesCoreDataRead {
-                            if messageNumber >= lastMessageLowestIndex {
-                                self.messages.lastMessages.append(message.content ?? "")
-                            }
+                            
                             self.loadMessageHistoryCache(message: message)
                             messageNumber += 1
+                            
                         }
+                        
                     }
-                    else {
-                        DispatchQueue.main.async {
-                            self.messages.lastMessages.append(userNoMessages)
-                            self.messages.lastMessages.append(chatbotNoMessages)
-                        }
-                    }
+                    
                 }
+                
             })
 
-            // Load user information from cache and go to Chat View (login)
+            // Load user information from cache
+            // Go to Chat View
             if self.socialMediaAuth.getAccountLoginStatus(personalLoginStatus: self.userInformation.isLoggedIn) != "logged out" {
                 
                 print("Logged in already!")
@@ -182,9 +172,9 @@ struct LoginView: View {
                 for userInfo in self.UserInformationCoreDataRead {
                     self.userInformation.id = userInfo.id ?? "Error: ID not unwrapped succesfully onAppearLoginView()"
                     self.userInformation.email = userInfo.email ?? ""
-                    self.userInformation.firstName = userInfo.firstName ?? ""
-                    self.userInformation.lastName = userInfo.lastName ?? ""
-                    self.userInformation.fullName =  (userInfo.firstName ?? "") + " " + (userInfo.lastName ?? "")
+                    self.userInformation.givenName = userInfo.givenName ?? ""
+                    self.userInformation.familyName = userInfo.familyName ?? ""
+                    self.userInformation.fullName =  (userInfo.givenName ?? "") + " " + (userInfo.familyName ?? "")
                 }
                 
                 // Go to Chat View
@@ -259,8 +249,6 @@ struct LoginView: View {
                             try? self.moc.save()
                         }
                     }
-                    
-                    print("------ email(TextField): \(self.email)")
                     
                     // Save user information to RAM
                     DispatchQueue.main.async {

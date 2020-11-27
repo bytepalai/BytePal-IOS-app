@@ -35,8 +35,6 @@ struct MessageHistory: View{
     @ObservedObject var keyboard = KeyboardResponder()
     
     // States
-    
-    //
     @State private var isHiddenHomeView: Bool = true
     @State private var isHiddenChatView: Bool = false
     @State private var isHiddenAccountSettingsView: Bool = true
@@ -69,13 +67,19 @@ struct MessageHistory: View{
                     isHiddenAccountSettingsView: self.$isHiddenAccountSettingsView
                 )
                     .isHidden(keyboard.isUp, remove: keyboard.isUp)
-                
+
             }
                 .frame(alignment: .bottom)
                 .edgesIgnoringSafeArea(.bottom)
                 .navigationBarTitle("")
                 .navigationBarHidden(true)
                 .isHidden(self.isHiddenChatView, remove: self.isHiddenChatView)
+                .onAppear(perform: {
+                    print("----- ID (MessageHistory): \(self.userInformation.id)")
+                    print("----- messages (MessageHistory): ")
+                    print(messages.list)
+                    
+                })
                 
 
             // Home View

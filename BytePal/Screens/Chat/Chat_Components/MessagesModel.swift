@@ -12,5 +12,4 @@ import SwiftUI
 class Messages: ObservableObject {
     @Published var list: [[String: Any]] = [[String: Any]]()
     @Published var messagesLeft: Int = -1
-    @Published var lastMessages: [String] = [String]()
 }

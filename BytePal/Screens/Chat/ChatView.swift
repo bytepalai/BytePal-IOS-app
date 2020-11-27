@@ -19,7 +19,7 @@ struct ChatView: View {
     var body: some View {
         GeometryReader{ geometry  in
             VStack{
-                // User Bar (Size: 6%)
+                // User Bar (height: 6%)
                 UserBar(
                     width: geometry.size.width,
                     sideSquareLength: geometry.size.height*0.06
@@ -27,7 +27,7 @@ struct ChatView: View {
                 
                 // Space (4%)
                 
-                // User Bar (Size: 90%)
+                // User Bar (height: 90%)
                 MessageHistory(
                     width: self.width,
                     height: self.height,

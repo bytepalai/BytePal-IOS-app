@@ -104,13 +104,12 @@ struct AccountSettingsView: View {
         // Clear Environment Object
         self.userInformation.id = ""
         self.userInformation.email = ""
-        self.userInformation.firstName = ""
-        self.userInformation.lastName = ""
+        self.userInformation.givenName = ""
+        self.userInformation.familyName = ""
         
         //// Messages
         self.messages.list = [[String: Any]]()
         self.messages.messagesLeft = -1
-        self.messages.lastMessages = [String]()
         
         // Set personal login status to logged out
         let userInformationCoreDataWrite: User = User(context: self.moc)

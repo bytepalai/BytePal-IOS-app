@@ -61,8 +61,8 @@ struct FacebookLoginButton: View {
 
     func loginFB(completion: @escaping(String) -> Void) {
         var email: String = ""
-        var firstName: String = ""
-        var lastName: String = ""
+        var givenName: String = ""
+        var familyName: String = ""
         var fbUserInformation: [String: String] = [String: String]()
 
         let fbLoginManager: LoginManager = LoginManager()
@@ -94,18 +94,22 @@ struct FacebookLoginButton: View {
                         let namesNum: Int = names.count
                         switch namesNum {
                             case 2:
-                                firstName = names[0]
-                                lastName = names[1]
+                                givenName = names[0]
+                                familyName = names[1]
                             case 3:
-                                firstName = names[0]
-                                lastName = names[2]
+                                givenName = names[0]
+                                familyName = names[2]
                             default:
-                                firstName = ""
-                                lastName = ""
+                                givenName = ""
+                                familyName = ""
                                 print("Error no name recieved")
                         }
 
-                        fbUserInformation = BytePalAuth().facebookLogin(id: id, email: email, first_name: firstName, last_name: lastName)
+                        fbUserInformation = BytePalAuth.facebookLogin(
+                                                                id: id,
+                                                                email: email,
+                                                                givenName: givenName,
+                                                            familyName: familyName)
 
                         // Saved userID if it exists
                         if fbUserInformation["id"]! != "" {
@@ -123,8 +127,8 @@ struct FacebookLoginButton: View {
                                 let userInformationCoreDataWrite: User = User(context: self.moc)
                                 userInformationCoreDataWrite.id = fbUserInformation["id"]!
                                 userInformationCoreDataWrite.email = fbUserInformation["email"]!
-                                userInformationCoreDataWrite.firstName = fbUserInformation["firstName"]!
-                                userInformationCoreDataWrite.lastName = fbUserInformation["lastName"]!
+                                userInformationCoreDataWrite.givenName = fbUserInformation["givenName"]!
+                                userInformationCoreDataWrite.familyName = fbUserInformation["familyName"]!
                                 DispatchQueue.main.async {
                                     try? self.moc.save()
                                 }
@@ -138,8 +142,8 @@ struct FacebookLoginButton: View {
                                 let userInformationCoreDataWrite: User = User(context: self.moc)
                                 userInformationCoreDataWrite.id = fbUserInformation["id"]!
                                 userInformationCoreDataWrite.email = fbUserInformation["email"]!
-                                userInformationCoreDataWrite.firstName = fbUserInformation["firstName"]!
-                                userInformationCoreDataWrite.lastName = fbUserInformation["lastName"]!
+                                userInformationCoreDataWrite.givenName = fbUserInformation["givenName"]!
+                                userInformationCoreDataWrite.familyName = fbUserInformation["familyName"]!
                                 
                                 DispatchQueue.main.async {
                                     try? self.moc.save()
@@ -151,9 +155,9 @@ struct FacebookLoginButton: View {
                             // Write user information to RAM
                             self.userInformation.id = fbUserInformation["id"]!
                             self.userInformation.email = fbUserInformation["email"]!
-                            self.userInformation.firstName = fbUserInformation["firstName"]!
-                            self.userInformation.lastName = fbUserInformation["lastName"]!
-                            self.userInformation.fullName = fbUserInformation["firstName"]! + " " + fbUserInformation["lastName"]!
+                            self.userInformation.givenName = fbUserInformation["givenName"]!
+                            self.userInformation.familyName = fbUserInformation["familyName"]!
+                            self.userInformation.fullName = fbUserInformation["givenName"]! + " " + fbUserInformation["familyName"]!
 
                             completion(fbUserInformation["id"]!)
                         }

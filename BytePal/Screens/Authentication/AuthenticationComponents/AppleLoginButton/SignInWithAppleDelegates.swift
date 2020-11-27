@@ -10,10 +10,19 @@ import UIKit
 import AuthenticationServices
 import Contacts
 
-class SignInWithAppleDelegates: NSObject {
-//    private let signInSucceeded: (Bool) -> Void
+class AppleLoginDelegateBP: NSObject, ObservableObject {
+    // private let signInSucceeded: (Bool) -> Void
+    
     private let userData: ([String]) -> Void
     private weak var window: UIWindow!
+    
+    // Shared data
+    let numSharedDataVar: Int = 5
+    @Published var email: String = ""
+    @Published var givenName: String = ""
+    @Published var familyName: String = ""
+    @Published var userIdentifier: String = ""
+    @Published var signedIn: Bool = false
   
     init(window: UIWindow?, data: @escaping([String]) -> Void) {
         self.window = window
@@ -21,7 +30,7 @@ class SignInWithAppleDelegates: NSObject {
   }
 }
 
-extension SignInWithAppleDelegates: ASAuthorizationControllerDelegate {
+extension AppleLoginDelegateBP: ASAuthorizationControllerDelegate {
   private func registerNewAccount(credential: ASAuthorizationAppleIDCredential) {
     // 1
     
@@ -32,41 +41,45 @@ extension SignInWithAppleDelegates: ASAuthorizationControllerDelegate {
     
     var userDataArray: [String] = [String]()
     
-    userDataArray.append(String(describing: userInformationApple.email))
-    userDataArray.append(String(describing: userInformationApple.name.givenName))
-    userDataArray.append(String(describing: userInformationApple.name.familyName))
-    userDataArray.append(String(describing: userInformationApple.identifier))
-    
-    
-    // 2
-    let keychain = UserDataKeychain()
-    do {
-        print("----- test 1")
-      try keychain.store(userInformationApple)
-    } catch {
-        print("----- test 2")
-        print("------ ERROR: \(error)")
-        userDataArray.append("false")
-        self.userData(userDataArray)
-    }
-    
-
+    self.email = String(userInformationApple.email)
+    self.givenName = String(userInformationApple.name.givenName!)
+    self.familyName = String(userInformationApple.name.familyName!)
+    self.userIdentifier = String(userInformationApple.identifier)
     
     // 3
     do {
-        print("----- test 3")
+    
         let success = try WebApi.Register(user: userInformationApple,
                                         identityToken: credential.identityToken,
                                         authorizationCode: credential.authorizationCode)
-        
-        // Return sign in status and user information
-        userDataArray.append("true")
+    
+        // Parse sign in status and user information
+        if self.email == nil || self.email == "" {
+            
+            // Not all user information returned from Apple
+            userDataArray.append(self.userIdentifier)
+            userDataArray.append("true")
+    
+        } else {
+            
+            // All user information returned from Apple
+            userDataArray.append(self.email)
+            userDataArray.append(self.givenName)
+            userDataArray.append(self.familyName)
+            userDataArray.append(self.userIdentifier)
+            userDataArray.append("true")
+    
+        }
+
+        // Handle sign in status and user information
         self.userData(userDataArray)
-        
+
     } catch {
-        print("----- test 4")
+
+        // Error Apple Login or Store to Keychain
         userDataArray.append("false")
         self.userData(userDataArray)
+        
     }
     
   }
@@ -78,11 +91,11 @@ extension SignInWithAppleDelegates: ASAuthorizationControllerDelegate {
     // if (WebAPI.Login(credential.user, credential.identityToken, credential.authorizationCode)) {
     //   ...
     // }
+    
+    let identifier: String = credential.user
+    
     var userDataArray: [String] = [String]()
-    userDataArray.append("Existing Account")
-    userDataArray.append("Existing Account")
-    userDataArray.append("Existing Account")
-    userDataArray.append("Existing Account")
+    userDataArray.append(identifier)
     userDataArray.append("true")
     self.userData(userDataArray)
   }
@@ -94,11 +107,10 @@ extension SignInWithAppleDelegates: ASAuthorizationControllerDelegate {
     // if (WebAPI.Login(credential.user, credential.password)) {
     //   ...
     // }
+    let identifier: String = credential.user
+    
     var userDataArray: [String] = [String]()
-    userDataArray.append("User and Password")
-    userDataArray.append("User and Password")
-    userDataArray.append("User and Password")
-    userDataArray.append("User and Password")
+    userDataArray.append(identifier)
     userDataArray.append("true")
     self.userData(userDataArray)
   }
@@ -129,147 +141,9 @@ extension SignInWithAppleDelegates: ASAuthorizationControllerDelegate {
   }
 
     
-    func signup (email: String, password: String, firstName: String, lastName: String, completion: @escaping(String) -> Void ) {
-        let semaphore = DispatchSemaphore (value: 0)
-        let parameters = """
-        {
-            \"email\": \"\(email)\",
-            \"password\": \"\(password)\",
-            \"first_name\": \"\(firstName)\",
-            \"last_name\": \"\(lastName)\"
-        }
-        """
-        let postData = parameters.data(using: .utf8)
-
-        var request = URLRequest(url: URL(string: "\(API_HOSTNAME)/register")!,timeoutInterval: Double.infinity)
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpMethod = "POST"
-        request.httpBody = postData
-    
-        struct responseStruct: Decodable {
-            var user_id: String
-        }
-
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data else {
-                print(String(describing: error))
-                return
-            }
-            do {
-                if String(data: data, encoding: .utf8)! == "User Email already Exist" {
-                    print("---- Error email already exists")
-                } else {
-                    // Set user id
-                    let reponseObject = try JSONDecoder().decode(responseStruct.self, from: data)
-                    let userID: String = reponseObject.user_id
-                    
-//                    // Init IAP
-//                    IAPManager.shared.initIAP(userID: userID)
-//
-//                    // Save user information to cache
-//                    if UserInformationCoreDataRead.count == 0 {
-//                        // Is not logged in
-//
-//                        let userInformationCoreDataWrite: User = User(context: self.moc)
-//                        userInformationCoreDataWrite.id = userID
-//                        userInformationCoreDataWrite.email = self.email
-//                        userInformationCoreDataWrite.firstName = self.firstName
-//                        userInformationCoreDataWrite.lastName = self.lastName
-//                        DispatchQueue.main.async {
-//                            try? self.moc.save()
-//                        }
-//                    } else if UserInformationCoreDataRead.count > 0 && UserInformationCoreDataRead[0].isLoggedIn == false {
-//                        // Is logged (After termination)
-//
-//                        for userInformation in UserInformationCoreDataRead {
-//                            moc.delete(userInformation)
-//                        }
-//
-//                        let userInformationCoreDataWrite: User = User(context: self.moc)
-//                        userInformationCoreDataWrite.id = userID
-//                        userInformationCoreDataWrite.email = self.email
-//                        userInformationCoreDataWrite.firstName = self.firstName
-//                        userInformationCoreDataWrite.lastName = self.lastName
-//
-//                        DispatchQueue.main.async {
-//                            try? self.moc.save()
-//                        }
-//                    }
-//
-//                    // Write user information to RAM
-//                    DispatchQueue.main.async {
-//                        self.userInformation.id = userID
-//                        self.userInformation.email = self.email
-//                        self.userInformation.firstName = self.firstName
-//                        self.userInformation.lastName = self.lastName
-//                        self.userInformation.fullName = self.firstName + " " + self.lastName
-//                    }
-
-//                    // Create agent
-//                    DispatchQueue.main.async {
-//                        self.createAgent(id: userID)
-//                    }
-                    
-                }
-            } catch {
-                print(error)
-            }
-            semaphore.signal()
-        }
-        task.resume()
-        semaphore.wait()
-    }
-    
-//    func createAgent(id: String) {
-//
-//        var err: Int = 0
-//        let semaphore = DispatchSemaphore (value: 0)
-//        let createAgentParameter = """
-//        {
-//            \"user_id\" : "\(id)"
-//        }
-//        """
-//
-//        let postData = createAgentParameter.data(using: .utf8)
-//        var request = URLRequest(url: URL(string: "\(API_HOSTNAME)/create_agent")!,timeoutInterval: Double.infinity)
-//        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-//        request.httpMethod = "POST"
-//        request.httpBody = postData
-//
-//        struct createAgentStruct: Decodable {
-//            var user_id: String
-//        }
-//
-//        // promise han dler (completion handler in Apple Dev Doc)
-//        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-//            guard let data = data else {
-//                print(String(describing: error))
-//                return
-//            }
-//            do {
-//                // Parse response
-//                let dataResponse: String = String(data: data, encoding: .utf8)!
-//                if dataResponse != "New Agent created" {
-//                    err = 1
-//                }
-//            }
-//            semaphore.signal()
-//        }
-//        task.resume()
-//        semaphore.wait()
-//
-//        if err == 0 {
-//            self.isShowingSignupError = false
-//            self.isHiddenLoginView = true
-//            self.isHiddenSignupView = true
-//            self.isHiddenChatView = false
-//        } else {
-//            print("------- Agent ALREADY created")
-//        }
-//    }
 }
 
-extension SignInWithAppleDelegates: ASAuthorizationControllerPresentationContextProviding {
+extension AppleLoginDelegateBP: ASAuthorizationControllerPresentationContextProviding {
   func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
     return self.window
   }

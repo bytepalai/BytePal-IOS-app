@@ -12,8 +12,8 @@ import Foundation
 class UserInformation: ObservableObject {
     @Published var id: String = ""
     @Published var email: String = ""
-    @Published var firstName: String = ""
-    @Published var lastName: String = ""
+    @Published var givenName: String = ""
+    @Published var familyName: String = ""
     @Published var fullName: String = ""
     @Published var messagesLeft: Int = 0
     @Published var isLoggedIn: Bool = false

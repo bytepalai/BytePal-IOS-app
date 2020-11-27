@@ -23,8 +23,8 @@ struct SignupView: View {
     @EnvironmentObject var googleDelegate: GoogleDelegate
     @ObservedObject var keyboard = KeyboardResponder()
     @State var email: String = ""
-    @State var firstName: String = ""
-    @State var lastName: String = ""
+    @State var givenName: String = ""
+    @State var familyName: String = ""
     @State var password: String = ""
     @State var isShowingSignupError: Bool = false
     @State var signupError: String = ""
@@ -79,6 +79,7 @@ struct SignupView: View {
                                     .foregroundColor(.appFontColorBlack)
                                 TextField("", text: $email)
                                     .autocapitalization(.none)
+                                    .disableAutocorrection(true)
                             }
                             .padding()
                         }
@@ -89,8 +90,8 @@ struct SignupView: View {
                                 Text("First Name")
                                     .fontWeight(.semibold)
                                     .foregroundColor(.appFontColorBlack)
-                                TextField("", text: $firstName
-                                )
+                                TextField("", text: $givenName)
+                                    .disableAutocorrection(true)
                             }
                             .padding()
                         }
@@ -101,7 +102,8 @@ struct SignupView: View {
                                 Text("Last Name")
                                     .fontWeight(.semibold)
                                     .foregroundColor(.appFontColorBlack)
-                                TextField("", text: $lastName)
+                                TextField("", text: $familyName)
+                                    .disableAutocorrection(true)
                             }
                             .padding()
                         }
@@ -114,6 +116,7 @@ struct SignupView: View {
                                     .foregroundColor(.appFontColorBlack)
                                 SecureField("Enter password", text: $password)
                                     .autocapitalization(.none)
+                                    .disableAutocorrection(true)
                             }
                             .padding()
                         }
@@ -123,7 +126,7 @@ struct SignupView: View {
                     
                     VStack {
                         Button(action: {
-                            if self.email != "" && self.firstName != "" && self.lastName != "" && self.password != "" {
+                            if self.email != "" && self.givenName != "" && self.familyName != "" && self.password != "" {
                                 self.signup()
                             }
                             else {
@@ -174,8 +177,8 @@ struct SignupView: View {
         {
             \"email\": \"\(self.email)\",
             \"password\": \"\(self.password)\",
-            \"first_name\": \"\(self.firstName)\",
-            \"last_name\": \"\(self.lastName)\"
+            \"first_name\": \"\(self.givenName)\",
+            \"last_name\": \"\(self.familyName)\"
         }
         """
         let postData = parameters.data(using: .utf8)
@@ -212,8 +215,8 @@ struct SignupView: View {
                         let userInformationCoreDataWrite: User = User(context: self.moc)
                         userInformationCoreDataWrite.id = userID
                         userInformationCoreDataWrite.email = self.email
-                        userInformationCoreDataWrite.firstName = self.firstName
-                        userInformationCoreDataWrite.lastName = self.lastName
+                        userInformationCoreDataWrite.givenName = self.givenName
+                        userInformationCoreDataWrite.familyName = self.familyName
                         DispatchQueue.main.async {
                             try? self.moc.save()
                         }
@@ -227,8 +230,8 @@ struct SignupView: View {
                         let userInformationCoreDataWrite: User = User(context: self.moc)
                         userInformationCoreDataWrite.id = userID
                         userInformationCoreDataWrite.email = self.email
-                        userInformationCoreDataWrite.firstName = self.firstName
-                        userInformationCoreDataWrite.lastName = self.lastName
+                        userInformationCoreDataWrite.givenName = self.givenName
+                        userInformationCoreDataWrite.familyName = self.familyName
                         
                         DispatchQueue.main.async {
                             try? self.moc.save()
@@ -239,9 +242,9 @@ struct SignupView: View {
                     DispatchQueue.main.async {
                         self.userInformation.id = userID
                         self.userInformation.email = self.email
-                        self.userInformation.firstName = self.firstName
-                        self.userInformation.lastName = self.lastName
-                        self.userInformation.fullName = self.firstName + " " + self.lastName
+                        self.userInformation.givenName = self.givenName
+                        self.userInformation.familyName = self.familyName
+                        self.userInformation.fullName = self.givenName + " " + self.familyName
                     }
 
                     // Create agent

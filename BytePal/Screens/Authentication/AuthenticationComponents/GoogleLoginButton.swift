@@ -26,39 +26,22 @@ struct GoogleLoginButton: View {
 
     var body: some View {
         VStack {
-            Group {
-                if googleDelegate.signedIn {
-                    Button(action: {
-                        GIDSignIn.sharedInstance().signIn()
-                    }){
-                        Text("G")
-                            .font(.custom(fontStyle, size: 26))
-                            .foregroundColor(Color(UIColor.white))
-                            .background(
-                                Circle()
-                                    .fill(convertHextoRGB(hexColor: "DB3236"))
-                                    .frame(width: CGFloat(36), height: CGFloat(36))
-                                    .shadow(color: Color(UIColor.black).opacity(0.60), radius: 4, x: 3, y: 3)
-                            )
-                                .padding([.leading, .trailing], (width ?? CGFloat(100))*0.04)
-                    }
-                } else {
-                    Button(action: {
-                        GIDSignIn.sharedInstance().signIn()
-                    }){
-                        Text("G")
-                            .font(.custom(fontStyle, size: 26))
-                            .foregroundColor(Color(UIColor.white))
-                            .background(
-                                Circle()
-                                    .fill(convertHextoRGB(hexColor: "DB3236"))
-                                    .frame(width: CGFloat(36), height: CGFloat(36))
-                                    .shadow(color: Color(UIColor.black).opacity(0.60), radius: 4, x: 3, y: 3)
-                            )
-                                .padding([.leading, .trailing], (width ?? CGFloat(100))*0.04)
-                    }
-                }
-            }.onAppear(perform: {
+                
+            Button(action: {
+                GIDSignIn.sharedInstance().signIn()
+            }){
+                Text("G")
+                    .font(.custom(fontStyle, size: 26))
+                    .foregroundColor(Color(UIColor.white))
+                    .background(
+                        Circle()
+                            .fill(convertHextoRGB(hexColor: "DB3236"))
+                            .frame(width: CGFloat(36), height: CGFloat(36))
+                            .shadow(color: Color(UIColor.black).opacity(0.60), radius: 4, x: 3, y: 3)
+                    )
+                        .padding([.leading, .trailing], (width ?? CGFloat(100))*0.04)
+            }
+             .onAppear(perform: {
                 if(GIDSignIn.sharedInstance()?.currentUser != nil){
                                         
                     // Saved userID if it exists
@@ -73,8 +56,8 @@ struct GoogleLoginButton: View {
                             let userInformationCoreDataWrite: User = User(context: self.moc)
                             userInformationCoreDataWrite.id = self.googleDelegate.userID
                             userInformationCoreDataWrite.email = self.googleDelegate.email
-                            userInformationCoreDataWrite.firstName = self.googleDelegate.firstName
-                            userInformationCoreDataWrite.lastName = self.googleDelegate.lastName
+                            userInformationCoreDataWrite.givenName = self.googleDelegate.givenName
+                            userInformationCoreDataWrite.familyName = self.googleDelegate.familyName
                             DispatchQueue.main.async {
                                 try? self.moc.save()
                             }
@@ -88,8 +71,8 @@ struct GoogleLoginButton: View {
                             let userInformationCoreDataWrite: User = User(context: self.moc)
                             userInformationCoreDataWrite.id = self.googleDelegate.userID
                             userInformationCoreDataWrite.email = self.googleDelegate.email
-                            userInformationCoreDataWrite.firstName = self.googleDelegate.firstName
-                            userInformationCoreDataWrite.lastName = self.googleDelegate.lastName
+                            userInformationCoreDataWrite.givenName = self.googleDelegate.givenName
+                            userInformationCoreDataWrite.familyName = self.googleDelegate.familyName
                             DispatchQueue.main.async {
                                 try? self.moc.save()
                             }
@@ -102,9 +85,9 @@ struct GoogleLoginButton: View {
                         // Write user information to RAM
                         self.userInformation.id = self.googleDelegate.userID
                         self.userInformation.email = self.googleDelegate.email
-                        self.userInformation.firstName = self.googleDelegate.firstName
-                        self.userInformation.lastName = self.googleDelegate.lastName
-                        self.userInformation.fullName = self.googleDelegate.firstName + " " + self.googleDelegate.lastName
+                        self.userInformation.givenName = self.googleDelegate.givenName
+                        self.userInformation.familyName = self.googleDelegate.familyName
+                        self.userInformation.fullName = self.googleDelegate.givenName + " " + self.googleDelegate.familyName
 
                         // Load messages
                         DispatchQueue.main.async {

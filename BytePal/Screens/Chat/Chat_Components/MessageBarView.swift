@@ -83,17 +83,9 @@ struct MessageBarView: View {
         if textFieldString != "" {
             // Update message history with user message
             DispatchQueue.main.async {
-                print("----- string: \(self.textFieldString)")
-                if self.messages.list.count > 0 {
-                    print("----- mesage: \(self.messages.list[0])")
-                }
                 
                 self.messages.list.insert(["id": UUID(), "content": self.textFieldString, "isCurrentUser": true], at: self.messages.list.startIndex)
-                print("----- string: \(self.textFieldString)")
-                if self.messages.list.count > 0 {
-                    print("----- mesage: \(self.messages.list[0])")
-                }
-                self.textFieldString = ""
+                
             }
         } else {
             print("Error: User message is blank")

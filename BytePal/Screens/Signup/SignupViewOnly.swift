@@ -8,8 +8,8 @@ struct SignupViewOnly: View {
     let cornerRadiusTextField: CGFloat = 15.0
     let viewHeightTextField: CGFloat = 75
     @State var email: String = ""
-    @State var firstName: String = ""
-    @State var lastName: String = ""
+    @State var givenName: String = ""
+    @State var familyName: String = ""
     @State var password: String = ""
     @State var signupError: String = ""
     let mainViewSpacing: CGFloat = 60
@@ -61,7 +61,7 @@ struct SignupViewOnly: View {
                                     Text("First Name")
                                         .fontWeight(.semibold)
                                         .foregroundColor(.appFontColorBlack)
-                                    TextField("", text: $firstName
+                                    TextField("", text: $givenName
                                     )
                                 }
                                 .padding()
@@ -73,7 +73,7 @@ struct SignupViewOnly: View {
                                     Text("Last Name")
                                         .fontWeight(.semibold)
                                         .foregroundColor(.appFontColorBlack)
-                                    TextField("", text: $lastName)
+                                    TextField("", text: $familyName)
                                 }
                                 .padding()
                             }
@@ -94,7 +94,7 @@ struct SignupViewOnly: View {
                         
                         VStack {
                             Button(action: {
-                                if self.email != "" && self.firstName != "" && self.lastName != "" && self.password != "" {
+                                if self.email != "" && self.givenName != "" && self.familyName != "" && self.password != "" {
                                         print("signup")
                                 }
                                 else {

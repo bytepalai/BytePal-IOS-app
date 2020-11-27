@@ -78,9 +78,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate  {
       // [START_EXCLUDE]
 
       // Get userID BytePal API
-
-        let bytePalAuth: BytePalAuth = BytePalAuth()
-        let BPUserID: String = bytePalAuth.googleLogin(id: idToken, email: email, first_name: givenName, last_name: familyName)
+        let BPUserID: String = BytePalAuth.googleLogin(
+                                    id: idToken,
+                                    email: email,
+                                    givenName: givenName,
+                                    familyName: familyName
+                                )
 
       NotificationCenter.default.post(
         name: Notification.Name(rawValue: "ToggleAuthUINotification"),

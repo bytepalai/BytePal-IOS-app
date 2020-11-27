@@ -18,7 +18,6 @@ class Sounds {
         //if let path = Bundle.main.path(forResource: soundfile, ofType: nil){
         
         do{
-            print(soundfile)
             audioPlayer = try AVAudioPlayer(contentsOf: URL(fileURLWithPath: soundfile))
             audioPlayer?.prepareToPlay()
             audioPlayer?.play()
