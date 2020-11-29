@@ -9,13 +9,19 @@
 import SwiftUI
 
 struct HomeView: View {
+    
+    // Arguments
+    
     let width: CGFloat?
     let height: CGFloat?
+    
+    //// Control which view is being shown
     @Binding var isHiddenLoginView: Bool
     @Binding var isHiddenHomeView: Bool
     @Binding var isHiddenChatView: Bool
     @Binding var isHiddenAccountSettingsView: Bool
-    var number: NumberController = NumberController()
+    
+    // Environment Object
     @EnvironmentObject var messages: Messages
     @EnvironmentObject var userInformation: UserInformation
 
@@ -43,7 +49,6 @@ struct HomeView: View {
                     NavigationBar(
                         width: width!,
                         height: height!*0.10,
-                        color: Color(UIColor.systemGray3),
                         isHiddenHomeView: self.$isHiddenHomeView,
                         isHiddenChatView: self.$isHiddenChatView,
                         isHiddenAccountSettingsView: self.$isHiddenAccountSettingsView
@@ -53,13 +58,9 @@ struct HomeView: View {
             }
         }
             .edgesIgnoringSafeArea(.bottom)
-            .onAppear(perform: {
-                // Set current view
-                userInformation.currentView = "Home"
-                print("------ email(Home): \(self.userInformation.email)")
-            })
-                .navigationBarTitle("")
-                .navigationBarHidden(true)
+            .navigationBarTitle("")
+            .navigationBarHidden(true)
+        
     }
     
     func updateHomeViewCards(attributes: [String: [String: String]]) -> [String: [String: String]] {

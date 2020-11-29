@@ -10,6 +10,8 @@ import SwiftUI
 
 // GoogleLoginButton (height: 7%)
 struct GoogleLoginButtonOnly: View {
+    
+    // Arguments
     var width: CGFloat?
     var height: CGFloat?
     

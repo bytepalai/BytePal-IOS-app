@@ -11,6 +11,10 @@ import CoreData
 
 
 struct HomeMessageCell: View {
+    
+    // Arguments
+    
+    //// Control which view view is beign shown
     @Binding var isHiddenLoginView: Bool
     @Binding var isHiddenHomeView: Bool
     var messageCreator: messagecreater
@@ -18,8 +22,11 @@ struct HomeMessageCell: View {
     var body: some View {
         
         Group{
+            
+            // Choose to show usercard or chabot card.
             switch messageCreator {
             
+            // User card
             case .user:
                     HStack {
                         Spacer(minLength: 40)
@@ -39,7 +46,8 @@ struct HomeMessageCell: View {
                         .cornerRadius(30)
                     }
                     .transition(.move(edge: .trailing))
-                
+            
+            // Chatbot card
             case .bytePal:
                 HStack {
                     HStack {
@@ -63,12 +71,11 @@ struct HomeMessageCell: View {
         .padding()
     }
     
+    // storage for card attributes
     enum messagecreater {
         case user(message: String)
         case bytePal(message: String)
-        
-        
-        
+
         var title: String {
             switch self {
             case .user:
@@ -88,6 +95,7 @@ struct HomeMessageCell: View {
         }
     }
     
+    // Control the background color of the card
     private func getBackgroundColor(accordingTo messageCreator: messagecreater) -> Color {
         switch messageCreator {
         
@@ -98,6 +106,7 @@ struct HomeMessageCell: View {
             return .appLightGreen2
         }
     }
+    
 }
 
 //MARK: Sub views

@@ -10,36 +10,59 @@ import SwiftUI
 import CoreData
 
 struct SignupView: View {
+    
+    // Arguments
+    
     var width: CGFloat?
     var height: CGFloat?
+    
+    // Constants
+    private let cornerRadious: CGFloat = 8
+    private let buttonHeight: CGFloat = 60
+    private let cornerRadiusTextField: CGFloat = 15.0
+    private let viewHeightTextField: CGFloat = 75
+    private let mainViewSpacing: CGFloat = 60
+    private let textFieldSpace: CGFloat = 30
+    private let backgroundBlurRadious: CGFloat = 400
+    
+    // Control which view is being shown
     @Binding var isHiddenLoginView: Bool
     @Binding var isHiddenChatView: Bool
     @Binding var isHiddenSignupView: Bool
+    
+    // BytePal Objects
+    
+    // Core Data
     var container: NSPersistentContainer!
     @FetchRequest(entity: User.entity(), sortDescriptors: []) var UserInformationCoreDataRead: FetchedResults<User>
     @Environment(\.managedObjectContext) var moc
+    
+    // Environment Object
     @EnvironmentObject var userInformation: UserInformation
     @EnvironmentObject var messages: Messages
     @EnvironmentObject var googleDelegate: GoogleDelegate
     @ObservedObject var keyboard = KeyboardResponder()
+    
+    // Observable Objects
+    
+    // States
+    
+    //// Text  field states
     @State var email: String = ""
     @State var givenName: String = ""
     @State var familyName: String = ""
     @State var password: String = ""
+    
+    //// Control which view is being shown
     @State var isShowingSignupError: Bool = false
     @State var signupError: String = ""
     @State var isShowingChatView: Bool = false
-    private let cornerRadious: CGFloat = 8
-    private let buttonHeight: CGFloat = 60
-    let cornerRadiusTextField: CGFloat = 15.0
-    let viewHeightTextField: CGFloat = 75
-    let mainViewSpacing: CGFloat = 60
-    let textFieldSpace: CGFloat = 30
-    let backgroundBlurRadious: CGFloat = 400
-
+    
     var body: some View {
         
         VStack(alignment: .leading) {
+            
+            // Back button
             Button (
                 action: {
                     self.isHiddenLoginView = false
@@ -59,8 +82,11 @@ struct SignupView: View {
                 .padding()
                 .isHidden(keyboard.isUp, remove: keyboard.isUp)
             
+            // Main signup view
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading) {
+                    
+                    
                     VStack(spacing: textFieldSpace){
                         Text("I am full of thoughts to share with you")
                             .foregroundColor(.appFontColorBlack)
@@ -77,7 +103,7 @@ struct SignupView: View {
                                 Text("Email")
                                     .fontWeight(.semibold)
                                     .foregroundColor(.appFontColorBlack)
-                                TextField("", text: $email)
+                                TextField("Enter email", text: $email)
                                     .autocapitalization(.none)
                                     .disableAutocorrection(true)
                             }
@@ -90,7 +116,7 @@ struct SignupView: View {
                                 Text("First Name")
                                     .fontWeight(.semibold)
                                     .foregroundColor(.appFontColorBlack)
-                                TextField("", text: $givenName)
+                                TextField("Enter first name", text: $givenName)
                                     .disableAutocorrection(true)
                             }
                             .padding()
@@ -102,7 +128,7 @@ struct SignupView: View {
                                 Text("Last Name")
                                     .fontWeight(.semibold)
                                     .foregroundColor(.appFontColorBlack)
-                                TextField("", text: $familyName)
+                                TextField("Enter last name", text: $familyName)
                                     .disableAutocorrection(true)
                             }
                             .padding()
@@ -124,6 +150,8 @@ struct SignupView: View {
                     }
                         .padding()
                     
+                    // Signup button (seperaete from main signup part to center the button)
+                    ////  button centering logic is done using the alignmenet guide modifier on the VStack
                     VStack {
                         Button(action: {
                             if self.email != "" && self.givenName != "" && self.familyName != "" && self.password != "" {
@@ -150,6 +178,8 @@ struct SignupView: View {
             }
         }
             .background(
+                
+                // Make background have a green linear gradiate
                 LinearGradient(
                     gradient: Gradient(
                         colors:
@@ -163,14 +193,13 @@ struct SignupView: View {
                 )
                     .blur(radius: backgroundBlurRadious)
                     .edgesIgnoringSafeArea(.all)
+                
             )
             .frame(width: self.width, height: self.height)
-            .onAppear(perform: {
-                // Set current view
-                userInformation.currentView = "Signup"
-            })
+            
     }
     
+    // Make a request to server /signup endpoiunt
     func signup () {
         let semaphore = DispatchSemaphore (value: 0)
         let parameters = """
@@ -262,9 +291,12 @@ struct SignupView: View {
         semaphore.wait()
     }
     
+    // Make a request to server /create_agent endpoiunt
     func createAgent(id: String) {
-    
+        
+        //  Indicates status if the chatbot user agent is created or not
         var err: Int = 0
+        
         let semaphore = DispatchSemaphore (value: 0)
         let createAgentParameter = """
         {

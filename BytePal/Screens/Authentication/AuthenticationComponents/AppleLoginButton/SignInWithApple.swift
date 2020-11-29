@@ -9,6 +9,7 @@
 import SwiftUI
 import AuthenticationServices
 
+// Wrap UIKit Apple Login View 
 final class SignInWithApple: UIViewRepresentable {
   func makeUIView(context: Context) -> ASAuthorizationAppleIDButton {
     return ASAuthorizationAppleIDButton()

@@ -1,5 +1,5 @@
 //
-//  ShareViewAccountSettings.swift
+//  ShareViewAccountSettingsOnly.swift
 //  BytePal
 //
 //  Created by Scott Hom on 11/5/20.
@@ -8,20 +8,20 @@
 
 import SwiftUI
 
-struct ShareViewAccountSettings: View {
+struct ShareViewAccountSettingsOnly: View {
+    
+    // Arguments
     var width: CGFloat?
+    var height: CGFloat?
     
     var body: some View {
         VStack(alignment:.leading) {
-            
             Text("Account")
                 .foregroundColor(.appFontColorBlack)
                 .font(.largeTitle)
                 .fontWeight(.bold)
             
-            ShareView(
-                height: (width ?? CGFloat(50))*0.30
-            )
+            ShareViewOnly(height: height!)
             
         }
         .padding(.bottom, 100)
@@ -41,9 +41,3 @@ struct ShareViewAccountSettings: View {
         .edgesIgnoringSafeArea(.all))
     }
 }
-
-//struct ShareViewAccountSettings_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ShareViewAccountSettings()
-//    }
-//}

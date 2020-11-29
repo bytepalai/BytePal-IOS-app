@@ -9,6 +9,8 @@
 import SwiftUI
 
 extension UIApplication {
+    
+    // Indicate wether this is the firs time the app has been launched
     class func isFirstLaunch() -> Bool {
         
         if !UserDefaults.standard.bool(forKey: "hasBeenLaunchedBeforeFlag") {
@@ -18,4 +20,5 @@ extension UIApplication {
         }
         return false
     }
+    
 }

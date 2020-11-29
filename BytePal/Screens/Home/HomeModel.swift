@@ -8,16 +8,6 @@
 
 import Foundation
 
+// HomeView view object attributes
 let titleLogoSize: Int = 60
 let titleTextSize: Int = 28
-    
-// Card Type and order in which cards appear from top to bottom
-let homeViewCardType: [String] = [
-    "typing",
-    "female user",
-    "BytePal",
-    "BytePal",
-    "BytePal"
-    ]
-
-// Card button types

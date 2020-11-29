@@ -9,6 +9,7 @@
 import Foundation
 import SwiftUI
 
+// Messages meta data
 class Messages: ObservableObject {
     @Published var list: [[String: Any]] = [[String: Any]]()
     @Published var messagesLeft: Int = -1

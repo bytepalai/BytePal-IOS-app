@@ -9,9 +9,12 @@
 import SwiftUI
 
 struct ShareViewOnly: View {
+    
+    // Arguments
     var height: CGFloat
+    
+    // States
     @State private var isShareSheetShowing = false
-     
     
     var body: some View {
         HStack{

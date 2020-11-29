@@ -9,19 +9,25 @@
 import SwiftUI
 
 struct NavigationBar: View {
+    
+    // Arguments
     var width: CGFloat
     var height: CGFloat
-    var color: Color
-    @Environment(\.managedObjectContext) var moc
-    @EnvironmentObject var messages: Messages
-    @EnvironmentObject var userInformation: UserInformation
-    @EnvironmentObject var googleDelegate: GoogleDelegate
+    
+    //// Control which view is beign shown
     @Binding var isHiddenHomeView: Bool
     @Binding var isHiddenChatView: Bool
     @Binding var isHiddenAccountSettingsView: Bool
     
+    // Environment Object
+    @EnvironmentObject var messages: Messages
+    @EnvironmentObject var userInformation: UserInformation
+    @EnvironmentObject var googleDelegate: GoogleDelegate
+    
     var body: some View {
         HStack {
+            
+            // Home View button
             Button(action: {
                 isHiddenHomeView = false
                 isHiddenChatView = true
@@ -34,6 +40,7 @@ struct NavigationBar: View {
                     .shadow(color: convertHextoRGB(hexColor: "000000").opacity(0.48), radius: 3, x: 3, y: 7)
             })
             
+            // Chat View Button
             Button(action: {
                 isHiddenHomeView = true
                 isHiddenChatView = false
@@ -46,6 +53,7 @@ struct NavigationBar: View {
                     .padding(EdgeInsets(top: 6, leading: 0, bottom: 32, trailing: 0))
             })
             
+            // Settings View Button
             Button(action: {
                 isHiddenHomeView = true
                 isHiddenChatView = true

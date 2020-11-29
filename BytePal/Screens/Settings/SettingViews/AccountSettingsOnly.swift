@@ -1,4 +1,5 @@
 import SwiftUI
+import WebKit
 
 struct AccountSettingsViewOnly: View {
     var width: CGFloat?
@@ -92,6 +93,21 @@ extension TextLinkOnly {
         return Page(request: URLRequest(url: URL(string: url)!))
     }
 }
+
+struct Page : UIViewRepresentable {
+    
+    let request: URLRequest
+    
+    func makeUIView(context: Context) -> WKWebView  {
+        return WKWebView()
+    }
+    
+    func updateUIView(_ uiView: WKWebView, context: Context) {
+        uiView.load(request)
+    }
+    
+}
+
 
 struct AccountSettingsViewOnly_Previews: PreviewProvider {
     static var previews: some View {

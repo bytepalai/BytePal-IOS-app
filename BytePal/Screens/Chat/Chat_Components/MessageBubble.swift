@@ -10,7 +10,13 @@ import SwiftUI
 
 // Message bubble
 struct MessageBubble: View {
+    
+    // Arguments
+    
+    //// Message text
     var message: String
+    
+    //// Indicates if the message is the curent user or chatbot
     var isCurrentUser: Bool
     
     var body: some View {

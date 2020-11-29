@@ -14,9 +14,28 @@ import FBSDKLoginKit
 
 // FacebookLoginButton (height: 7%)
 struct FacebookLoginButton: View {
+    
+    // Arguments
+    
+    //// Dynamic sizing
     var width: CGFloat?
+    
+    //// Navigation by changing if views are shown
     @Binding var isHiddenLoginView: Bool
     @Binding var isHiddenChatView: Bool
+    
+    // BytePal Objects
+    
+    // Core Data
+    
+    // Environment Object
+    
+    // Observable Objects
+    
+    // States
+    
+    
+    
     var container: NSPersistentContainer!
     @FetchRequest(entity: User.entity(), sortDescriptors: []) var UserInformationCoreDataRead: FetchedResults<User>
     @FetchRequest(entity: Message.entity(), sortDescriptors: []) var MessagesCoreDataRead: FetchedResults<Message>
@@ -168,7 +187,10 @@ struct FacebookLoginButton: View {
     }
 
     func createAgent(id: String) {
+        
+        //  Indicates status if the chatbot user agent is created or not
         var err: Int = 0
+        
         let semaphore = DispatchSemaphore (value: 0)
         let createAgentParameter = """
         {

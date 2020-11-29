@@ -10,8 +10,15 @@ import SwiftUI
 
 //  Message View
 struct MessageView: View, Identifiable {
+    
+    // Arguments
+    
+    //// System generated unique alpha numeric string
     var id: UUID
+    
+    ////  contains message text and wether message is from user or chabot.
     var message: MessageInformation
+    
     var body: some View {
         HStack (alignment: .bottom, spacing: 16) {
             if message.isCurrentUser == true { Spacer() }

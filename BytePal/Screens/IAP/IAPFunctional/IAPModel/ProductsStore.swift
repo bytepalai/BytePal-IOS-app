@@ -13,11 +13,15 @@ import Combine
 import StoreKit
 
 class ProductsStore : ObservableObject {
-    
+        
+    // BytePal singelton Object
     static let shared = ProductsStore()
-    
+
+    // Products list
     @Published var products: [SKProduct] = []
-    @Published var anyString = "123" // little trick to force reload ContentView from PurchaseView by just changing any Published value
+    
+    // little trick to force reload ContentView from PurchaseView by just changing any Published value
+    @Published var anyString = "123"
     
     func handleUpdateStore(){
         anyString = UUID().uuidString

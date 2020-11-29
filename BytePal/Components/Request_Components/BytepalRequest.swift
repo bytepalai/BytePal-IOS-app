@@ -43,48 +43,4 @@ class MakeRequest {
         }
     }
     
-    static func sendMessageTestServer(message: String,
-                            userID: String,
-                            completion: @escaping (String) -> Void) {
-
-        var responseFromChatBot: String = ""
-        
-        //      Define header of POST Request
-        let urlRequest =  "\(TEST_SERVER_API_HOSTNAME)/interact"
-        var request = URLRequest(url: URL(string: "\(API_HOSTNAME)/interact")!,
-                                 timeoutInterval: Double.infinity)
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpMethod = "POST"
-        
-        
-        // Header
-        let headers: HTTPHeaders = [
-            "Accept": "application/json"
-        ]
-        
-        //Define body of POST Request
-        let parameters: Parameters = [
-            "user_id": userID,
-            "text":message,
-            "type":"user"
-        ]
-        
-//        AF.request(urlRequest, method: .post, parameters: parameters, headers: headers).responseJSON { response in
-//            
-//            if let statusCode = response.response?.statusCode {
-//                switch statusCode {
-//                    case 503:
-//                        print("----- Error: Service unavailable 503")
-//                    case 200:
-//                        responseFromChatBot = response
-//                        completion(responseFromChatBot)
-//                    default:
-//                        print("----- Error: \(statusCode)")
-//                }
-//            }
-//            
-//        }
-        
-        
-    }
 }

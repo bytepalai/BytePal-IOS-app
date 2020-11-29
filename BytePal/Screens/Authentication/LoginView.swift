@@ -136,14 +136,12 @@ struct LoginView: View {
             userInformationCoreDataWrite.isLoggedIn = false
             try? self.moc.save()
         } else {
-            // Set current view
-            userInformation.currentView = "Login"
-
-            // Load messages from cache
+            
+            // Load messages from cache if there is network connection
             NetworkStatus.checkNetworkStatus(completion: {netStat in
                 let isNotConnected: Bool = !netStat["status"]!
 
-                if userInformation.currentView == "Login" &&  isNotConnected {
+                if isNotConnected {
                     print("Loading messages from cache ...")
                     var messageNumber: Int = 0
                     
@@ -179,7 +177,9 @@ struct LoginView: View {
                 
                 // Go to Chat View
                 self.isHiddenLoginView = true
-                
+                self.isHiddenSignupView = true
+                self.isHiddenChatView = false
+                 
             }
         }
     }
@@ -310,7 +310,7 @@ struct LoginView: View {
     func updateMessageHistoryServer(userID: String) {
         var messageHistoryData: [[String: String]] = [[String: String]]()
         
-        print("----------- load SERVER")
+        print("----------- load SERVER(LOGIN VIEW)")
         
         // Clear message cache
         for message in MessagesCoreDataRead {

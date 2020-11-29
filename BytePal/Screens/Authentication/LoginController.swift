@@ -280,7 +280,10 @@ class GoogleDelegate: NSObject, GIDSignInDelegate, ObservableObject {
     
     //Create Agent Handeler
     func createAgent(id: String) {
+        
+        //  Indicates status if the chatbot user agent is created or not
         var err: Int = 0
+        
         let semaphore = DispatchSemaphore (value: 0)
         let createAgentParameter = """
         {

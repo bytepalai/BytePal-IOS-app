@@ -9,11 +9,14 @@
 import SwiftUI
 
 final class KeyboardResponder: ObservableObject {
-//    let keyBoardHeight: Int = 144
+    
+    // Notification Center Object (similar to observable object)
     private var notificationCenter: NotificationCenter
+    
+    // Observable Objects
     @Published var currentHeight: CGFloat = 0
     @Published private(set) var isUp: Bool = false
-
+    
     init(center: NotificationCenter = .default) {
         notificationCenter = center
         notificationCenter.addObserver(self, selector: #selector(keyBoardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)

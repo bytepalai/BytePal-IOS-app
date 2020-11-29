@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+// Subscription attributes 
 class IAPViewModel: ObservableObject {
     var subscriptions = [
         Subscription(

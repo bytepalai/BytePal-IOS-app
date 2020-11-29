@@ -11,8 +11,13 @@ import CoreData
 
 //  User Inforamtion Bar (Top)
 struct UserBar: View {
-    // UserBar View
+    
+    // Arguments
+    
+    //// View width
     var width: CGFloat
+    
+    ////  Logo width and height
     var sideSquareLength: CGFloat
     
     var body: some View {
@@ -20,6 +25,7 @@ struct UserBar: View {
         VStack {
             ZStack{
                 
+                //// Ceneter logo with these spacers
                 Spacer()
                 
                 // Logo
@@ -54,16 +60,4 @@ struct UserBar: View {
             )
     }
     
-}
-
-//struct UserBar_Previews: PreviewProvider {
-//    static var previews: some View {
-//        UserBar(sideSquareLength: CGFloat(48))
-//    }
-//}
-
-struct UserBar_Previews: PreviewProvider {
-    static var previews: some View {
-        /*@START_MENU_TOKEN@*/Text("Hello, World!")/*@END_MENU_TOKEN@*/
-    }
 }

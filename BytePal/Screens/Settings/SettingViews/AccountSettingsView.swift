@@ -10,27 +10,43 @@ import SwiftUI
 import CoreData
 
 struct AccountSettingsView: View {
+    
+    // Arguments
+    
     let width: CGFloat?
     let height: CGFloat?
+    
+    // Constats
+    var email: String = ""
+    
+    //// Contorl which view is beign shown
+    @Binding var isHiddenUserBar: Bool
     @Binding var isHiddenLoginView: Bool
     @Binding var isHiddenHomeView: Bool
     @Binding var isHiddenChatView: Bool
     @Binding var isHiddenAccountSettingsView: Bool
+    
+    // BytePal Objects
+    
+    //// Controller indicate sign in status
     var socialMediaAuth: SocialMediaAuth = SocialMediaAuth()
+    
+    
+    
+    // Core Data
     var container: NSPersistentContainer!
     @FetchRequest(entity: Message.entity(), sortDescriptors: []) var MessagesCoreDataRead: FetchedResults<Message>
     @FetchRequest(entity: User.entity(), sortDescriptors: []) var UserInformationCoreDataRead: FetchedResults<User>
     @Environment(\.managedObjectContext) var moc
+    
+    // Environment Object
     @EnvironmentObject var userInformation: UserInformation
     @EnvironmentObject var messages: Messages
+    
+    // States
     @State var isShowingChatView: Bool = false
-    var email: String = ""
     @State var name: String = ""
 
-    // Temp
-    @State var fullName: String = "ExampleUsername963"
-    
-    
     var body: some View {
         
         VStack {
@@ -39,11 +55,20 @@ struct AccountSettingsView: View {
             ShareViewAccountSettings(width: (width ?? 100))
                 
             GeometryReader { proxy in
+                
+                // Settigns
                 List {
+                    
+                    // User email
                     TitleWithSubTitleCell(title: "Email", subTitle: self.userInformation.email)
+                    
+                    // Terms and conditions
                     TextLink(name: "Terms and Conditions")
+                    
+                    // Privacy Policy
                     TextLink(name: "Privacy Policy")
-
+                    
+                    // Logout button
                     Button(action: {
                         self.logout()
                     }, label: {
@@ -56,6 +81,7 @@ struct AccountSettingsView: View {
                         .cornerRadius(10)
                         .shadow(radius: 2)
                         .padding()
+                    
                 }
                 .frame(width: proxy.size.width - 20, height: proxy.size.height + proxy.size.height/10, alignment: .center)
                 .cornerRadius(20, antialiased: true)
@@ -71,18 +97,14 @@ struct AccountSettingsView: View {
             NavigationBar(
                 width: width!,
                 height: height!*0.10,
-                color: Color(UIColor.systemGray3),
                 isHiddenHomeView: self.$isHiddenHomeView,
                 isHiddenChatView: self.$isHiddenChatView,
                 isHiddenAccountSettingsView: self.$isHiddenAccountSettingsView
             )
+            
         }
-            .onAppear(perform: {
-                // Set current view
-                self.userInformation.currentView = "AccountSettings"
-            })
-                .navigationBarTitle("")
-                .navigationBarHidden(true)
+            .navigationBarTitle("")
+            .navigationBarHidden(true)
         
     }
     
@@ -123,10 +145,12 @@ struct AccountSettingsView: View {
         self.userInformation.isLoggedIn = false
         
         // Got Login View
+        self.isHiddenUserBar = true
         self.isHiddenHomeView = true
         self.isHiddenChatView = true
         self.isHiddenAccountSettingsView = true
         self.isHiddenLoginView = false
+        
 
     }
 

@@ -12,13 +12,15 @@ import StoreKit
 import Combine
 
 struct PurchaseView : View {
+    
+    // Arguments
     var userID: String?
-    @State private var isDisabled : Bool = false
+    
+    // Environment Variable
     @Environment(\.presentationMode) var presentationMode
-
-    private func dismiss() {
-        self.presentationMode.wrappedValue.dismiss()
-    }
+    
+    // States
+    @State private var isDisabled : Bool = false
 
     var body: some View {
         GeometryReader { geometry in
@@ -92,7 +94,7 @@ struct PurchaseView : View {
             }
         }
     }
-
+    
     func helperButtons() -> some View{
         HStack {
             Button(action: {
@@ -136,6 +138,11 @@ struct PurchaseView : View {
             Text("Not now").font(.footnote)
             }.padding()
     }
+    
+    private func dismiss() {
+        self.presentationMode.wrappedValue.dismiss()
+    }
+
 
     //MARK:- Actions
 

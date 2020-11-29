@@ -9,6 +9,19 @@
 import SwiftUI
 
 struct DividerCustom: View {
+    
+    // Arguments
+    
+    // BytePal Objects
+    
+    // Core Data
+    
+    // Environment Object
+    
+    // Observable Objects
+    
+    // States
+    
     var color: Color
     var length: Float
     var width: Float

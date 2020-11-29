@@ -9,5 +9,6 @@
 import Foundation
 import SwiftUI
 
+// Endpoints for webviews on AcountSttingsView.swift
 let termsAndConditions: String = "\(WEBPAGE_HOSTNAME)/terms"
 let privacyPolicy: String = "\(WEBPAGE_HOSTNAME)/privacy"

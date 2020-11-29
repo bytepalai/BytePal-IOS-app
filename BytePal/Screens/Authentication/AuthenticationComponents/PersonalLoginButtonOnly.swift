@@ -10,6 +10,8 @@ import SwiftUI
 
 // PersonalLoginButton (height: 7%)
 struct PersonalLoginButtonOnly: View {
+    
+    // Arguments
     var width: CGFloat?
     var height: CGFloat?
     

@@ -10,18 +10,28 @@ import SwiftUI
 import CoreData
 
 struct MessageBarView: View {
+    
+    // Arguments
     var width: CGFloat?
     var height: CGFloat?
+    
+    // Core Data
     var container: NSPersistentContainer!
     @FetchRequest(entity: Message.entity(), sortDescriptors: []) var MessagesCoreDataRead: FetchedResults<Message>
     @FetchRequest(entity: User.entity(), sortDescriptors: []) var UserInformationCoreDataRead: FetchedResults<User>
     @Environment(\.managedObjectContext) var moc
+    
+    // Environment Object
     @EnvironmentObject var messages: Messages
     @EnvironmentObject var userInformation: UserInformation
+    
+    // Observable Objects
     @ObservedObject var keyboard = KeyboardResponder()
+    
+    // States
     @State public var textFieldString: String = ""
     @State public var messageString: String = ""
-    
+
     var body: some View {
         
         DividerCustom(color: Color(UIColor.systemGray3), length: Float(width ?? CGFloat(100)), width: 1)
@@ -84,16 +94,18 @@ struct MessageBarView: View {
             // Update message history with user message
             DispatchQueue.main.async {
                 
+                // Store message in RAM
                 self.messages.list.insert(["id": UUID(), "content": self.textFieldString, "isCurrentUser": true], at: self.messages.list.startIndex)
                 
+                // Store in temporary variable
+                self.messageString = self.textFieldString
+                
             }
+            
         } else {
             print("Error: User message is blank")
         }
 
-        // Clear message box
-        self.messageString = self.textFieldString
-        
     }
     
     func sendChatbotMessage(){

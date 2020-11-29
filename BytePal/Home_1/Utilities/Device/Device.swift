@@ -13,6 +13,7 @@ import SwiftUI
 class DeviceInfo: ObservableObject {
     @Published var deviceSizeGroup: String = "Error: Device group size unique identifier not set"
     
+    // set device size group
     func setDeviceGroup() {
         switch UIDevice().type {
             case .iPhone12ProMax:

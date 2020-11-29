@@ -134,6 +134,7 @@ struct AppleLoginButton: View {
         let isSignedIn: String = userInformationAppleSignIn["isSignedIn"]
                                     ?? "Error: signed in state not returned"
         
+        // Signup when all user informaton is provided
         if isSignedIn == "true" &&  lengthUserInformaton > 2 {
             
             self.signupAppleLoginAllInformation(
@@ -146,7 +147,8 @@ struct AppleLoginButton: View {
                 userIdentifier: userInformationAppleSignIn["userIdentifier"]
                             ?? "Error: user identifier not returned from Apple Server"
             )
-            
+        
+        // Signup when only user identifier is provided
         } else if isSignedIn == "true" &&  lengthUserInformaton == 2 {
 
             self.signupAppleLoginOnlyIdentifier(
@@ -188,7 +190,7 @@ struct AppleLoginButton: View {
     private func updateMessageHistoryServer(userID: String) {
         var messageHistoryData: [[String: String]] = [[String: String]]()
         
-        print("----------- load SERVER")
+        print("----------- load SERVER (APPLELOGINBUTTONVIEW)")
         
         // Clear message cache
         for message in MessagesCoreDataRead {
@@ -209,12 +211,16 @@ struct AppleLoginButton: View {
     
     private func loadMessageServer(message: [String: String]) {
         // Load messages into RAM
+        
+        print("-------- Message (Apple Login Button): \(message)")
+        
         self.messages.list.insert(["id": UUID(), "content": message["text"] ?? "Error can't unwrap message text", "isCurrentUser": isCurrentUserLoadServer], at: self.messages.list.startIndex)
         
         //  Toggle the user type
         isCurrentUserLoadServer.toggle()
     }
     
+    // Make request to /signup endpoint when all user information si provided
     private func signupAppleLoginAllInformation (email: String, givenName: String, familyName: String, userIdentifier: String) {
         
         let semaphore = DispatchSemaphore (value: 0)
@@ -286,9 +292,6 @@ struct AppleLoginButton: View {
                         }
                     }
                     
-                    
-                    
-
                     // Write user information to RAM
                     DispatchQueue.main.async {
                         self.userInformation.id = userID
@@ -316,9 +319,9 @@ struct AppleLoginButton: View {
                     })
                     
                     // Go to chat view
-                    self.isHiddenLoginView = true
+                    self.isHiddenLoginView = false
                     self.isHiddenSignupView = true
-                    self.isHiddenChatView = false
+                    self.isHiddenChatView = true
 
                     // Create agent
                     DispatchQueue.main.async {
@@ -335,6 +338,7 @@ struct AppleLoginButton: View {
         semaphore.wait()
     }
     
+    // Make request to /signup endpoint when only user identifer is provided
     private func signupAppleLoginOnlyIdentifier (userIdentifier: String) {
         
         let semaphore = DispatchSemaphore (value: 0)
@@ -443,7 +447,9 @@ struct AppleLoginButton: View {
     
     private func createAgent(id: String) {
 
+        //  Indicates status if the chatbot user agent is created or not
         var err: Int = 0
+        
         let semaphore = DispatchSemaphore (value: 0)
         let createAgentParameter = """
         {

@@ -14,8 +14,12 @@ import FBSDKLoginKit
 
 // SignupBar (height: 40%)
 struct SignupBar: View {
+    
+    // Arguments
     var width: CGFloat?
     var height: CGFloat?
+    
+    // States (bindings)
     @Binding var isHiddenLoginView: Bool
     @Binding var isHiddenChatView: Bool
     @Binding var isHiddenSignupView: Bool

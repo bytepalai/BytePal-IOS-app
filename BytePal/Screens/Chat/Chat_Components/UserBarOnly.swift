@@ -35,8 +35,6 @@ struct UserBarOnly: View {
                     
                     Spacer()
                     
-                    ShareBoxView(width: width)
-                    
                     Button(action: {
                         print("Logout")
                     }, label: {

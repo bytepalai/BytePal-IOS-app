@@ -11,19 +11,23 @@ import AuthenticationServices
 import Contacts
 
 class AppleLoginDelegateBP: NSObject, ObservableObject {
-    // private let signInSucceeded: (Bool) -> Void
     
-    private let userData: ([String]) -> Void
+    // Arguments
     private weak var window: UIWindow!
     
-    // Shared data
+    // Personal defined closure
+    private let userData: ([String]) -> Void
+    
+    // Constants
     let numSharedDataVar: Int = 5
+    
+    // Observable Objects
     @Published var email: String = ""
     @Published var givenName: String = ""
     @Published var familyName: String = ""
     @Published var userIdentifier: String = ""
     @Published var signedIn: Bool = false
-  
+    
     init(window: UIWindow?, data: @escaping([String]) -> Void) {
         self.window = window
         self.userData = data
@@ -33,6 +37,8 @@ class AppleLoginDelegateBP: NSObject, ObservableObject {
 extension AppleLoginDelegateBP: ASAuthorizationControllerDelegate {
   private func registerNewAccount(credential: ASAuthorizationAppleIDCredential) {
     // 1
+    
+    print("----- new")
     
     let userInformationApple = UserData(email: credential.email!,
                             name: credential.fullName!,
@@ -91,6 +97,8 @@ extension AppleLoginDelegateBP: ASAuthorizationControllerDelegate {
     // if (WebAPI.Login(credential.user, credential.identityToken, credential.authorizationCode)) {
     //   ...
     // }
+    
+    print("----- existing")
     
     let identifier: String = credential.user
     

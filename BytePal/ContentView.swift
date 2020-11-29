@@ -2,7 +2,7 @@
 //  ContentView.swift
 //  BytePal
 //
-//  Created by Paul Ngouchet on 8/24/20.
+//  Created by Scott Hom on 8/24/20.
 //  Copyright © 2020 BytePal AI, LLC. All rights reserved.
 //
 
@@ -14,15 +14,5 @@ struct ContentView: View {
         
         LoginView()
         
-//        NavigationLinkPopToRootEnvObj()
-        
-//        SheetView()
-        
     }
 }
-
-//struct ContentView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        /*@START_MENU_TOKEN@*/Text("Hello, World!")/*@END_MENU_TOKEN@*/
-//    }
-//}

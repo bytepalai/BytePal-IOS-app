@@ -13,28 +13,25 @@ import StoreKit
 
 struct PurchaseButton : View {
     
+    // Arguments
+    
+    //// Closure for sotre kit success indication
     var block : SuccessBlock!
+    
     var product : SKProduct!
-
-    @State private var image = ""
-    @State private var plan = ""
-    @State private var price = ""
-    @State private var action = ""
-       
     
     var body: some View {
         
         Button(action: {
+            
             self.block()
             print("price is", self.product.localizedPrice())
             print(self.product.localizedPrice())
-            //Spacer()
            
         }) {
-            IAPCard(price:String(self.product.localizedPrice()))
-            //Spacer()
             
-            //Text(product.localizedPrice()).lineLimit(nil).multilineTextAlignment(.center).font(.subheadline)
+            IAPCard(price:String(self.product.localizedPrice()))
+            
             }
     }
         

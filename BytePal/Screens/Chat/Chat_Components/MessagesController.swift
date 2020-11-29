@@ -10,8 +10,13 @@ import Foundation
 
 extension Messages {
     
+    
+    // Make request to /history endpoint
     func getHistory(userID: String) -> [[String: String]] {
+            
+            // Dictionary to store messages
             var messagHistoryData: [[String: String]]?
+        
             let semaphore = DispatchSemaphore (value: 0)
 
     //      Define header of POST Request
@@ -41,6 +46,14 @@ extension Messages {
                     if let responseJSON = responseJSON as? [String: [[String: String]]] {
                         messagHistoryData = responseJSON[userID]
                     }
+                    
+                    // Ouput HTTP Status Code if status code not success
+                    if let httpResponse = response as? HTTPURLResponse {
+                        if httpResponse.statusCode != 200 {
+                            print("Error BP: HTTP Status code \(httpResponse.statusCode). \(DebugBP.debug())")
+                        }
+                    }
+                    
                 } catch {
                     print(error)
                 }
@@ -49,7 +62,8 @@ extension Messages {
             task.resume()
             semaphore.wait()
             // Return loginStatus
-            return messagHistoryData!
+        
+        return messagHistoryData ?? [["Error" : "Message history was unssucessfuly retrieved"]]
     }
 
     
@@ -84,9 +98,13 @@ extension Messages {
                     return
                 }
                 do {
+                    
                     let reponseObject = try JSONDecoder().decode(responseStruct.self, from: data)
                     let responseData: String = reponseObject.messages_left
+                    
+                    // remove white spaces on response
                     messagesLeftResponse = responseData.trimmingCharacters(in: .whitespacesAndNewlines)
+                    
                 } catch {
                     print(error)
                 }
@@ -94,7 +112,9 @@ extension Messages {
             }
             task.resume()
             semaphore.wait()
+        
             // Return loginStatus
             return messagesLeftResponse ?? "Error: Unable to get number of messages left"
+        
     }
 }

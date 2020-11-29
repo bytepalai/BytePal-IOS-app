@@ -22,24 +22,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Get the managed object context from the shared persistent container.
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         
-        // List of messages. See ChatView.swift for more information
+        // EnvironmentObjects (stored in RAM)
+        //// Messages
         let messages = Messages()
-        
-        // Information on device Group
+        //// Device model (example: iPhon 12, iPhone 12 Pro Max, etc ... )
         let deviceInfo = DeviceInfo()
-        
-        // PopToRootViewEnvObj (Proof of concept)
-        let popToRootView: NavLinkPopToRoot = NavLinkPopToRoot()
-        
-        // Create Objet to store user ID
-        // Get the googleDelegate from AppDelegate
+        //// User information
         let userInformation = UserInformation()
+        
+        // Observable Object
+        //// Google sign in. Declared so user ID, email, etc ... can be returend from class model to the UI to store in EnvironmentObject UserInformation.
         let googleDelegate = (UIApplication.shared.delegate as! AppDelegate).googleDelegate
         
         
-        // Create the SwiftUI view and set the context as the value for the managedObjectContext environment keyPath.
-        // Add `@Environment(\.managedObjectContext)` in the views that will need the context.
-        let contentView = ContentView().environment(\.managedObjectContext, context).environmentObject(messages).environmentObject(userInformation).environmentObject(googleDelegate).environmentObject(deviceInfo).environmentObject(popToRootView)
+        // Init view
+        let contentView = ContentView().environment(\.managedObjectContext, context).environmentObject(messages).environmentObject(userInformation).environmentObject(googleDelegate).environmentObject(deviceInfo)
 
         // Use a UIHostingController as window root view controller.
         if let windowScene = scene as? UIWindowScene {

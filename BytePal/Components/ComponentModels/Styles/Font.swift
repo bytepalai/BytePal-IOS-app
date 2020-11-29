@@ -8,6 +8,9 @@
 
 import SwiftUI
 
+// font used for UI
 let fontStyle: String = "Helvetica Bold"
+
+// Simulate these size options that are only available in iOS 14
 let title2Custom: Font = Font.system(size: 22)
 let title3Custom: Font = Font.system(size: 20)

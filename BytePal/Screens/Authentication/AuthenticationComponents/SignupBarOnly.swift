@@ -10,6 +10,8 @@ import SwiftUI
 
 // SignupBar (height: 40%)
 struct SignupBarOnly: View {
+    
+    // Arguments
     var width: CGFloat?
     var height: CGFloat?
     

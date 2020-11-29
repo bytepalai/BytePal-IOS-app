@@ -10,15 +10,17 @@ import SwiftUI
 
 // PersonalLoginButton (height: 7%)
 struct PersonalLoginButton: View {
+    
+    // Arguments
     var width: CGFloat?
     @Binding var isHiddenLoginView: Bool
     @Binding var isHiddenChatView: Bool
     @Binding var isHiddenSignupView: Bool
-    @Environment(\.managedObjectContext) var moc
+    
+    // Environment Object
     @EnvironmentObject var messages: Messages
     @EnvironmentObject var userInformation: UserInformation
     @EnvironmentObject var googleDelegate: GoogleDelegate
-    
     
     var body: some View {
         Button(action: {
@@ -37,11 +39,5 @@ struct PersonalLoginButton: View {
                 )
                     .padding(EdgeInsets(top: 0, leading: (width ?? CGFloat(100))*0.04, bottom: 0, trailing: (width ?? CGFloat(100))*0.05))
         })
-    }
-}
-
-struct PersonalLoginButton_Previews: PreviewProvider {
-    static var previews: some View {
-        /*@START_MENU_TOKEN@*/Text("Hello, World!")/*@END_MENU_TOKEN@*/
     }
 }

@@ -12,16 +12,24 @@ import GoogleSignIn
 
 // GoogleLoginButton (height: 7%)
 struct GoogleLoginButton: View {
+    
+    // Arguments
     var width: CGFloat?
     @Binding var isHiddenLoginView: Bool
     @Binding var isHiddenChatView: Bool
+    
+    // Core Data
     var container: NSPersistentContainer!
     @FetchRequest(entity: User.entity(), sortDescriptors: []) var UserInformationCoreDataRead: FetchedResults<User>
     @FetchRequest(entity: Message.entity(), sortDescriptors: []) var MessagesCoreDataRead: FetchedResults<Message>
     @Environment(\.managedObjectContext) var moc
+    
+    // Environment Object
     @EnvironmentObject var messages: Messages
     @EnvironmentObject var userInformation: UserInformation
     @EnvironmentObject var googleDelegate: GoogleDelegate
+
+    // States (Bindings)
     @State var isCurrentUserLoadServer = true
 
     var body: some View {

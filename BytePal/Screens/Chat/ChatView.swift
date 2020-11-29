@@ -11,10 +11,24 @@ import SwiftUI
 import CoreData
 
 struct ChatView: View {
+    
+    // Arguments
     var width: CGFloat?
     var height: CGFloat?
+    
+    //// Control which view is being shown
     @Binding var isHiddenLoginView: Bool
+    
+    // Environment Object
     @EnvironmentObject var userInformation: UserInformation
+    
+    // States
+    
+    //// Control which view is bing shwon
+    @State private var isHiddenUserBar: Bool = true
+    @State private var isHiddenHomeView: Bool = true
+    @State private var isHiddenChatView: Bool = false
+    @State private var isHiddenAccountSettingsView: Bool = true
 
     var body: some View {
         GeometryReader{ geometry  in
@@ -24,6 +38,7 @@ struct ChatView: View {
                     width: geometry.size.width,
                     sideSquareLength: geometry.size.height*0.06
                 )
+                    .isHidden(self.isHiddenUserBar, remove: self.isHiddenUserBar)
                 
                 // Space (4%)
                 
@@ -31,37 +46,19 @@ struct ChatView: View {
                 MessageHistory(
                     width: self.width,
                     height: self.height,
-                    isHiddenLoginView: self.$isHiddenLoginView
+                    isHiddenUserBar: self.$isHiddenUserBar,
+                    isHiddenLoginView: self.$isHiddenLoginView,
+                    isHiddenHomeView: self.$isHiddenHomeView,
+                    isHiddenChatView: self.$isHiddenChatView,
+                    isHiddenAccountSettingsView: self.$isHiddenAccountSettingsView
                 )
             }
         }
             .edgesIgnoringSafeArea(.bottom)
-            .onAppear(perform: {                
-                // Set current view
-                userInformation.currentView = "Chat"
-            })
+            // Hide navigation bar. The title must be initiated for it to totally dissapear
             .navigationBarTitle("")
             .navigationBarHidden(true)
             .navigationBarBackButtonHidden(true)
     }
 
-}
-
-//#if DEBUG
-//struct ChatView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ChatView()
-//            .environment(\.colorScheme, .dark)
-//        
-//        ChatView()
-//            .environment(\.colorScheme, .light)
-//        
-//    }
-//}
-//#endif
-
-struct ChatView_Previews: PreviewProvider {
-    static var previews: some View {
-        /*@START_MENU_TOKEN@*/Text("Hello, World!")/*@END_MENU_TOKEN@*/
-    }
 }

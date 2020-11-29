@@ -9,6 +9,7 @@
 import Foundation
 import SwiftUI
 
+// Convert a string with hex value to it's correspnding Color Object
 func convertHextoRGB(hexColor: String) -> Color {
     let color: Int = Int(hexColor, radix: 16)!
     let mask = 0x0000FF

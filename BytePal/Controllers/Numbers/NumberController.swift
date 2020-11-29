@@ -8,6 +8,7 @@
 
 import Foundation
 
+// Add commas to number
 class NumberController {
     func commaSeperatedNumber(num: Int) -> String {
         let numberFormatter = NumberFormatter()

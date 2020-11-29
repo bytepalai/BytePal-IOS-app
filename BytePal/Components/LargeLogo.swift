@@ -9,7 +9,10 @@
 import SwiftUI
 
 // LargeLogo (height: 41%)
+// This is the logo used on the Login View
 struct LargeLogo: View {
+    
+    // Arguments
     var width: CGFloat?
     var height: CGFloat?
     

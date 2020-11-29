@@ -19,6 +19,8 @@ let IAP_PRODUCTS_DID_LOAD_NOTIFICATION = Notification.Name("IAP_PRODUCTS_DID_LOA
 class IAPManager : NSObject{
 
     private var sharedSecret = ""
+    
+    // Make singelton object
     @objc static let shared = IAPManager()
     @objc private(set) var products = [SKProduct]()
     

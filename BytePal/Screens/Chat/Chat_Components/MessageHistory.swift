@@ -17,27 +17,29 @@ import FBSDKLoginKit
 struct MessageHistory: View{
     
     // Arguments
+    
     let width: CGFloat?
     let height: CGFloat?
+    
+    //// Control which view is beign shown
+    @Binding var isHiddenUserBar: Bool
     @Binding var isHiddenLoginView: Bool
+    @Binding var isHiddenHomeView: Bool
+    @Binding var isHiddenChatView: Bool
+    @Binding var isHiddenAccountSettingsView: Bool
     
     // Core Data
     var container: NSPersistentContainer!
     @FetchRequest(entity: Message.entity(), sortDescriptors: []) var MessagesCoreDataRead: FetchedResults<Message>
     @FetchRequest(entity: User.entity(), sortDescriptors: []) var UserInformationCoreDataRead: FetchedResults<User>
+    @Environment(\.managedObjectContext) var moc
     
     // Environment Object
-    @Environment(\.managedObjectContext) var moc
     @EnvironmentObject var messages: Messages
     @EnvironmentObject var userInformation: UserInformation
     
     // Observable Objects
     @ObservedObject var keyboard = KeyboardResponder()
-    
-    // States
-    @State private var isHiddenHomeView: Bool = true
-    @State private var isHiddenChatView: Bool = false
-    @State private var isHiddenAccountSettingsView: Bool = true
     
     var body: some View {
         ZStack {
@@ -59,9 +61,8 @@ struct MessageHistory: View{
                 
                 // NavigationBar (height: 10%)
                 NavigationBar(
-                    width: (width ?? CGFloat(100)),
+                     width: (width ?? CGFloat(100)),
                     height: (height ?? CGFloat(200))*0.10,
-                    color: Color(UIColor.systemGray3),
                     isHiddenHomeView: self.$isHiddenHomeView,
                     isHiddenChatView: self.$isHiddenChatView,
                     isHiddenAccountSettingsView: self.$isHiddenAccountSettingsView
@@ -98,6 +99,7 @@ struct MessageHistory: View{
             AccountSettingsView(
                 width: self.width,
                 height: self.height,
+                isHiddenUserBar: self.$isHiddenUserBar,
                 isHiddenLoginView: self.$isHiddenLoginView,
                 isHiddenHomeView: self.$isHiddenHomeView,
                 isHiddenChatView: self.$isHiddenChatView,

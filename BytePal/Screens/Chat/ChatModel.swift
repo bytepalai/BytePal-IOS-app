@@ -8,7 +8,7 @@
 
 import Foundation
 
-// Use this for mainting message history between views
+// User information meta data
 class UserInformation: ObservableObject {
     @Published var id: String = ""
     @Published var email: String = ""
@@ -17,5 +17,4 @@ class UserInformation: ObservableObject {
     @Published var fullName: String = ""
     @Published var messagesLeft: Int = 0
     @Published var isLoggedIn: Bool = false
-    @Published var currentView: String = ""
 }

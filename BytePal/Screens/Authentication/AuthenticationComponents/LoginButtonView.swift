@@ -10,6 +10,8 @@ import SwiftUI
 
 // LoginButtonView (height: 9%)
 struct LoginButtonView: View {
+    
+    // Arguments
     var width: CGFloat?
     var height: CGFloat?
     
